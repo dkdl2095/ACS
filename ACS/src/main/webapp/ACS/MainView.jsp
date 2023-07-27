@@ -50,7 +50,7 @@
 				<li class="nav-item"><a id="btnMyInfo" class="nav-link"
 					href="#">내 정보</a></li>
 				<!-- 관리자 버튼-->
-				<li class="nav-item"><a id="btnAdmin" class="nav-link" href="#">관리자</a></li>
+				<li class="nav-item"><a id="btnAdmin" class="nav-link" href="AdminView.jsp">관리자</a></li>
 				<!-- 로그아웃 버튼 -->
 				<li class="nav-item"><a id="btnLogout" class="nav-link"
 					href="#">로그아웃</a></li>
