@@ -41,18 +41,19 @@
 			</ul>
 			<!-- 내 정보, 로그아웃 버튼 -->
 			<ul class="navbar-nav">
-				<!-- 내 정보 버튼 -->
-				<li class="nav-item"><a id="btnMyInfo" class="nav-link"
-					href="#">내 정보</a></li>
-				<!-- 로그아웃 버튼 -->
-				<li class="nav-item"><a id="btnLogout" class="nav-link"
-					href="#">로그아웃</a></li>
 				<!-- 회원가입 버튼 -->
 				<li class="nav-item"><a id="btnSignup" class="nav-link"
 					href="#">회원가입</a></li>
 				<!-- 로그인 버튼 -->
 				<li class="nav-item"><a id="btnLogin" class="nav-link" href="#">로그인</a></li>
-
+				<!-- 내 정보 버튼 -->
+				<li class="nav-item"><a id="btnMyInfo" class="nav-link"
+					href="#">내 정보</a></li>
+				<!-- 관리자 버튼-->
+				<li class="nav-item"><a id="btnAdmin" class="nav-link" href="#">관리자</a></li>
+				<!-- 로그아웃 버튼 -->
+				<li class="nav-item"><a id="btnLogout" class="nav-link"
+					href="#">로그아웃</a></li>
 			</ul>
 		</div>
 	</nav>
@@ -98,7 +99,7 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<!-- 글쓰기 버튼과 검색 -->
 	<div class="container mt-3">
 		<div class="row">
@@ -119,10 +120,12 @@
 			// 초기 로그인 상태는 회원가입 버튼만 보이도록 설정
 			$("#btnMyInfo").hide();
 			$("#btnLogout").hide();
+			$("#btnAdmin").hide();
 
 			// 로그인 버튼을 클릭하면 내 정보와 로그아웃 버튼이 토글됨
 			$("#btnLogin").click(function() {
 				$("#btnMyInfo").toggle();
+				$("#btnAdmin").toggle();
 				$("#btnLogout").toggle();
 				$("#btnLogin").hide();
 				$("#btnSignup").hide();
@@ -132,6 +135,7 @@
 			$("#btnLogout").click(function() {
 				$("#btnMyInfo").hide();
 				$("#btnLogout").hide();
+				$("#btnAdmin").hide();
 				// 로그인 버튼과 회원가입 버튼을 보이게 함
 				$("#btnSignup").show();
 				$("#btnLogin").show();
