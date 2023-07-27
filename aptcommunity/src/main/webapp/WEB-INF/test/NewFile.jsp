@@ -4,11 +4,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>회원가입</title>
+<title>Insert title here</title>
 </head>
 <body>
- <h2>회원 가입</h2>
- <hr>
- 회원 가입에 오신걸 환영 합니다. 아래 내용을 기재하여 가입하세용!
+	<h2>Test 페이지 입니다.</h2>
 </body>
 </html>
