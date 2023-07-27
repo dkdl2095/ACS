@@ -14,7 +14,7 @@
 	integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
 	crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<title>글 목록 화면</title>
+<title>글 세부 화면</title>
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
