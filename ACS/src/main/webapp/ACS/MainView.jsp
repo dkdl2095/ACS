@@ -104,7 +104,7 @@
 	<div class="container mt-3">
 		<div class="row">
 			<div class="col-lg-8">
-				<button class="btn btn-primary">글쓰기</button>
+				<a href="PostCreationEditing.jsp" class="btn btn-primary">글쓰기</a>
 			</div>
 			<div class="col-lg-4">
 				<div class="input-group">

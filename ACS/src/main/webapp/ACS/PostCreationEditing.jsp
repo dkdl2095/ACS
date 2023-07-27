@@ -106,7 +106,7 @@
 
 	<div class="container mt-3">
 		<!-- 확인 버튼 -->
-		<button type="button" class="btn btn-primary">확인</button>
+		<a href="MainView.jsp" class="btn btn-primary">확인</a>
 	</div>
 
 	<script>
