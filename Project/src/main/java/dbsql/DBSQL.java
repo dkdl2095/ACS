@@ -57,6 +57,42 @@ public class DBSQL {
 			close();
 		}
 	}
+	
+	public void delete(Tenant s) {
+		open();
+		String sql = "DELETE FROM tenantcomplet WHERE id = ?";
+
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, s.getId());
+
+			pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+	}
+	
+	public void update(Tenant s) {
+		open();
+		String sql = "UPDATE tenantcomplet SET id=?, name=?, password=?, accessiondate=?, residence=?";
+
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, s.getId());
+			pstmt.setString(2, s.getName());
+			pstmt.setString(3, s.getPassword());
+			pstmt.setDate(4, s.getAccessiondate());
+			pstmt.setString(5, s.getResidence());
+
+			pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+	}
 
 	public List<Tenant> getAll() {
 		open();
