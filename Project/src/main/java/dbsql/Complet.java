@@ -20,7 +20,7 @@ public class Complet extends HttpServlet {
 
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
-		dao = new DBSQL();
+		dao = new DBSQL("TENANTCOMPLET");
 	}
 
 	protected void service(HttpServletRequest request, HttpServletResponse response)

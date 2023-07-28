@@ -13,6 +13,10 @@ public class DBSQL {
 	private String table;
 	Connection conn = null;
 	PreparedStatement pstmt;
+	
+	public DBSQL(String table) { // 생성자
+		this.table = table;
+	}
 
 	final String JDBC_DRIVER = "oracle.jdbc.driver.OracleDriver";
 	final String JDBC_URL = "jdbc:oracle:thin:@localhost:1521:xe";
@@ -41,7 +45,7 @@ public class DBSQL {
 
 	public void insert(Tenant s) {
 		open();
-		String sql = "INSERT INTO tenantcomplet(id, name, password, accessiondate, residence) values(?,?,?,?,?)";
+		String sql = "INSERT INTO " + table + "(id, name, password, accessiondate, residence) values(?,?,?,?,?)";
 
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -61,7 +65,7 @@ public class DBSQL {
 	
 	public void delete(Tenant s) {
 		open();
-		String sql = "DELETE FROM tenantcomplet WHERE id = ?";
+		String sql = "DELETE FROM " + table + " WHERE id = ?";
 
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -77,7 +81,7 @@ public class DBSQL {
 	
 	public void update(Tenant s) {
 		open();
-		String sql = "UPDATE tenantcomplet SET id=?, name=?, password=?, accessiondate=?, residence=?";
+		String sql = "UPDATE " + table + " SET id=?, name=?, password=?, accessiondate=?, residence=?";
 
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -98,7 +102,7 @@ public class DBSQL {
 	public List<Tenant> select() {
 		open();
 		List<Tenant> tenants = new ArrayList<>();
-		String sql = "SELECT * FROM tenantcomplet";
+		String sql = "SELECT * FROM " + table;
 		try {
 			pstmt = conn.prepareStatement(sql);
 			ResultSet rs = pstmt.executeQuery();
