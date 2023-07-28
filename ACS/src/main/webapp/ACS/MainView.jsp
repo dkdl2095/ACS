@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page import="dbsql.DBSQL"%>
+<%@ page import="table.Tenant"%>
+<%@ page import="java.util.List"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -41,16 +44,12 @@
 			</ul>
 			<!-- 내 정보, 로그아웃 버튼 -->
 			<ul class="navbar-nav">
-				<!-- 회원가입 버튼 -->
-				<li class="nav-item"><a id="btnSignup" class="nav-link"
-					href="#">회원가입</a></li>
-				<!-- 로그인 버튼 -->
-				<li class="nav-item"><a id="btnLogin" class="nav-link" href="#">로그인</a></li>
 				<!-- 내 정보 버튼 -->
 				<li class="nav-item"><a id="btnMyInfo" class="nav-link"
 					href="#">내 정보</a></li>
 				<!-- 관리자 버튼-->
-				<li class="nav-item"><a id="btnAdmin" class="nav-link" href="AdminView.jsp">관리자</a></li>
+				<li class="nav-item"><a id="btnAdmin" class="nav-link"
+					href="AdminView.jsp">관리자</a></li>
 				<!-- 로그아웃 버튼 -->
 				<li class="nav-item"><a id="btnLogout" class="nav-link"
 					href="#">로그아웃</a></li>
@@ -83,8 +82,39 @@
 				<!-- 로그인 시에만 보이는 회원정보 div -->
 				<div id="memberInfo" class="card">
 					<div class="card-body">
-						<!-- 회원정보를 표시하는 내용 -->
-						회원정보
+						<!-- 회원정보를 표시하는 플레이스홀더 요소 -->
+						<%
+						// Java 코드 작성 (스크립트릿)
+						// DBSQL 객체 생성
+						DBSQL dbsql = new DBSQL("TENANTCOMPLET");
+
+						// 데이터베이스에서 회원 정보 가져오기
+						List<Object> members = dbsql.DBSelect("TENANTCOMPLET"); // 적절한 메서드를 호출하여 회원 정보를 가져오도록 수정해야 합니다.
+
+						// 가져온 회원 정보를 사용하여 HTML 코드 작성
+						if (members.size() > 0) {
+							for (Object obj : members) {
+								if (obj instanceof Tenant) {
+							Tenant member = (Tenant) obj; // Tenant로 캐스팅
+						%>
+						<p>
+							아이디: <%=member.getId()%>, 이름: <%=member.getName()%>, 가입날짜: <%=member.getAccessiondate()%>,
+							거주지: <%=member.getResidence()%></p>
+						<%
+						} else {
+						// 적절한 타입이 아닌 경우 처리
+						%>
+
+						<p>회원 정보가 없습니다.</p>
+						<%
+						}
+						}
+						} else {
+						%>
+						<p>회원 정보가 없습니다.</p>
+						<%
+						}
+						%>
 					</div>
 				</div>
 			</div>
@@ -99,18 +129,16 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<!-- 페이지 -->
 	<nav aria-label="Page navigation" class="mt-3">
 		<ul class="pagination justify-content-center">
-			<li class="page-item disabled">
-				<a class="page-link" href="#" tabindex="-1" aria-disabled="true">&laquo;</a>
-			</li>
+			<li class="page-item disabled"><a class="page-link" href="#"
+				tabindex="-1" aria-disabled="true">&laquo;</a></li>
 			<li class="page-item active"><a class="page-link" href="#">1</a></li>
 			<li class="page-item"><a class="page-link" href="#">2</a></li>
 			<li class="page-item"><a class="page-link" href="#">3</a></li>
-			<li class="page-item">
-				<a class="page-link" href="#">&raquo;</a>
+			<li class="page-item"><a class="page-link" href="#">&raquo;</a>
 			</li>
 		</ul>
 	</nav>
@@ -133,7 +161,7 @@
 	<script>
 		$(document).ready(function() {
 			// 초기 로그인 상태는 회원가입 버튼만 보이도록 설정
-			$("#btnMyInfo").hide();
+			/*$("#btnMyInfo").hide();
 			$("#btnLogout").hide();
 			$("#btnAdmin").hide();
 
@@ -153,7 +181,7 @@
 				$("#btnAdmin").hide();
 				// 로그인 버튼과 회원가입 버튼을 보이게 함
 				$("#btnSignup").show();
-				$("#btnLogin").show();
+				$("#btnLogin").show();*/
 			});
 		});
 	</script>

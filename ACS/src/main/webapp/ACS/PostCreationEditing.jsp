@@ -63,7 +63,7 @@
 		<!-- 글꼴, 크기, 글 색상 설정 -->
 		<div class="row">
 			<div class="col-md-3">
-				<select class="form-select form-select-sm"
+				<select id="fontSelect" class="form-select form-select-sm"
 					aria-label=".form-select-sm example">
 					<option selected>글꼴 선택</option>
 					<option value="Arial, sans-serif">Arial</option>
@@ -72,7 +72,7 @@
 				</select>
 			</div>
 			<div class="col-md-3">
-				<select class="form-select form-select-sm"
+				<select id="sizeSelect" class="form-select form-select-sm"
 					aria-label=".form-select-sm example">
 					<option selected>글 크기 선택</option>
 					<option value="12px">12</option>
@@ -81,7 +81,7 @@
 				</select>
 			</div>
 			<div class="col-md-3">
-				<select class="form-select form-select-sm"
+				<select id="colorSelect" class="form-select form-select-sm"
 					aria-label=".form-select-sm example">
 					<option selected>글 색상 선택</option>
 					<option value="black">검정</option>
@@ -111,6 +111,24 @@
 
 	<script>
 		$(document).ready(function() {
+			// 글꼴 선택 시 실시간으로 적용
+	        $("#fontSelect").change(function() {
+	            var selectedFont = $(this).val();
+	            $("#postContent").css("font-family", selectedFont);
+	        });
+
+	        // 글 크기 선택 시 실시간으로 적용
+	        $("#sizeSelect").change(function() {
+	            var selectedSize = $(this).val();
+	            $("#postContent").css("font-size", selectedSize);
+	        });
+
+	        // 글 색상 선택 시 실시간으로 적용
+	        $("#colorSelect").change(function() {
+	            var selectedColor = $(this).val();
+	            $("#postContent").css("color", selectedColor);
+	        });
+	        
 			// 초기 로그인 상태는 회원가입 버튼만 보이도록 설정
 			$("#btnMyInfo").hide();
 			$("#btnLogout").hide();
@@ -134,7 +152,7 @@
 				$("#btnSignup").show();
 				$("#btnLogin").show();
 			});
-		});
+		})
 	</script>
 </body>
 </html>
