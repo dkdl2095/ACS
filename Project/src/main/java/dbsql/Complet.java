@@ -87,7 +87,7 @@ public class Complet extends HttpServlet {
 	}
 
 	private String list(HttpServletRequest request, HttpServletResponse response) {
-		request.setAttribute("complets", dao.getAll());
+		request.setAttribute("complets", dao.select());
 		return "studentInfo.jsp";
 	}
 }

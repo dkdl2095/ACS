@@ -10,6 +10,7 @@ import java.util.List;
 import table.*;
 
 public class DBSQL {
+	private String table;
 	Connection conn = null;
 	PreparedStatement pstmt;
 
@@ -94,7 +95,7 @@ public class DBSQL {
 		}
 	}
 
-	public List<Tenant> getAll() {
+	public List<Tenant> select() {
 		open();
 		List<Tenant> tenants = new ArrayList<>();
 		String sql = "SELECT * FROM tenantcomplet";
