@@ -7,19 +7,23 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.catalina.valves.rewrite.InternalRewriteMap.UpperCase;
+
 import table.*;
 
 public class DBSQL {
 	private String table;
 	Connection conn = null;
 	PreparedStatement pstmt;
-	
+	Object obj;
+
+	// 오라클 드라이버 설정
+	final String JDBC_DRIVER = "oracle.jdbc.driver.OracleDriver";
+	final String JDBC_URL = "jdbc:oracle:thin:@localhost:1521:xe";
+
 	public DBSQL(String table) { // 생성자
 		this.table = table;
 	}
-
-	final String JDBC_DRIVER = "oracle.jdbc.driver.OracleDriver";
-	final String JDBC_URL = "jdbc:oracle:thin:@localhost:1521:xe";
 
 	public void open() {
 		try {
@@ -43,17 +47,17 @@ public class DBSQL {
 		}
 	}
 
-	public void insert(Tenant s) {
+	public void insert(Tenant t) {
 		open();
 		String sql = "INSERT INTO " + table + "(id, name, password, accessiondate, residence) values(?,?,?,?,?)";
 
 		try {
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, s.getId());
-			pstmt.setString(2, s.getName());
-			pstmt.setString(3, s.getPassword());
-			pstmt.setDate(4, s.getAccessiondate());
-			pstmt.setString(5, s.getResidence());
+			pstmt.setString(1, t.getId());
+			pstmt.setString(2, t.getName());
+			pstmt.setString(3, t.getPassword());
+			pstmt.setDate(4, t.getAccessiondate());
+			pstmt.setString(5, t.getResidence());
 
 			pstmt.executeUpdate();
 		} catch (Exception e) {
@@ -62,7 +66,7 @@ public class DBSQL {
 			close();
 		}
 	}
-	
+
 	public void delete(Tenant s) {
 		open();
 		String sql = "DELETE FROM " + table + " WHERE id = ?";
@@ -78,7 +82,7 @@ public class DBSQL {
 			close();
 		}
 	}
-	
+
 	public void update(Tenant s) {
 		open();
 		String sql = "UPDATE " + table + " SET id=?, name=?, password=?, accessiondate=?, residence=?";
