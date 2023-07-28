@@ -112,13 +112,15 @@
     
     <script>
 		$(document).ready(function() {
-			// 초기 로그인 상태는 회원가입 버튼만 보이도록 설정
-			$("#btnMyInfo").hide();
-			$("#btnLogout").hide();
+			// 초기 로그인 상태는 로그아웃 버튼만 보이도록 설정
+			$("#btnMyInfo").show();
+			$("#btnLogout").show();
 			$("#btnAdmin").hide();
+			$("#btnLogin").hide();
+			$("#btnSignup").hide();
 
-			// 로그인 버튼을 클릭하면 내 정보와 로그아웃 버튼이 토글됨
-			$("#btnLogin").click(function() {
+			// 로그아웃 버튼을 클릭하면 내 정보와 로그아웃 버튼이 토글됨
+			$("#btnLogout").click(function() {
 				$("#btnMyInfo").toggle();
 				$("#btnAdmin").toggle();
 				$("#btnLogout").toggle();
@@ -140,6 +142,8 @@
 			 $("#btnSignup").click(function() {
 			        $("#registrationForm").show();
 			    });
+			
+			
 		});
 	</script>
 </body>
