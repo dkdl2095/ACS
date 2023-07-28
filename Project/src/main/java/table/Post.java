@@ -3,6 +3,17 @@ package table;
 import java.sql.Date;
 
 public class Post {
+	/*
+	 	CREATE TABLE Post(
+    		postid INT NOT NULL PRIMARY KEY, 
+			type VARCHAR2(20), 
+			text VARCHAR2(2000), 
+			writingdate DATE,
+    		name VARCHAR2(20),
+    		img VARCHAR2(500),
+		viewsnum INT
+		);
+	*/
 	private int postid;
 	private String type;
 	private String text;

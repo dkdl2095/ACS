@@ -60,7 +60,7 @@ public class Complet extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		dao.insert(s);
+		dao.DBInsert("TENANTCOMPLET");
 		return list(request, response);
 	}
 	
@@ -71,7 +71,7 @@ public class Complet extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		dao.delete(s);
+		dao.DBDelete("TENANTCOMPLET");
 		return list(request, response);
 	}
 	
@@ -82,12 +82,12 @@ public class Complet extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		dao.update(s);
+		dao.DBUpdate("TENANTCOMPLET");
 		return list(request, response);
 	}
 
 	private String list(HttpServletRequest request, HttpServletResponse response) {
-		request.setAttribute("complets", dao.select());
+		request.setAttribute("complets", dao.DBSelect("TENANTCOMPLET"));
 		return "studentInfo.jsp";
 	}
 }
