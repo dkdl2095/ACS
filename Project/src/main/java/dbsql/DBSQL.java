@@ -49,7 +49,7 @@ public class DBSQL {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public List<Object> DBSelect(String table) { // 테이블 검색
 		open();
 		List<Object> objs = new ArrayList<>();
@@ -103,7 +103,8 @@ public class DBSQL {
 			updateCalendarData(table, c);
 		}
 	}
-	private List<Object> selectTenantData(String table2, Tenant t) {
+
+	protected List<Object> selectTenantData(String table, Tenant t) {
 		List<Object> tenants = new ArrayList<>();
 		String sql = "SELECT * FROM " + table;
 		try {
@@ -111,6 +112,7 @@ public class DBSQL {
 			ResultSet rs = pstmt.executeQuery();
 
 			while (rs.next()) {
+				t = new Tenant();
 				t.setId(rs.getString("id"));
 				t.setName(rs.getString("name"));
 				t.setPassword(rs.getString("password"));
@@ -126,8 +128,8 @@ public class DBSQL {
 		}
 		return tenants;
 	}
-	
-	private List<Object> selectPostData(String table2, Post p) {
+
+	protected List<Object> selectPostData(String table, Post p) {
 		List<Object> posts = new ArrayList<>();
 		String sql = "SELECT * FROM " + table;
 		try {
@@ -135,6 +137,7 @@ public class DBSQL {
 			ResultSet rs = pstmt.executeQuery();
 
 			while (rs.next()) {
+				p = new Post();
 				p.setPostid(rs.getInt("postid"));
 				p.setType(rs.getString("type"));
 				p.setText(rs.getString("text"));
@@ -152,8 +155,8 @@ public class DBSQL {
 		}
 		return posts;
 	}
-	
-	private List<Object> selectCalendarData(String table2, Calender c) {
+
+	protected List<Object> selectCalendarData(String table, Calender c) {
 		List<Object> calenders = new ArrayList<>();
 		String sql = "SELECT * FROM " + table;
 		try {
@@ -161,10 +164,7 @@ public class DBSQL {
 			ResultSet rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				pstmt.setInt(1, c.getCalid());
-				pstmt.setDate(2, c.getCdate());
-				pstmt.setString(3, c.getText());
-				pstmt.setInt(4, c.getPostid());
+				c = new Calender();
 				c.setCalid(rs.getInt("calid"));
 				c.setCdate(rs.getDate("cdate"));
 				c.setText(rs.getString("text"));
@@ -180,7 +180,7 @@ public class DBSQL {
 		return calenders;
 	}
 
-	private void insertTenantData(String table, Tenant t) {
+	protected void insertTenantData(String table, Tenant t) {
 		String sql = "INSERT INTO " + table + "(id, name, password, accessiondate, residence) VALUES (?, ?, ?, ?, ?)";
 
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -198,7 +198,7 @@ public class DBSQL {
 		}
 	}
 
-	private void insertPostData(String table, Post p) {
+	protected void insertPostData(String table, Post p) {
 		String sql = "INSERT INTO " + table
 				+ "(postid, type, text, writingdate, name, img, viewsnum) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
@@ -219,7 +219,7 @@ public class DBSQL {
 		}
 	}
 
-	private void insertCalendarData(String table, Calender c) {
+	protected void insertCalendarData(String table, Calender c) {
 		String sql = "INSERT INTO " + table + "(calid, cdate, text, postid) VALUES (?, ?, ?, ?)";
 
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -236,7 +236,7 @@ public class DBSQL {
 		}
 	}
 
-	private void deleteTenantData(String table, Tenant t) {
+	protected void deleteTenantData(String table, Tenant t) {
 		String sql = "DELETE FROM " + table + " WHERE id = ?";
 
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -250,7 +250,7 @@ public class DBSQL {
 		}
 	}
 
-	private void deletePostData(String table, Post p) {
+	protected void deletePostData(String table, Post p) {
 		String sql = "DELETE FROM " + table + " WHERE psotid = ?";
 
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -264,7 +264,7 @@ public class DBSQL {
 		}
 	}
 
-	private void deleteCalendarData(String table, Calender c) {
+	protected void deleteCalendarData(String table, Calender c) {
 		String sql = "DELETE FROM " + table + " WHERE calid = ?";
 
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -278,7 +278,7 @@ public class DBSQL {
 		}
 	}
 
-	private void updateTenantData(String table, Tenant t) {
+	protected void updateTenantData(String table, Tenant t) {
 		String sql = "UPDATE " + table + " SET id=?, name=?, password=?, accessiondate=?, residence=?";
 
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -296,7 +296,7 @@ public class DBSQL {
 		}
 	}
 
-	private void updatePostData(String table, Post p) {
+	protected void updatePostData(String table, Post p) {
 		String sql = "UPDATE " + table + " SET postid=?, type=?, text=?, writingdate=?, name=?, img=?, viewsnum=?";
 
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -316,7 +316,7 @@ public class DBSQL {
 		}
 	}
 
-	private void updateCalendarData(String table, Calender c) {
+	protected void updateCalendarData(String table, Calender c) {
 		String sql = "UPDATE " + table + " SET id=?, name=?, password=?, accessiondate=?, residence=?";
 
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
