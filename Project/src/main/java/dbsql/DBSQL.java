@@ -16,6 +16,7 @@ public class DBSQL {
 	Tenant t = null;
 	Post p = null;
 	Calender c = null;
+	TenantBan b = null;
 
 	// 오라클 드라이버 설정
 	final String JDBC_DRIVER = "oracle.jdbc.driver.OracleDriver";
@@ -26,6 +27,7 @@ public class DBSQL {
 		this.t = new Tenant();
 		this.p = new Post();
 		this.c = new Calender();
+		this.b = new TenantBan();
 	}
 
 	public void open() {
@@ -61,6 +63,8 @@ public class DBSQL {
 			objs = selectPostData(table, p);
 		} else if (upperCaseTable.equals("CALENDER")) {
 			objs = selectCalendarData(table, c);
+		} else if(upperCaseTable.equals("TENANTBAN")) {
+			objs = selectBanData(table, b);
 		}
 		return objs;
 	}
@@ -178,6 +182,27 @@ public class DBSQL {
 			close();
 		}
 		return calenders;
+	}
+	
+	private List<Object> selectBanData(String table, TenantBan b) {
+		List<Object> ban = new ArrayList<>();
+		String sql = "SELECT * FROM " + table;
+		try {
+			pstmt = conn.prepareStatement(sql);
+			ResultSet rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				b = new TenantBan();
+				b.setBanid(rs.getString("banid"));
+
+				ban.add(c);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		return ban;
 	}
 
 	protected void insertTenantData(String table, Tenant t) {
