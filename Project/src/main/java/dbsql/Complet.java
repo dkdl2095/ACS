@@ -16,17 +16,11 @@ import table.*;
 public class Complet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	PosSelect select;
-	PosInsert insert;
-	PosDelete delete;
-	PosUpdate update;
+	DBSQL dao;
 
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
-		insert = new PosInsert("tenatcomplet");
-		select = new PosSelect("tenatcomplet");
-		delete = new PosDelete("tenatcomplet");
-		update = new PosUpdate("tenatcomplet");
+		dao = new DBSQL("TENANTCOMPLET");
 	}
 
 	protected void service(HttpServletRequest request, HttpServletResponse response)
@@ -66,7 +60,7 @@ public class Complet extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		insert.DBInsert();
+		dao.DBInsert();
 		return list(request, response);
 	}
 	
@@ -77,7 +71,7 @@ public class Complet extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		delete.DBDelete();
+		dao.DBDelete();
 		return list(request, response);
 	}
 	
@@ -88,12 +82,12 @@ public class Complet extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		update.DBUpdate();
+		dao.DBUpdate();
 		return list(request, response);
 	}
 
 	private String list(HttpServletRequest request, HttpServletResponse response) {
-		request.setAttribute("complets", select.DBSelect());
+		request.setAttribute("complets", dao.DBSelect());
 		return "studentInfo.jsp";
 	}
 }

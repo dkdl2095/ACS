@@ -7,15 +7,17 @@ public class Post {
 	 	CREATE TABLE Post(
     		postid INT NOT NULL PRIMARY KEY, 
 			type VARCHAR2(20), 
+    		title VARCHAR2(20),
 			text VARCHAR2(2000), 
 			writingdate DATE,
     		name VARCHAR2(20),
     		img VARCHAR2(500),
-		viewsnum INT
-		);
-	*/
+			viewsnum INT
+	 	);
+	 */
 	private int postid;
 	private String type;
+	private String title;
 	private String text;
 	private Date writingdate;
 	private String name;
@@ -36,6 +38,14 @@ public class Post {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	public String getText() {
