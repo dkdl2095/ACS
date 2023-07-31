@@ -8,11 +8,11 @@
 <title>회원정보</title>
 </head>
 <body>
-	<h2>회원정보</h2>[<a href="/Project/complet">새로고침</a>]
+	<h2>회원정보</h2>[<a href="/Project/${TENANTCOMPLET}">새로고침</a>]
 	<hr>
 	<table border="1">
 		<tr><th>아이디</th><th>이름</th><th>비밀번호</th><th>가입일</th><th>거주지</th></tr>
-		<c:forEach items="${complets}" var="s">
+		<c:forEach items="${TENANTCOMPLET}" var="s">
 			<tr>
 				<td>${s.id}</td> <td>${s.name}</td> <td>${s.password}</td>
 				<td>${s.accessiondate}</td> <td>${s.residence}</td>

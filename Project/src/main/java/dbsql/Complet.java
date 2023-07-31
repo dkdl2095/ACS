@@ -12,15 +12,16 @@ import org.apache.commons.beanutils.BeanUtils;
 
 import table.*;
 
-@WebServlet("/complet")
+@WebServlet("/TENANTCOMPLET")
 public class Complet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	DBSQL dao;
+	String table = "TENANTCOMPLET";
 
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
-		dao = new DBSQL("TENANTCOMPLET");
+		dao = new DBSQL(table);
 	}
 
 	protected void service(HttpServletRequest request, HttpServletResponse response)
@@ -28,8 +29,9 @@ public class Complet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		String action = request.getParameter("action");
 		String view = "";
+		String dispatcher = "/" + table + "?action=list";
 		if (action == null) {
-			getServletContext().getRequestDispatcher("/complet?action=list").forward(request, response);
+			getServletContext().getRequestDispatcher(dispatcher).forward(request, response);
 		} else {
 			switch (action) {
 			case "list":
@@ -60,7 +62,7 @@ public class Complet extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		dao.DBInsert("TENANTCOMPLET");
+		dao.DBInsert(table);
 		return list(request, response);
 	}
 	
@@ -71,7 +73,7 @@ public class Complet extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		dao.DBDelete("TENANTCOMPLET");
+		dao.DBDelete(table);
 		return list(request, response);
 	}
 	
@@ -82,12 +84,12 @@ public class Complet extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		dao.DBUpdate("TENANTCOMPLET");
+		dao.DBUpdate(table);
 		return list(request, response);
 	}
 
 	private String list(HttpServletRequest request, HttpServletResponse response) {
-		request.setAttribute("complets", dao.DBSelect("TENANTCOMPLET"));
+		request.setAttribute(table, dao.DBSelect(table));
 		return "studentInfo.jsp";
 	}
 }
