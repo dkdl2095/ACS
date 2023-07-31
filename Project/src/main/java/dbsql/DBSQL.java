@@ -14,10 +14,10 @@ public class DBSQL {
 	private String table;
 	private Connection conn = null;
 	private PreparedStatement pstmt;
-	private Tenant t = null;
-	private Post p = null;
-	private Calender c = null;
-	private TenantBan b = null;
+	Tenant t = null;
+	Post p = null;
+	Calender c = null;
+	TenantBan b = null;
 
 	// 오라클 드라이버 설정
 	final String JDBC_DRIVER = "oracle.jdbc.driver.OracleDriver";
