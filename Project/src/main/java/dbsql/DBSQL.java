@@ -201,7 +201,6 @@ public class DBSQL {
 		return ban;
 	}
 
-	// 뉴스 한 개를 클릭했을 때 세부 내용을 보여주는 메소드
 	protected Object getTenantData(int id) throws SQLException {
 		open();
 		String sql = "SELECT * FROM Tenantcomplet where id =?";
