@@ -10,13 +10,13 @@ public class PosDelete extends DBSQL {
 		String upperCaseTable = table.toUpperCase();
 
 		if (upperCaseTable.equals("TENANTCOMPLET") || upperCaseTable.equals("TENANTWAIT")) {
-			deleteTenantData(table, t);
+			deleteTenantData(t);
 		} else if (upperCaseTable.equals("POST")) {
-			deletePostData(table, p);
+			deletePostData(p);
 		} else if (upperCaseTable.equals("CALENDER")) {
-			deleteCalendarData(table, c);
+			deleteCalendarData(c);
 		} else if (upperCaseTable.equals("TENANTBAN")) {
-			deleteBanData(table, b);
+			deleteBanData(b);
 		} 
 	}
 }

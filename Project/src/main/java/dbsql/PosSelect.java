@@ -14,13 +14,13 @@ public class PosSelect extends DBSQL {
 		String upperCaseTable = table.toUpperCase();
 
 		if (upperCaseTable.equals("TENANTCOMPLET") || upperCaseTable.equals("TENANTWAIT")) {
-			objs = selectTenantData(table, t);
+			objs = selectTenantData(t);
 		} else if (upperCaseTable.equals("POST")) {
-			objs = selectPostData(table, p);
+			objs = selectPostData(p);
 		} else if (upperCaseTable.equals("CALENDER")) {
-			objs = selectCalendarData(table, c);
+			objs = selectCalendarData(c);
 		} else if (upperCaseTable.equals("TENANTBAN")) {
-			objs = selectBanData(table, b);
+			objs = selectBanData(b);
 		}
 		return objs;
 	}

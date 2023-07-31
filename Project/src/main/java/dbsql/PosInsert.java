@@ -10,13 +10,13 @@ public class PosInsert extends DBSQL {
 		String upperCaseTable = table.toUpperCase();
 
 		if (upperCaseTable.equals("TENANTCOMPLET") || upperCaseTable.equals("TENANTWAIT")) {
-			insertTenantData(table, t);
+			insertTenantData(t);
 		} else if (upperCaseTable.equals("POST")) {
-			insertPostData(table, p);
+			insertPostData(p);
 		} else if (upperCaseTable.equals("CALENDER")) {
-			insertCalendarData(table, c);
+			insertCalendarData(c);
 		} else if (upperCaseTable.equals("TENANTBAN")) {
-			insertBanData(table, b);
+			insertBanData(b);
 		}
 	}
 }

@@ -10,13 +10,13 @@ public class PosUpdate extends DBSQL{
 		String upperCaseTable = table.toUpperCase();
 
 		if (upperCaseTable.equals("TENANTCOMPLET") || upperCaseTable.equals("TENANTWAIT")) {
-			updateTenantData(table, t);
+			updateTenantData(t);
 		} else if (upperCaseTable.equals("POST")) {
-			updatePostData(table, p);
+			updatePostData(p);
 		} else if (upperCaseTable.equals("CALENDER")) {
-			updateCalendarData(table, c);
+			updateCalendarData(c);
 		} else if (upperCaseTable.equals("TENANTBAN")) {
-			updateBanData(table, b);
+			updateBanData(b);
 		}
 	}
 }
