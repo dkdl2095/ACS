@@ -239,16 +239,17 @@ public class DBSQL {
 
 	protected void insertPostData(Post p) {
 		String sql = "INSERT INTO " + table
-				+ "(postid, type, text, writingdate, name, img, viewsnum) VALUES (?, ?, ?, ?, ?, ?, ?)";
+				+ "(postid, type, title, text, writingdate, name, img, viewsnum) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			pstmt.setInt(1, p.getPostid());
 			pstmt.setString(2, p.getType());
-			pstmt.setString(3, p.getText());
-			pstmt.setDate(4, p.getWritingdate());
-			pstmt.setString(5, p.getName());
-			pstmt.setString(6, p.getImg());
-			pstmt.setInt(7, p.getViewsnum());
+			pstmt.setString(3, p.getTitle());
+			pstmt.setString(4, p.getText());
+			pstmt.setDate(5, p.getWritingdate());
+			pstmt.setString(6, p.getName());
+			pstmt.setString(7, p.getImg());
+			pstmt.setInt(8, p.getViewsnum());
 
 			pstmt.executeUpdate();
 		} catch (Exception e) {
@@ -364,16 +365,17 @@ public class DBSQL {
 	}
 
 	protected void updatePostData(Post p) {
-		String sql = "UPDATE " + table + " SET postid=?, type=?, text=?, writingdate=?, name=?, img=?, viewsnum=?";
+		String sql = "UPDATE " + table + " SET postid=?, type=?, title=?, text=?, writingdate=?, name=?, img=?, viewsnum=?";
 
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			pstmt.setInt(1, p.getPostid());
 			pstmt.setString(2, p.getType());
-			pstmt.setString(3, p.getText());
-			pstmt.setDate(4, p.getWritingdate());
-			pstmt.setString(5, p.getName());
-			pstmt.setString(6, p.getImg());
-			pstmt.setInt(7, p.getViewsnum());
+			pstmt.setString(3, p.getTitle());
+			pstmt.setString(4, p.getText());
+			pstmt.setDate(5, p.getWritingdate());
+			pstmt.setString(6, p.getName());
+			pstmt.setString(7, p.getImg());
+			pstmt.setInt(8, p.getViewsnum());
 
 			pstmt.executeUpdate();
 		} catch (Exception e) {
