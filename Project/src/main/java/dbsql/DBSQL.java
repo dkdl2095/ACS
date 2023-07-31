@@ -11,10 +11,9 @@ import java.util.List;
 import table.*;
 
 public class DBSQL {
-	@SuppressWarnings("unused")
 	private String table;
-	private Connection conn = null;
-	private PreparedStatement pstmt;
+	Connection conn = null;
+	PreparedStatement pstmt;
 	Tenant t = null;
 	Post p = null;
 	Calender c = null;
@@ -25,7 +24,7 @@ public class DBSQL {
 	final String JDBC_URL = "jdbc:oracle:thin:@localhost:1521:xe";
 
 	public DBSQL(String table) { // 생성자
-		this.table = table;
+		this.table = table.toUpperCase();
 		this.t = new Tenant();
 		this.p = new Post();
 		this.c = new Calender();
@@ -54,69 +53,65 @@ public class DBSQL {
 		}
 	}
 
-	public List<Object> DBSelect(String table) { // 테이블 검색
+	public List<Object> DBSelect() { // 테이블 검색
 		open();
 		List<Object> objs = new ArrayList<>();
-		String upperCaseTable = table.toUpperCase();
 
-		if (upperCaseTable.equals("TENANTCOMPLET") || upperCaseTable.equals("TENANTWAIT")) {
-			objs = selectTenantData(table, t);
-		} else if (upperCaseTable.equals("POST")) {
-			objs = selectPostData(table, p);
-		} else if (upperCaseTable.equals("CALENDER")) {
-			objs = selectCalendarData(table, c);
-		} else if (upperCaseTable.equals("TENANTBAN")) {
-			objs = selectBanData(table, b);
+		if (table.equals("TENANTCOMPLET") || table.equals("TENANTWAIT")) {
+			objs = selectTenantData(t);
+		} else if (table.equals("POST")) {
+			objs = selectPostData(p);
+		} else if (table.equals("CALENDER")) {
+			objs = selectCalendarData(c);
+		} else if (table.equals("TENANTBAN")) {
+			objs = selectBanData(b);
 		}
 		return objs;
 	}
 
-	public void DBInsert(String table) { // 테이블 삽입
+	public void DBInsert() { // 테이블 삽입
 		open();
-		String upperCaseTable = table.toUpperCase();
 
-		if (upperCaseTable.equals("TENANTCOMPLET") || upperCaseTable.equals("TENANTWAIT")) {
-			insertTenantData(table, t);
-		} else if (upperCaseTable.equals("POST")) {
-			insertPostData(table, p);
-		} else if (upperCaseTable.equals("CALENDER")) {
-			insertCalendarData(table, c);
-		} else if (upperCaseTable.equals("TENANTBAN")) {
-			insertBanData(table, b);
+		if (table.equals("TENANTCOMPLET") || table.equals("TENANTWAIT")) {
+			insertTenantData(t);
+		} else if (table.equals("POST")) {
+			insertPostData(p);
+		} else if (table.equals("CALENDER")) {
+			insertCalendarData(c);
+		} else if (table.equals("TENANTBAN")) {
+			insertBanData(b);
 		}
 	}
 
-	public void DBDelete(String table) { // 테이블 삭제
+	public void DBDelete() { // 테이블 삭제
 		open();
-		String upperCaseTable = table.toUpperCase();
 
-		if (upperCaseTable.equals("TENANTCOMPLET") || upperCaseTable.equals("TENANTWAIT")) {
-			deleteTenantData(table, t);
-		} else if (upperCaseTable.equals("POST")) {
-			deletePostData(table, p);
-		} else if (upperCaseTable.equals("CALENDER")) {
-			deleteCalendarData(table, c);
-		} else if (upperCaseTable.equals("TENANTBAN")) {
-			deleteBanData(table, b);
+		if (table.equals("TENANTCOMPLET") || table.equals("TENANTWAIT")) {
+			deleteTenantData(t);
+		} else if (table.equals("POST")) {
+			deletePostData(p);
+		} else if (table.equals("CALENDER")) {
+			deleteCalendarData(c);
+		} else if (table.equals("TENANTBAN")) {
+			deleteBanData(b);
 		}
 	}
 
-	public void DBUpdate(String table) { // 테이블 수정
+	public void DBUpdate() { // 테이블 수정
 		open();
-		String upperCaseTable = table.toUpperCase();
 
-		if (upperCaseTable.equals("TENANTCOMPLET") || upperCaseTable.equals("TENANTWAIT")) {
-			updateTenantData(table, t);
-		} else if (upperCaseTable.equals("POST")) {
-			updatePostData(table, p);
-		} else if (upperCaseTable.equals("CALENDER")) {
-			updateCalendarData(table, c);
-		} else if (upperCaseTable.equals("TENANTBAN")) {
-			updateBanData(table, b);
+		if (table.equals("TENANTCOMPLET") || table.equals("TENANTWAIT")) {
+			updateTenantData(t);
+		} else if (table.equals("POST")) {
+			updatePostData(p);
+		} else if (table.equals("CALENDER")) {
+			updateCalendarData(c);
+		} else if (table.equals("TENANTBAN")) {
+			updateBanData(b);
 		}
 	}
 
-	protected List<Object> selectTenantData(String table, Tenant t) {
+	protected List<Object> selectTenantData(Tenant t) {
 		List<Object> tenants = new ArrayList<>();
 		String sql = "SELECT * FROM " + table;
 		try (PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()){
@@ -138,7 +133,7 @@ public class DBSQL {
 		return tenants;
 	}
 
-	protected List<Object> selectPostData(String table, Post p) {
+	protected List<Object> selectPostData(Post p) {
 		List<Object> posts = new ArrayList<>();
 		String sql = "SELECT * FROM " + table;
 		try (PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()){
@@ -162,7 +157,7 @@ public class DBSQL {
 		return posts;
 	}
 
-	protected List<Object> selectCalendarData(String table, Calender c) {
+	protected List<Object> selectCalendarData(Calender c) {
 		List<Object> calenders = new ArrayList<>();
 		String sql = "SELECT * FROM " + table;
 		try (PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()){
@@ -183,7 +178,7 @@ public class DBSQL {
 		return calenders;
 	}
 
-	protected List<Object> selectBanData(String table, TenantBan b) {
+	protected List<Object> selectBanData(TenantBan b) {
 		List<Object> ban = new ArrayList<>();
 		String sql = "SELECT * FROM " + table;
 		try (PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()){
@@ -203,7 +198,7 @@ public class DBSQL {
 
 	protected Object getTenantData(int id) throws SQLException {
 		open();
-		String sql = "SELECT * FROM Tenantcomplet where id =?";
+		String sql = "SELECT * FROM " + table + " where id =?";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 
 		pstmt.setInt(1, id);
@@ -224,25 +219,25 @@ public class DBSQL {
 		}
 	}
 
-	protected void insertTenantData(String table, Tenant t) {
-		String sql = "INSERT INTO " + table + "(id, name, password, accessiondate, residence) VALUES (?, ?, ?, ?, ?)";
+	protected void insertTenantData(Tenant t) {
+		String sql = "INSERT INTO " + table + "(ID, NAME, PASSWORD, ACCESSIONDATE, RESIDENCE) VALUES(?, ?, ?, ?, ?)";
 
-		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-			pstmt.setString(1, t.getId());
-			pstmt.setString(2, t.getName());
-			pstmt.setString(3, t.getPassword());
-			pstmt.setDate(4, t.getAccessiondate());
-			pstmt.setString(5, t.getResidence());
+	    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        pstmt.setString(1, t.getId());
+	        pstmt.setString(2, t.getName());
+	        pstmt.setString(3, t.getPassword());
+	        pstmt.setDate(4, t.getAccessiondate());
+	        pstmt.setString(5, t.getResidence());
 
-			pstmt.executeUpdate();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			close();
-		}
+	        pstmt.executeUpdate();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        close();
+	    }
 	}
 
-	protected void insertPostData(String table, Post p) {
+	protected void insertPostData(Post p) {
 		String sql = "INSERT INTO " + table
 				+ "(postid, type, text, writingdate, name, img, viewsnum) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
@@ -263,7 +258,7 @@ public class DBSQL {
 		}
 	}
 
-	protected void insertCalendarData(String table, Calender c) {
+	protected void insertCalendarData(Calender c) {
 		String sql = "INSERT INTO " + table + "(calid, cdate, text, postid) VALUES (?, ?, ?, ?)";
 
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -280,7 +275,7 @@ public class DBSQL {
 		}
 	}
 
-	protected void insertBanData(String table, TenantBan b) {
+	protected void insertBanData(TenantBan b) {
 		String sql = "INSERT INTO " + table + "(banid) VALUES (?)";
 
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -294,7 +289,7 @@ public class DBSQL {
 		}
 	}
 
-	protected void deleteTenantData(String table, Tenant t) {
+	protected void deleteTenantData(Tenant t) {
 		String sql = "DELETE FROM " + table + " WHERE id = ?";
 
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -308,7 +303,7 @@ public class DBSQL {
 		}
 	}
 
-	protected void deletePostData(String table, Post p) {
+	protected void deletePostData(Post p) {
 		String sql = "DELETE FROM " + table + " WHERE psotid = ?";
 
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -322,7 +317,7 @@ public class DBSQL {
 		}
 	}
 
-	protected void deleteCalendarData(String table, Calender c) {
+	protected void deleteCalendarData(Calender c) {
 		String sql = "DELETE FROM " + table + " WHERE calid = ?";
 
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -336,7 +331,7 @@ public class DBSQL {
 		}
 	}
 
-	protected void deleteBanData(String table, TenantBan b) {
+	protected void deleteBanData(TenantBan b) {
 		String sql = "DELETE FROM " + table + " WHERE banid = ?";
 
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -350,7 +345,7 @@ public class DBSQL {
 		}
 	}
 
-	protected void updateTenantData(String table, Tenant t) {
+	protected void updateTenantData(Tenant t) {
 		String sql = "UPDATE " + table + " SET id=?, name=?, password=?, accessiondate=?, residence=?";
 
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -368,7 +363,7 @@ public class DBSQL {
 		}
 	}
 
-	protected void updatePostData(String table, Post p) {
+	protected void updatePostData(Post p) {
 		String sql = "UPDATE " + table + " SET postid=?, type=?, text=?, writingdate=?, name=?, img=?, viewsnum=?";
 
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -388,7 +383,7 @@ public class DBSQL {
 		}
 	}
 
-	protected void updateCalendarData(String table, Calender c) {
+	protected void updateCalendarData(Calender c) {
 		String sql = "UPDATE " + table + " SET id=?, name=?, password=?, accessiondate=?, residence=?";
 
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -405,7 +400,7 @@ public class DBSQL {
 		}
 	}
 
-	protected void updateBanData(String table, TenantBan b) {
+	protected void updateBanData(TenantBan b) {
 		String sql = "UPDATE " + table + " SET banid=?";
 
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {

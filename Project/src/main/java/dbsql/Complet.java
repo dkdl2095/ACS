@@ -12,16 +12,15 @@ import org.apache.commons.beanutils.BeanUtils;
 
 import table.*;
 
-@WebServlet("/TENANTCOMPLET")
+@WebServlet("/complet")
 public class Complet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	DBSQL dao;
-	String table = "TENANTCOMPLET";
 
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
-		dao = new DBSQL(table);
+		dao = new DBSQL("TENANTCOMPLET");
 	}
 
 	protected void service(HttpServletRequest request, HttpServletResponse response)
@@ -29,9 +28,8 @@ public class Complet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		String action = request.getParameter("action");
 		String view = "";
-		String dispatcher = "/" + table + "?action=list";
 		if (action == null) {
-			getServletContext().getRequestDispatcher(dispatcher).forward(request, response);
+			getServletContext().getRequestDispatcher("/complet?action=list").forward(request, response);
 		} else {
 			switch (action) {
 			case "list":
@@ -56,13 +54,13 @@ public class Complet extends HttpServlet {
 	}
 
 	private String insert(HttpServletRequest request, HttpServletResponse response) {
-		Tenant s = new Tenant();
+		Tenant t = new Tenant();
 		try {
-			BeanUtils.populate(s, request.getParameterMap());
+			BeanUtils.populate(t, request.getParameterMap());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		dao.DBInsert(table);
+		dao.DBInsert();
 		return list(request, response);
 	}
 	
@@ -73,7 +71,7 @@ public class Complet extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		dao.DBDelete(table);
+		dao.DBDelete();
 		return list(request, response);
 	}
 	
@@ -84,12 +82,12 @@ public class Complet extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		dao.DBUpdate(table);
+		dao.DBUpdate();
 		return list(request, response);
 	}
 
 	private String list(HttpServletRequest request, HttpServletResponse response) {
-		request.setAttribute(table, dao.DBSelect(table));
+		request.setAttribute("complets", dao.DBSelect());
 		return "studentInfo.jsp";
 	}
 }
