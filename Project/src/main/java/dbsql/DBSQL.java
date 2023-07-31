@@ -79,7 +79,9 @@ public class DBSQL {
 			insertPostData(table, p);
 		} else if (upperCaseTable.equals("CALENDER")) {
 			insertCalendarData(table, c);
-		}
+		} else if (upperCaseTable.equals("CALENDER")) {
+			insertBanData(table, b);
+		} 
 	}
 
 	public void DBDelete(String table) { // 테이블 삭제
@@ -92,7 +94,9 @@ public class DBSQL {
 			deletePostData(table, p);
 		} else if (upperCaseTable.equals("CALENDER")) {
 			deleteCalendarData(table, c);
-		}
+		} else if (upperCaseTable.equals("CALENDER")) {
+			deleteBanData(table, b);
+		} 
 	}
 
 	public void DBUpdate(String table) { // 테이블 수정
@@ -260,6 +264,20 @@ public class DBSQL {
 			close();
 		}
 	}
+	
+	private void insertBanData(String table, TenantBan b) {
+		String sql = "INSERT INTO " + table + "(banid) VALUES (?)";
+
+		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			pstmt.setString(1, b.getBanid());
+
+			pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+	}
 
 	protected void deleteTenantData(String table, Tenant t) {
 		String sql = "DELETE FROM " + table + " WHERE id = ?";
@@ -291,6 +309,20 @@ public class DBSQL {
 
 	protected void deleteCalendarData(String table, Calender c) {
 		String sql = "DELETE FROM " + table + " WHERE calid = ?";
+
+		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			pstmt.setInt(1, c.getCalid());
+
+			pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+	}
+	
+	private void deleteBanData(String table, TenantBan b) {
+		String sql = "DELETE FROM " + table + " WHERE banid = ?";
 
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			pstmt.setInt(1, c.getCalid());
