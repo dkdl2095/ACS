@@ -15,6 +15,8 @@ public class PosUpdate extends DBSQL{
 			updatePostData(table, p);
 		} else if (upperCaseTable.equals("CALENDER")) {
 			updateCalendarData(table, c);
+		} else if (upperCaseTable.equals("TENANTBAN")) {
+			updateBanData(table, b);
 		}
 	}
 }

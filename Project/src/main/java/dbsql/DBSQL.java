@@ -63,7 +63,7 @@ public class DBSQL {
 			objs = selectPostData(table, p);
 		} else if (upperCaseTable.equals("CALENDER")) {
 			objs = selectCalendarData(table, c);
-		} else if(upperCaseTable.equals("TENANTBAN")) {
+		} else if (upperCaseTable.equals("TENANTBAN")) {
 			objs = selectBanData(table, b);
 		}
 		return objs;
@@ -79,9 +79,9 @@ public class DBSQL {
 			insertPostData(table, p);
 		} else if (upperCaseTable.equals("CALENDER")) {
 			insertCalendarData(table, c);
-		} else if (upperCaseTable.equals("CALENDER")) {
+		} else if (upperCaseTable.equals("TENANTBAN")) {
 			insertBanData(table, b);
-		} 
+		}
 	}
 
 	public void DBDelete(String table) { // 테이블 삭제
@@ -94,9 +94,9 @@ public class DBSQL {
 			deletePostData(table, p);
 		} else if (upperCaseTable.equals("CALENDER")) {
 			deleteCalendarData(table, c);
-		} else if (upperCaseTable.equals("CALENDER")) {
+		} else if (upperCaseTable.equals("TENANTBAN")) {
 			deleteBanData(table, b);
-		} 
+		}
 	}
 
 	public void DBUpdate(String table) { // 테이블 수정
@@ -109,6 +109,8 @@ public class DBSQL {
 			updatePostData(table, p);
 		} else if (upperCaseTable.equals("CALENDER")) {
 			updateCalendarData(table, c);
+		} else if (upperCaseTable.equals("TENANTBAN")) {
+			updateBanData(table, b);
 		}
 	}
 
@@ -187,8 +189,8 @@ public class DBSQL {
 		}
 		return calenders;
 	}
-	
-	private List<Object> selectBanData(String table, TenantBan b) {
+
+	protected List<Object> selectBanData(String table, TenantBan b) {
 		List<Object> ban = new ArrayList<>();
 		String sql = "SELECT * FROM " + table;
 		try {
@@ -264,8 +266,8 @@ public class DBSQL {
 			close();
 		}
 	}
-	
-	private void insertBanData(String table, TenantBan b) {
+
+	protected void insertBanData(String table, TenantBan b) {
 		String sql = "INSERT INTO " + table + "(banid) VALUES (?)";
 
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -320,8 +322,8 @@ public class DBSQL {
 			close();
 		}
 	}
-	
-	private void deleteBanData(String table, TenantBan b) {
+
+	protected void deleteBanData(String table, TenantBan b) {
 		String sql = "DELETE FROM " + table + " WHERE banid = ?";
 
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -381,6 +383,20 @@ public class DBSQL {
 			pstmt.setDate(2, c.getCdate());
 			pstmt.setString(3, c.getText());
 			pstmt.setInt(4, c.getPostid());
+
+			pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+	}
+
+	protected void updateBanData(String table, TenantBan b) {
+		String sql = "UPDATE " + table + " SET banid=?";
+
+		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			pstmt.setString(1, b.getBanid());
 
 			pstmt.executeUpdate();
 		} catch (Exception e) {

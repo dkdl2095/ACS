@@ -15,6 +15,8 @@ public class PosInsert extends DBSQL {
 			insertPostData(table, p);
 		} else if (upperCaseTable.equals("CALENDER")) {
 			insertCalendarData(table, c);
+		} else if (upperCaseTable.equals("TENANTBAN")) {
+			insertBanData(table, b);
 		}
 	}
 }

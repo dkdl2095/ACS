@@ -15,6 +15,8 @@ public class PosDelete extends DBSQL {
 			deletePostData(table, p);
 		} else if (upperCaseTable.equals("CALENDER")) {
 			deleteCalendarData(table, c);
-		}
+		} else if (upperCaseTable.equals("TENANTBAN")) {
+			deleteBanData(table, b);
+		} 
 	}
 }
