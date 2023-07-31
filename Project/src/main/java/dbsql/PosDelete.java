@@ -1,11 +1,16 @@
 package dbsql;
 
+import table.Calender;
+import table.Post;
+import table.Tenant;
+import table.TenantBan;
+
 public class PosDelete extends DBSQL {
 	public PosDelete(String table) {
 		super(table);
 	}
 
-	public void DBDelete(String table) { // 테이블 삭제
+	public void DBDelete(Tenant t, Post p, Calender c, TenantBan b) { // 테이블 삭제
 		open();
 		String upperCaseTable = table.toUpperCase();
 

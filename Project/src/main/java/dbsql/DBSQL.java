@@ -14,10 +14,6 @@ public class DBSQL {
 	String table;
 	Connection conn = null;
 	PreparedStatement pstmt;
-	Tenant t = null;
-	Post p = null;
-	Calender c = null;
-	TenantBan b = null;
 
 	// 오라클 드라이버 설정
 	final String JDBC_DRIVER = "oracle.jdbc.driver.OracleDriver";
@@ -25,10 +21,6 @@ public class DBSQL {
 
 	public DBSQL(String table) { // 생성자
 		this.table = table.toUpperCase();
-		this.t = new Tenant();
-		this.p = new Post();
-		this.c = new Calender();
-		this.b = new TenantBan();
 	}
 
 	public void open() {
@@ -53,7 +45,7 @@ public class DBSQL {
 		}
 	}
 
-	public List<Object> DBSelect() { // 테이블 검색
+	public List<Object> DBSelect(Tenant t, Post p, Calender c, TenantBan b) { // 테이블 검색
 		open();
 		List<Object> objs = new ArrayList<>();
 
@@ -69,7 +61,7 @@ public class DBSQL {
 		return objs;
 	}
 
-	public void DBInsert() { // 테이블 삽입
+	public void DBInsert(Tenant t, Post p, Calender c, TenantBan b) { // 테이블 삽입
 		open();
 
 		if (table.equals("TENANTCOMPLET") || table.equals("TENANTWAIT")) {
@@ -83,7 +75,7 @@ public class DBSQL {
 		}
 	}
 
-	public void DBDelete() { // 테이블 삭제
+	public void DBDelete(Tenant t, Post p, Calender c, TenantBan b) { // 테이블 삭제
 		open();
 
 		if (table.equals("TENANTCOMPLET") || table.equals("TENANTWAIT")) {
@@ -97,7 +89,7 @@ public class DBSQL {
 		}
 	}
 
-	public void DBUpdate() { // 테이블 수정
+	public void DBUpdate(Tenant t, Post p, Calender c, TenantBan b) { // 테이블 수정
 		open();
 
 		if (table.equals("TENANTCOMPLET") || table.equals("TENANTWAIT")) {
@@ -186,7 +178,7 @@ public class DBSQL {
 				b = new TenantBan();
 				b.setBanid(rs.getString("banid"));
 
-				ban.add(c);
+				ban.add(b);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -194,29 +186,6 @@ public class DBSQL {
 			close();
 		}
 		return ban;
-	}
-
-	protected Object getTenantData(int id) throws SQLException {
-		open();
-		String sql = "SELECT * FROM " + table + " where id =?";
-		PreparedStatement pstmt = conn.prepareStatement(sql);
-
-		pstmt.setInt(1, id);
-		ResultSet rs = pstmt.executeQuery();
-		rs.next();
-
-		try {
-			t.setId(rs.getString("id"));
-			t.setName(rs.getString("name"));
-			t.setPassword(rs.getString("password"));
-			t.setAccessiondate(rs.getDate("accessiondate"));
-			t.setResidence(rs.getString("residence"));
-			
-			pstmt.executeQuery();
-			return t;
-		} finally {
-			close();
-		}
 	}
 
 	protected void insertTenantData(Tenant t) {
@@ -336,7 +305,7 @@ public class DBSQL {
 		String sql = "DELETE FROM " + table + " WHERE banid = ?";
 
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-			pstmt.setInt(1, c.getCalid());
+			pstmt.setString(1, b.getBanid());
 
 			pstmt.executeUpdate();
 		} catch (Exception e) {

@@ -1,11 +1,16 @@
 package dbsql;
 
+import table.Calender;
+import table.Post;
+import table.Tenant;
+import table.TenantBan;
+
 public class PosUpdate extends DBSQL{
 	public PosUpdate(String table) {
 		super(table);
 	}
 	
-	public void DBUpdate(String table) { // 테이블 수정
+	public void DBUpdate(Tenant t, Post p, Calender c, TenantBan b) { // 테이블 수정
 		open();
 		String upperCaseTable = table.toUpperCase();
 

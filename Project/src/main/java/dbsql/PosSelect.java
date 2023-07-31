@@ -3,12 +3,17 @@ package dbsql;
 import java.util.ArrayList;
 import java.util.List;
 
+import table.Calender;
+import table.Post;
+import table.Tenant;
+import table.TenantBan;
+
 public class PosSelect extends DBSQL {
 	public PosSelect(String table) {
 		super(table);
 	}
 	
-	public List<Object> DBSelect() { // 테이블 검색
+	public List<Object> DBSelect(Tenant t, Post p, Calender c, TenantBan b) { // 테이블 검색
 		open();
 		List<Object> objs = new ArrayList<>();
 
