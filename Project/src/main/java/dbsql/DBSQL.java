@@ -10,13 +10,14 @@ import java.util.List;
 import table.*;
 
 public class DBSQL {
+	@SuppressWarnings("unused")
 	private String table;
-	Connection conn = null;
-	PreparedStatement pstmt;
-	Tenant t = null;
-	Post p = null;
-	Calender c = null;
-	TenantBan b = null;
+	private Connection conn = null;
+	private PreparedStatement pstmt;
+	private Tenant t = null;
+	private Post p = null;
+	private Calender c = null;
+	private TenantBan b = null;
 
 	// 오라클 드라이버 설정
 	final String JDBC_DRIVER = "oracle.jdbc.driver.OracleDriver";
