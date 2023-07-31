@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -118,10 +119,7 @@ public class DBSQL {
 	protected List<Object> selectTenantData(String table, Tenant t) {
 		List<Object> tenants = new ArrayList<>();
 		String sql = "SELECT * FROM " + table;
-		try {
-			pstmt = conn.prepareStatement(sql);
-			ResultSet rs = pstmt.executeQuery();
-
+		try (PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()){
 			while (rs.next()) {
 				t = new Tenant();
 				t.setId(rs.getString("id"));
@@ -143,10 +141,7 @@ public class DBSQL {
 	protected List<Object> selectPostData(String table, Post p) {
 		List<Object> posts = new ArrayList<>();
 		String sql = "SELECT * FROM " + table;
-		try {
-			pstmt = conn.prepareStatement(sql);
-			ResultSet rs = pstmt.executeQuery();
-
+		try (PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()){
 			while (rs.next()) {
 				p = new Post();
 				p.setPostid(rs.getInt("postid"));
@@ -170,10 +165,7 @@ public class DBSQL {
 	protected List<Object> selectCalendarData(String table, Calender c) {
 		List<Object> calenders = new ArrayList<>();
 		String sql = "SELECT * FROM " + table;
-		try {
-			pstmt = conn.prepareStatement(sql);
-			ResultSet rs = pstmt.executeQuery();
-
+		try (PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()){
 			while (rs.next()) {
 				c = new Calender();
 				c.setCalid(rs.getInt("calid"));
@@ -194,10 +186,7 @@ public class DBSQL {
 	protected List<Object> selectBanData(String table, TenantBan b) {
 		List<Object> ban = new ArrayList<>();
 		String sql = "SELECT * FROM " + table;
-		try {
-			pstmt = conn.prepareStatement(sql);
-			ResultSet rs = pstmt.executeQuery();
-
+		try (PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()){
 			while (rs.next()) {
 				b = new TenantBan();
 				b.setBanid(rs.getString("banid"));
@@ -210,6 +199,30 @@ public class DBSQL {
 			close();
 		}
 		return ban;
+	}
+
+	// 뉴스 한 개를 클릭했을 때 세부 내용을 보여주는 메소드
+	protected Object getTenantData(int id) throws SQLException {
+		open();
+		String sql = "SELECT * FROM Tenantcomplet where id =?";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+
+		pstmt.setInt(1, id);
+		ResultSet rs = pstmt.executeQuery();
+		rs.next();
+
+		try {
+			t.setId(rs.getString("id"));
+			t.setName(rs.getString("name"));
+			t.setPassword(rs.getString("password"));
+			t.setAccessiondate(rs.getDate("accessiondate"));
+			t.setResidence(rs.getString("residence"));
+			
+			pstmt.executeQuery();
+			return t;
+		} finally {
+			close();
+		}
 	}
 
 	protected void insertTenantData(String table, Tenant t) {
