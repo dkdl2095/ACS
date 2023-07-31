@@ -53,8 +53,7 @@
     </script>
     <style>
         #calendarBox{
-            width: 70%;
-            padding-left: 15%;
+            width: 100%;
         }
 
     </style>
