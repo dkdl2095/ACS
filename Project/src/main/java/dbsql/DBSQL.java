@@ -11,7 +11,7 @@ import java.util.List;
 import table.*;
 
 public class DBSQL {
-	private String table;
+	String table;
 	Connection conn = null;
 	PreparedStatement pstmt;
 	Tenant t = null;

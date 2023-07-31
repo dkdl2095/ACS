@@ -8,21 +8,19 @@ public class PosSelect extends DBSQL {
 		super(table);
 	}
 	
-	public List<Object> DBSelect(String table) { // 테이블 검색
+	public List<Object> DBSelect() { // 테이블 검색
 		open();
 		List<Object> objs = new ArrayList<>();
-		String upperCaseTable = table.toUpperCase();
 
-		if (upperCaseTable.equals("TENANTCOMPLET") || upperCaseTable.equals("TENANTWAIT")) {
+		if (table.equals("TENANTCOMPLET") || table.equals("TENANTWAIT")) {
 			objs = selectTenantData(t);
-		} else if (upperCaseTable.equals("POST")) {
+		} else if (table.equals("POST")) {
 			objs = selectPostData(p);
-		} else if (upperCaseTable.equals("CALENDER")) {
+		} else if (table.equals("CALENDER")) {
 			objs = selectCalendarData(c);
-		} else if (upperCaseTable.equals("TENANTBAN")) {
+		} else if (table.equals("TENANTBAN")) {
 			objs = selectBanData(b);
 		}
 		return objs;
 	}
-
 }
