@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="table.TenantDAO"%>
+<%@ page import="java.io.PrintWriter" %>
 <%@ page import="table.Tenant"%>
 <%@ page import="java.util.List"%>
 
@@ -71,30 +72,39 @@ button {
 				aria-describedby="btnShowPassword">
 		</div>
 		<div class="d-grid gap-2">
-			<button class="btn btn-primary" type="button">로그인</button>
+			
 
 			<button class="btn btn-secondary" type="button">회원가입</button>
 		</div>
 	</div>
-<script>
-$(function () {
-    $('#login').validate({
-        rules: {
-            id: {
-                required: true
-            },
-            pw: {
-                required: true,
-                minlength: 4
-            }
-        },
-        messages: {
-            id: "아이디를 입력해주세요",
-            pw: {
-                required: "비밀번호를 입력해주세요",
-                minlength: "비밀번호는 4자리 이상이어야 합니다"
-            }
-        }</script>
+	
+	<form method="post" action="<%= request.getRequestURI() %>">
+	    <button type="submit" class="btn btn-primary">로그인</button>
+</form>
 
+<%
+    TenantDAO tenantDAO = new TenantDAO();
+
+    if (request.getMethod().equalsIgnoreCase("post")) {
+        
+        String id = request.getParameter("ID");
+        String password = request.getParameter("PW");
+        
+        int result = tenantDAO.login(id, password);
+
+        if (result == 1) {
+            
+            session.setAttribute("loggedInUser", id);
+            out.println("<script>alert('로그인에 성공 했습니다.'); history.back();</script>");
+            
+        } else if (result == 0) {
+            out.println("<script>alert('비밀번호가 틀립니다.'); history.back();</script>");
+        } else if (result == 2) {
+            out.println("<script>alert('존재하지 않는 아이디입니다.'); history.back();</script>");
+        } else if (result == -2) {
+            out.println("<script>alert('데이터베이스 오류가 발생했습니다.'); history.back();</script>");
+        }
+    }
+%>
 </body>
 </html>
