@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ page import="dbsql.DBSQL"%>
 <%@ page import="table.Tenant"%>
+<%@ page import="table.Post"%>
 <%@ page import="java.util.List"%>
 <!DOCTYPE html>
 <html>
@@ -82,24 +83,28 @@
 				<!-- 로그인 시에만 보이는 회원정보 div -->
 				<div id="memberInfo" class="card">
 					<div class="card-body">
+						<%-- Java 코드 작성 (스크립트릿) --%>
 						<!-- 회원정보를 표시하는 플레이스홀더 요소 -->
 						<%
 						// Java 코드 작성 (스크립트릿)
 						// DBSQL 객체 생성
-						DBSQL dbsql = new DBSQL("TENANTCOMPLET");
+						DBSQL dbsqlTenant = new DBSQL("TENANTCOMPLET",null,null,null,null);
 
 						// 데이터베이스에서 회원 정보 가져오기
-						List<Object> members = dbsql.DBSelect("TENANTCOMPLET"); // 적절한 메서드를 호출하여 회원 정보를 가져오도록 수정해야 합니다.
+						List<Object> TenantMembers = dbsqlTenant.DBSelect(); // 적절한 메서드를 호출하여 회원 정보를 가져오도록 수정해야 합니다.
 
 						// 가져온 회원 정보를 사용하여 HTML 코드 작성
-						if (members.size() > 0) {
-							for (Object obj : members) {
+						if (TenantMembers.size() > 0) {
+							for (Object obj : TenantMembers) {
 								if (obj instanceof Tenant) {
-							Tenant member = (Tenant) obj; // Tenant로 캐스팅
+							Tenant TenantMember = (Tenant) obj; // Tenant로 캐스팅
 						%>
 						<p>
-							아이디: <%=member.getId()%>, 이름: <%=member.getName()%>, 가입날짜: <%=member.getAccessiondate()%>,
-							거주지: <%=member.getResidence()%></p>
+							아이디:
+							<%=TenantMember.getId()%>, 이름:
+							<%=TenantMember.getName()%>, 가입날짜:
+							<%=TenantMember.getAccessiondate()%>, 거주지:
+							<%=TenantMember.getResidence()%></p>
 						<%
 						} else {
 						// 적절한 타입이 아닌 경우 처리
@@ -124,11 +129,43 @@
 	<div class="container mt-3">
 		<div class="card">
 			<div class="card-body">
-				<!-- 게시글 목록을 표시하는 내용 -->
-				<p>게시글 목록</p>
+				<%-- Java 코드 작성 (스크립트릿) --%>
+				<!-- 글목록 정보를 표시하는 플레이스홀더 요소 -->
+				<%
+				// Java 코드 작성 (스크립트릿)
+				// DBSQL 객체 생성
+				DBSQL dbsqlPost = new DBSQL("Post",null,null,null,null);
+
+				// 데이터베이스에서 글목록 가져오기
+				List<Object> PostMembers = dbsqlPost.DBSelect(); // 적절한 메서드를 호출하여 글목록 정보를 가져오도록 수정해야 합니다.
+
+				// 가져온 글목록 정보를 사용하여 HTML 코드 작성
+				if (PostMembers.size() > 0) {
+					for (Object obj : PostMembers) {
+						if (obj instanceof Post) {
+					Post PostMember = (Post) obj; // Post로 캐스팅
+				%>
+				<p>
+					번호 :
+					<%=PostMember.getPostid()%>, 타입:
+					<%=PostMember.getType()%>, 이름:
+					<%=PostMember.getName()%>, 조회수:
+					<%=PostMember.getViewsnum()%>, 날짜:
+					<%=PostMember.getWritingdate()%>
+				</p>
+				<%
+				}
+				}
+				} else {
+				%>
+				<p>게시글이 없습니다.</p>
+				<%
+				}
+				%>
 			</div>
 		</div>
 	</div>
+
 
 	<!-- 페이지 -->
 	<nav aria-label="Page navigation" class="mt-3">
