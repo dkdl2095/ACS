@@ -208,12 +208,12 @@ public class DBSQL {
 		}
 	}
 
-	protected void DBDelete(Tenant t) {
+	protected void DBDelete(Tenant t, String id) {
 		open();
 		String sql = "DELETE FROM " + table + " WHERE id = ?";
 
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-			pstmt.setString(1, t.getId());
+			pstmt.setString(1, id);
 
 			pstmt.executeUpdate();
 		} catch (Exception e) {
@@ -223,12 +223,12 @@ public class DBSQL {
 		}
 	}
 
-	protected void DBDelete(Post p) {
+	protected void DBDelete(Post p, int postid) {
 		open();
-		String sql = "DELETE FROM " + table + " WHERE psotid = ?";
+		String sql = "DELETE FROM " + table + " WHERE postid = ?";
 
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-			pstmt.setInt(1, p.getPostid());
+			pstmt.setInt(1, postid);
 
 			pstmt.executeUpdate();
 		} catch (Exception e) {
@@ -238,12 +238,12 @@ public class DBSQL {
 		}
 	}
 
-	protected void DBDelete(Calender c) {
+	protected void DBDelete(Calender c, int calid) {
 		open();
 		String sql = "DELETE FROM " + table + " WHERE calid = ?";
 
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-			pstmt.setInt(1, c.getCalid());
+			pstmt.setInt(1, calid);
 
 			pstmt.executeUpdate();
 		} catch (Exception e) {
@@ -253,12 +253,12 @@ public class DBSQL {
 		}
 	}
 
-	protected void DBDelete(TenantBan b) {
+	protected void DBDelete(TenantBan b, String banid) {
 		open();
 		String sql = "DELETE FROM " + table + " WHERE banid = ?";
 
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-			pstmt.setString(1, b.getBanid());
+			pstmt.setString(1, banid);
 
 			pstmt.executeUpdate();
 		} catch (Exception e) {

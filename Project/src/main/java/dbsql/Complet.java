@@ -18,10 +18,12 @@ public class Complet extends HttpServlet {
 
 	DBSQL dao;
 	Tenant t = new Tenant();
+	Post p = new Post();
+	Calender c = new Calender();
+	TenantBan b = new TenantBan();
 
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
-		dao = new DBSQL("TENANTCOMPLET");
 	}
 
 	protected void service(HttpServletRequest request, HttpServletResponse response)
@@ -34,17 +36,45 @@ public class Complet extends HttpServlet {
 		} else {
 			switch (action) {
 			case "list":
-				view = list(request, response);
+				view = listcomplet(request, response);
+				view = listwait(request, response);
+				view = listban(request, response);
+				view = listpost(request, response);
+				view = listcalender(request, response);
 				break;
 
-			case "insert":
-				view = insert(request, response);
+			case "insertcomplet":
+				view = insertcomplet(request, response);
+				break;
+			case "insertwait":
+				view = insertwait(request, response);
+				break;
+			case "insertban":
+				view = insertban(request, response);
+				break;
+			case "insertpost":
+				view = insertpost(request, response);
+				break;
+			case "insertcalender":
+				view = insertcalender(request, response);
 				break;
 
-			case "delete":
-				view = delete(request, response);
+			case "deletecomplet":
+				view = deletecomplet(request, response);
 				break;
-				
+			case "deletewait":
+				view = deletewait(request, response);
+				break;
+			case "deleteban":
+				view = deleteban(request, response);
+				break;
+			case "deletepost":
+				view = deletepost(request, response);
+				break;
+			case "deletecalender":
+				view = deletecalender(request, response);
+				break;
+
 			case "update":
 				view = update(request, response);
 				break;
@@ -54,26 +84,120 @@ public class Complet extends HttpServlet {
 
 	}
 
-	private String insert(HttpServletRequest request, HttpServletResponse response) {
+	private String insertcomplet(HttpServletRequest request, HttpServletResponse response) {
+		dao = new DBSQL("TENANTCOMPLET");
 		try {
 			BeanUtils.populate(t, request.getParameterMap());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		dao.DBInsert(t);
-		return list(request, response);
+		return "Info.jsp";
 	}
-	
-	private String delete(HttpServletRequest request, HttpServletResponse response) {
+
+	private String insertwait(HttpServletRequest request, HttpServletResponse response) {
+		dao = new DBSQL("TENANTWAIT");
 		try {
 			BeanUtils.populate(t, request.getParameterMap());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		dao.DBDelete(t);
-		return list(request, response);
+		dao.DBInsert(t);
+		return "Info.jsp";
 	}
 	
+	private String insertban(HttpServletRequest request, HttpServletResponse response) {
+		dao = new DBSQL("TENANTBAN");
+		try {
+			BeanUtils.populate(b, request.getParameterMap());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		dao.DBInsert(t);
+		return "Info.jsp";
+	}
+	
+	private String insertpost(HttpServletRequest request, HttpServletResponse response) {
+		dao = new DBSQL("POST");
+		try {
+			BeanUtils.populate(p, request.getParameterMap());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		dao.DBInsert(p);
+		return "Info.jsp";
+	}
+	private String insertcalender(HttpServletRequest request, HttpServletResponse response) {
+		dao = new DBSQL("CALENDER");
+		try {
+			BeanUtils.populate(c, request.getParameterMap());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		dao.DBInsert(p);
+		return "Info.jsp";
+	}
+
+	private String deletecomplet(HttpServletRequest request, HttpServletResponse response) {
+		dao = new DBSQL("TENANTCOMPLET");
+		String id = request.getParameter("id");
+		try {
+			BeanUtils.populate(t, request.getParameterMap());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		dao.DBDelete(t, id);
+		return "Info.jsp";
+	}
+
+	private String deletewait(HttpServletRequest request, HttpServletResponse response) {
+		dao = new DBSQL("TENANTWAIT");
+		String id = request.getParameter("id");
+		try {
+			BeanUtils.populate(t, request.getParameterMap());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		dao.DBDelete(t, id);
+		return "Info.jsp";
+	}
+
+	private String deleteban(HttpServletRequest request, HttpServletResponse response) {
+		dao = new DBSQL("TENANTBAN");
+		String id = request.getParameter("banid");
+		try {
+			BeanUtils.populate(b, request.getParameterMap());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		dao.DBDelete(b, id);
+		return "Info.jsp";
+	}
+
+	private String deletepost(HttpServletRequest request, HttpServletResponse response) {
+		dao = new DBSQL("POST");
+		int id = Integer.parseInt(request.getParameter("postid"));
+		try {
+			BeanUtils.populate(p, request.getParameterMap());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		dao.DBDelete(p, id);
+		return "Info.jsp";
+	}
+
+	private String deletecalender(HttpServletRequest request, HttpServletResponse response) {
+		dao = new DBSQL("CALENDER");
+		int id = Integer.parseInt(request.getParameter("calid"));
+		try {
+			BeanUtils.populate(c, request.getParameterMap());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		dao.DBDelete(c, id);
+		return "Info.jsp";
+	}
+
 	private String update(HttpServletRequest request, HttpServletResponse response) {
 		try {
 			BeanUtils.populate(t, request.getParameterMap());
@@ -81,11 +205,36 @@ public class Complet extends HttpServlet {
 			e.printStackTrace();
 		}
 		dao.DBUpdate(t);
-		return list(request, response);
+		return "Info.jsp";
 	}
 
-	private String list(HttpServletRequest request, HttpServletResponse response) {
+	private String listcomplet(HttpServletRequest request, HttpServletResponse response) {
+		dao = new DBSQL("TENANTCOMPLET");
 		request.setAttribute("complets", dao.DBSelect(t));
-		return "studentInfo.jsp";
+		return "Info.jsp";
+	}
+
+	private String listwait(HttpServletRequest request, HttpServletResponse response) {
+		dao = new DBSQL("TENANTWAIT");
+		request.setAttribute("waits", dao.DBSelect(t));
+		return "Info.jsp";
+	}
+
+	private String listban(HttpServletRequest request, HttpServletResponse response) {
+		dao = new DBSQL("TENANTBAN");
+		request.setAttribute("bans", dao.DBSelect(b));
+		return "Info.jsp";
+	}
+
+	private String listpost(HttpServletRequest request, HttpServletResponse response) {
+		dao = new DBSQL("POST");
+		request.setAttribute("posts", dao.DBSelect(p));
+		return "Info.jsp";
+	}
+
+	private String listcalender(HttpServletRequest request, HttpServletResponse response) {
+		dao = new DBSQL("Calender");
+		request.setAttribute("calenders", dao.DBSelect(c));
+		return "Info.jsp";
 	}
 }
