@@ -45,11 +45,6 @@
 			</ul>
 			<!-- 내 정보, 로그아웃 버튼 -->
 			<ul class="navbar-nav">
-				<!-- 회원가입 버튼 -->
-				<li class="nav-item"><a id="btnSignup" class="nav-link"
-					href="#">회원가입</a></li>
-				<!-- 로그인 버튼 -->
-				<li class="nav-item"><a id="btnLogin" class="nav-link" href="#">로그인</a></li>
 				<!-- 내 정보 버튼 -->
 				<li class="nav-item"><a id="btnMyInfo" class="nav-link"
 					href="#">내 정보</a></li>
@@ -230,65 +225,48 @@
 		};
 
 		// 확인 버튼 클릭 이벤트 처리
-		document.getElementById("btnConfirm").addEventListener("click",
-				function() {
-					var textArea = document.getElementById("postContent");
-					var postContent = textArea.value;
+		document
+				.getElementById("btnConfirm")
+				.addEventListener(
+						"click",
+						function() {
+							var textArea = document
+									.getElementById("postContent");
+							var postContent = textArea.value;
+							var confirmed = confirm("확인 버튼을 누르면 게시글을 저장합니다. 계속하시겠습니까?");
 
-					// AJAX 요청을 보냅니다.
-					$.ajax({
-						url : "PostCreation.jsp",
-						method : "POST",
-						data : {
-							postContent : postContent,
-							btnConfirm : "true"
-						},
-						success : function(response) {
-							// 요청이 성공적으로 처리되었을 때 실행되는 코드
-							console.log("요청이 성공적으로 처리되었습니다.");
-							console.log("서버 응답: ", response); // Log server response to browser console
-							// 여기서 필요한 추가 작업 수행
-						},
-						error : function(xhr, status, error) {
-							// 요청이 실패하거나 에러가 발생했을 때 실행되는 코드
-							console.error("요청이 실패하였습니다.");
-							console.error(xhr, status, error);
-						}
-					});
-				});
-	</script>
+							if (confirmed) {
+								// AJAX 요청을 보냅니다.
+								$.ajax({
+									url : "PostCreation.jsp",
+									method : "POST",
+									data : {
+										postContent : postContent,
+										btnConfirm : "true"
+									},
+									success : function(response) {
+										// 요청이 성공적으로 처리되었을 때 실행되는 코드
+										console.log("요청이 성공적으로 처리되었습니다.");
+										console.log("서버 응답: ", response); // 브라우저 콘솔에 서버 응답 기록
+										// 폰트, 사이즈, 색상 선택을 초기화하고, 게시글 내용을 지웁니다.
+										localStorage.setItem("selectedFont", "Font");
+										localStorage.setItem("selectedSize", "Size");
+										localStorage.setItem("selectedColor", "Color");
+										localStorage.setItem("postContent", "");
+									},
+									error : function(xhr, status, error) {
+										// 요청이 실패하거나 에러가 발생했을 때 실행되는 코드
+										console.error("요청이 실패하였습니다.");
+										console.error(xhr, status, error);
+									}
+								});
+							}
+						});
 
-	<script>
 		function insertImage() {
 			var textArea = document.getElementById("postContent");
 			textArea.value += "\n"; // 이미지 첨부 후 줄 바꿈 처리
 		}
-
-		$(document).ready(function() {
-			// 초기 로그인 상태는 회원가입 버튼만 보이도록 설정
-			$("#btnMyInfo").hide();
-			$("#btnLogout").hide();
-			$("#btnAdmin").hide();
-
-			// 로그인 버튼을 클릭하면 내 정보와 로그아웃 버튼이 토글됨
-			$("#btnLogin").click(function() {
-				$("#btnMyInfo").toggle();
-				$("#btnAdmin").toggle();
-				$("#btnLogout").toggle();
-				$("#btnLogin").hide();
-				$("#btnSignup").hide();
-			});
-
-			// 로그아웃 버튼을 클릭하면 내 정보와 로그아웃 버튼이 사라짐
-			$("#btnLogout").click(function() {
-				$("#btnMyInfo").hide();
-				$("#btnLogout").hide();
-				$("#btnAdmin").hide();
-				// 로그인 버튼과 회원가입 버튼을 보이게 함
-				$("#btnSignup").show();
-				$("#btnLogin").show();
-			});
-		})
 	</script>
 </body>
 </html>
