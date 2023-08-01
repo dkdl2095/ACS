@@ -66,12 +66,62 @@ public class DBSQL {
 		}
 		return tenants;
 	}
+	
+	public List<Object> DBSelect(Tenant t, int id) {
+		open();
+		List<Object> tenants = new ArrayList<>();
+		String sql = "SELECT * FROM " + table + " WHERE id=?";
+		try (PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()){
+			pstmt.setInt(1, id);
+			while (rs.next()) {
+				t = new Tenant();
+				t.setId(rs.getString("id"));
+				t.setName(rs.getString("name"));
+				t.setPassword(rs.getString("password"));
+				t.setAccessiondate(rs.getDate("accessiondate"));
+				t.setResidence(rs.getString("residence"));
+
+				tenants.add(t);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		return tenants;
+	}
 
 	public List<Object> DBSelect(Post p) {
 		open();
 		List<Object> posts = new ArrayList<>();
 		String sql = "SELECT * FROM " + table;
 		try (PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()){
+			while (rs.next()) {
+				p = new Post();
+				p.setPostid(rs.getInt("postid"));
+				p.setType(rs.getString("type"));
+				p.setText(rs.getString("text"));
+				p.setWritingdate(rs.getDate("writingdate"));
+				p.setName(rs.getString("name"));
+				p.setImg(rs.getString("img"));
+				p.setViewsnum(rs.getInt("viewsnum"));
+
+				posts.add(p);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		return posts;
+	}
+	
+	public List<Object> DBSelect(Post p, int postid) {
+		open();
+		List<Object> posts = new ArrayList<>();
+		String sql = "SELECT * FROM " + table + " WHERE postid=?";
+		try (PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()){
+			pstmt.setInt(1, postid);
 			while (rs.next()) {
 				p = new Post();
 				p.setPostid(rs.getInt("postid"));
@@ -113,12 +163,56 @@ public class DBSQL {
 		}
 		return calenders;
 	}
+	
+	public List<Object> DBSelect(Calender c, int calid) {
+		open();
+		List<Object> calenders = new ArrayList<>();
+		String sql = "SELECT * FROM " + table + " WHERE calid=?";
+		try (PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()){
+			pstmt.setInt(1, calid);
+			while (rs.next()) {
+				c = new Calender();
+				c.setCalid(rs.getInt("calid"));
+				c.setCdate(rs.getDate("cdate"));
+				c.setText(rs.getString("text"));
+				c.setPostid(rs.getInt("postid"));
+
+				calenders.add(c);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		return calenders;
+	}
 
 	public List<Object> DBSelect(TenantBan b) {
 		open();
 		List<Object> ban = new ArrayList<>();
 		String sql = "SELECT * FROM " + table;
 		try (PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()){
+			while (rs.next()) {
+				b = new TenantBan();
+				b.setBanid(rs.getString("banid"));
+				b.setBandate(rs.getDate("bandate"));
+
+				ban.add(b);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		return ban;
+	}
+	
+	public List<Object> DBSelect(TenantBan b, int banid) {
+		open();
+		List<Object> ban = new ArrayList<>();
+		String sql = "SELECT * FROM " + table + " WHERE banid=?";
+		try (PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()){
+			pstmt.setInt(1, banid);
 			while (rs.next()) {
 				b = new TenantBan();
 				b.setBanid(rs.getString("banid"));
