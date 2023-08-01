@@ -17,18 +17,11 @@ public class Complet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	DBSQL dao;
-	Tenant t = null;
-	Post p = null;
-	Calender c = null;
-	TenantBan b = null;
+	Tenant t = new Tenant();
 
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 		dao = new DBSQL("TENANTCOMPLET");
-		t = new Tenant();
-		p = new Post();
-		c = new Calender();
-		b = new TenantBan();
 	}
 
 	protected void service(HttpServletRequest request, HttpServletResponse response)
@@ -67,7 +60,7 @@ public class Complet extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		dao.DBInsert(t, p, c, b);
+		dao.DBInsert(t);
 		return list(request, response);
 	}
 	
@@ -77,7 +70,7 @@ public class Complet extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		dao.DBDelete(t, p, c, b);
+		dao.DBDelete(t);
 		return list(request, response);
 	}
 	
@@ -87,12 +80,12 @@ public class Complet extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		dao.DBUpdate(t, p, c, b);
+		dao.DBUpdate(t);
 		return list(request, response);
 	}
 
 	private String list(HttpServletRequest request, HttpServletResponse response) {
-		request.setAttribute("complets", dao.DBSelect(t, p, c, b));
+		request.setAttribute("complets", dao.DBSelect(t));
 		return "studentInfo.jsp";
 	}
 }
