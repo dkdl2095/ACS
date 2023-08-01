@@ -44,7 +44,7 @@ public class DBSQL {
 		}
 	}
 
-	protected List<Object> DBSelect(Tenant t) {
+	public List<Object> DBSelect(Tenant t) {
 		open();
 		List<Object> tenants = new ArrayList<>();
 		String sql = "SELECT * FROM " + table;
@@ -67,7 +67,7 @@ public class DBSQL {
 		return tenants;
 	}
 
-	protected List<Object> DBSelect(Post p) {
+	public List<Object> DBSelect(Post p) {
 		open();
 		List<Object> posts = new ArrayList<>();
 		String sql = "SELECT * FROM " + table;
@@ -92,7 +92,7 @@ public class DBSQL {
 		return posts;
 	}
 
-	protected List<Object> DBSelect(Calender c) {
+	public List<Object> DBSelect(Calender c) {
 		open();
 		List<Object> calenders = new ArrayList<>();
 		String sql = "SELECT * FROM " + table;
@@ -114,7 +114,7 @@ public class DBSQL {
 		return calenders;
 	}
 
-	protected List<Object> DBSelect(TenantBan b) {
+	public List<Object> DBSelect(TenantBan b) {
 		open();
 		List<Object> ban = new ArrayList<>();
 		String sql = "SELECT * FROM " + table;
@@ -133,7 +133,7 @@ public class DBSQL {
 		return ban;
 	}
 
-	protected void DBInsert(Tenant t) {
+	public void DBInsert(Tenant t) {
 		open();
 		String sql = "INSERT INTO " + table + "(ID, NAME, PASSWORD, ACCESSIONDATE, RESIDENCE) VALUES(?, ?, ?, ?, ?)";
 
@@ -152,20 +152,19 @@ public class DBSQL {
 	    }
 	}
 
-	protected void DBInsert(Post p) {
+	public void DBInsert(Post p) {
 		open();
 		String sql = "INSERT INTO " + table
-				+ "(postid, type, title, text, writingdate, name, img, viewsnum) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+				+ "(postid, type, title, text, writingdate, name, img, viewsnum) VALUES (POSTID_SEQ.NEXTVAL, ?, ?, ?, ?, ?, ?, ?)";
 
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-			pstmt.setInt(1, p.getPostid());
-			pstmt.setString(2, p.getType());
-			pstmt.setString(3, p.getTitle());
-			pstmt.setString(4, p.getText());
-			pstmt.setDate(5, p.getWritingdate());
-			pstmt.setString(6, p.getName());
-			pstmt.setString(7, p.getImg());
-			pstmt.setInt(8, p.getViewsnum());
+			pstmt.setString(1, p.getType());
+			pstmt.setString(2, p.getTitle());
+			pstmt.setString(3, p.getText());
+			pstmt.setDate(4, p.getWritingdate());
+			pstmt.setString(5, p.getName());
+			pstmt.setString(6, p.getImg());
+			pstmt.setInt(7, p.getViewsnum());
 
 			pstmt.executeUpdate();
 		} catch (Exception e) {
@@ -175,7 +174,7 @@ public class DBSQL {
 		}
 	}
 
-	protected void DBInsert(Calender c) {
+	public void DBInsert(Calender c) {
 		open();
 		String sql = "INSERT INTO " + table + "(calid, cdate, text, postid) VALUES (?, ?, ?, ?)";
 
@@ -193,7 +192,7 @@ public class DBSQL {
 		}
 	}
 
-	protected void DBInsert(TenantBan b) {
+	public void DBInsert(TenantBan b) {
 		open();
 		String sql = "INSERT INTO " + table + "(banid) VALUES (?)";
 
@@ -208,7 +207,7 @@ public class DBSQL {
 		}
 	}
 
-	protected void DBDelete(Tenant t, String id) {
+	public void DBDelete(Tenant t, String id) {
 		open();
 		String sql = "DELETE FROM " + table + " WHERE id = ?";
 
@@ -223,7 +222,7 @@ public class DBSQL {
 		}
 	}
 
-	protected void DBDelete(Post p, int postid) {
+	public void DBDelete(Post p, int postid) {
 		open();
 		String sql = "DELETE FROM " + table + " WHERE postid = ?";
 
@@ -238,7 +237,7 @@ public class DBSQL {
 		}
 	}
 
-	protected void DBDelete(Calender c, int calid) {
+	public void DBDelete(Calender c, int calid) {
 		open();
 		String sql = "DELETE FROM " + table + " WHERE calid = ?";
 
@@ -253,7 +252,7 @@ public class DBSQL {
 		}
 	}
 
-	protected void DBDelete(TenantBan b, String banid) {
+	public void DBDelete(TenantBan b, String banid) {
 		open();
 		String sql = "DELETE FROM " + table + " WHERE banid = ?";
 
@@ -268,7 +267,7 @@ public class DBSQL {
 		}
 	}
 
-	protected void DBUpdate(Tenant t) {
+	public void DBUpdate(Tenant t) {
 		open();
 		String sql = "UPDATE " + table + " SET id=?, name=?, password=?, accessiondate=?, residence=?";
 
@@ -287,7 +286,7 @@ public class DBSQL {
 		}
 	}
 
-	protected void DBUpdate(Post p) {
+	public void DBUpdate(Post p) {
 		open();
 		String sql = "UPDATE " + table + " SET postid=?, type=?, title=?, text=?, writingdate=?, name=?, img=?, viewsnum=?";
 
@@ -309,7 +308,7 @@ public class DBSQL {
 		}
 	}
 
-	protected void DBUpdate(Calender c) {
+	public void DBUpdate(Calender c) {
 		open();
 		String sql = "UPDATE " + table + " SET id=?, name=?, password=?, accessiondate=?, residence=?";
 
@@ -327,7 +326,7 @@ public class DBSQL {
 		}
 	}
 
-	protected void DBUpdate(TenantBan b) {
+	public void DBUpdate(TenantBan b) {
 		open();
 		String sql = "UPDATE " + table + " SET banid=?";
 
