@@ -122,6 +122,7 @@ public class DBSQL {
 			while (rs.next()) {
 				b = new TenantBan();
 				b.setBanid(rs.getString("banid"));
+				b.setBandate(rs.getDate("bandate"));
 
 				ban.add(b);
 			}
@@ -194,10 +195,11 @@ public class DBSQL {
 
 	public void DBInsert(TenantBan b) {
 		open();
-		String sql = "INSERT INTO " + table + "(banid) VALUES (?)";
+		String sql = "INSERT INTO " + table + "(banid, bandate) VALUES (?, ?)";
 
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			pstmt.setString(1, b.getBanid());
+			pstmt.setDate(2, b.getBandate());
 
 			pstmt.executeUpdate();
 		} catch (Exception e) {
@@ -328,10 +330,11 @@ public class DBSQL {
 
 	public void DBUpdate(TenantBan b) {
 		open();
-		String sql = "UPDATE " + table + " SET banid=?";
+		String sql = "UPDATE " + table + " SET banid=?, bandate=?";
 
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			pstmt.setString(1, b.getBanid());
+			pstmt.setDate(2, b.getBandate());
 
 			pstmt.executeUpdate();
 		} catch (Exception e) {

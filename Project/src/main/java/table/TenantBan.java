@@ -1,7 +1,10 @@
 package table;
 
+import java.sql.Date;
+
 public class TenantBan {
 	String banid;
+	Date bandate;
 
 	public String getBanid() {
 		return banid;
@@ -9,5 +12,13 @@ public class TenantBan {
 
 	public void setBanid(String banid) {
 		this.banid = banid;
+	}
+
+	public Date getBandate() {
+		return bandate;
+	}
+
+	public void setBandate(Date bandate) {
+		this.bandate = bandate;
 	}
 }
