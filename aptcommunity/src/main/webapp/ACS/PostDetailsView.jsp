@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css"
 	rel="stylesheet"
@@ -11,33 +14,7 @@
 	integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
 	crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>회원 가입 폼 만들기</title>
-<style>
-body {
-	padding-top: 20px;
-	background-color: #f9f9f9;
-}
-
-h2 {
-	text-align: center;
-}
-
-label {
-	width: 100px;
-}
-
-input[type="text"], input[type="password"] {
-	width: 240px;
-}
-
-button {
-	cursor: pointer;
-}
-</style>
+<title>글 세부 화면</title>
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -82,56 +59,81 @@ button {
 		</div>
 	</nav>
 
-
-
-	<div class="container" id="registrationForm" style="display: none;">
-		<h2>회원가입</h2>
-		<hr>
-		<p>아래 내용을 기재하여 가입하세요.</p>
-		<hr>
-		<div class="mb-3">
-			<label for="ID" class="form-label">아이디</label>
-			<div class="input-group">
-				<input type="text" id="ID" name="ID" class="form-control"
-					aria-describedby="btnCheckDuplicate">
-				<button class="btn btn-outline-primary" type="button"
-					id="btnCheckDuplicate">중복확인</button>
+	<div class="container mt-3">
+		<div class="card">
+			<div class="card-header">
+				<div class="row">
+					<div class="col-md-3">
+						<p>
+							<strong>타입:</strong> [데이터베이스에서 받아온 타입]
+						</p>
+					</div>
+					<div class="col-md-3">
+						<p>
+							<strong>제목:</strong> [데이터베이스에서 받아온 제목]
+						</p>
+					</div>
+					<div class="col-md-3">
+						<p>
+							<strong>작성자:</strong> [데이터베이스에서 받아온 작성자]
+						</p>
+					</div>
+					<div class="col-md-3">
+						<p>
+							<strong>조회수:</strong> [데이터베이스에서 받아온 조회수]
+						</p>
+					</div>
+				</div>
 			</div>
-		</div>
-		<div class="mb-3">
-			<label for="PW" class="form-label">비밀번호</label>
-			<div class="input-group">
-				<input type="password" id="PW" name="PW" class="form-control"
-					aria-describedby="btnShowPassword">
-				<button class="btn btn-outline-primary" type="button"
-					id="btnShowPassword">내용표시</button>
+			<div class="card-body">
+				<div class="col">
+					<p>[데이터베이스에서 받아온 글]</p>
+					<div class="text-center">
+						<p>
+							<strong>추천수:</strong> <span id="recommendCount">0</span>
+							<button class="btn btn-success" onclick="recommend()">추천</button>
+						</p>
+					</div>
+				</div>
 			</div>
-		</div>
-		<div class="mb-3">
-			<label for="name" class="form-label">이름</label> <input type="text"
-				id="name" name="name" class="form-control">
-		</div>
-		<div class="mb-3">
-			<label for="address" class="form-label">거주지</label> <input
-				type="text" id="address" name="address" class="form-control">
-		</div>
-		<div class="d-grid gap-2">
-			<button class="btn btn-primary" type="button">가입승인요청</button>
-			<button class="btn btn-secondary" type="button">취소</button>
+			<div class="card-body">
+				<div class="col">
+					<!-- 댓글 라벨 -->
+					<label for="comment"><strong>댓글:</strong></label>
+					<!-- 댓글을 입력할 수 있는 텍스트 박스 -->
+					<textarea class="form-control" id="comment" rows="3"
+						placeholder="댓글을 입력하세요"></textarea>
+					<div class="text-end">
+						<!-- 확인 버튼 -->
+						<button class="btn btn-primary mt-2" onclick="submitComment()">확인</button>
+					</div>
+				</div>
+			</div>
+			<div class="card-body">
+				<div class="row mt-4">
+					<div class="col">
+						<!-- 댓글 작성자, 내용, 작성일 라벨 -->
+						<p>
+							<strong>댓글 작성자:</strong> [데이터베이스에서 받아온 댓글 작성자]
+							<strong>댓글 내용:</strong> [데이터베이스에서 받아온 댓글 내용]
+							<strong>작성일:</strong> [데이터베이스에서 받아온 작성일]
+						</p>
+					</div>
+				</div>
+			</div>
+
 		</div>
 	</div>
 
 	<script>
 		$(document).ready(function() {
-			// 초기 로그인 상태는 로그아웃 버튼만 보이도록 설정
-			$("#btnMyInfo").show();
-			$("#btnLogout").show();
+			// 초기 로그인 상태는 회원가입 버튼만 보이도록 설정
+			$("#btnMyInfo").hide();
+			$("#btnLogout").hide();
 			$("#btnAdmin").hide();
-			$("#btnLogin").hide();
-			$("#btnSignup").hide();
 
-			// 로그아웃 버튼을 클릭하면 내 정보와 로그아웃 버튼이 토글됨
-			$("#btnLogout").click(function() {
+			// 로그인 버튼을 클릭하면 내 정보와 로그아웃 버튼이 토글됨
+			$("#btnLogin").click(function() {
 				$("#btnMyInfo").toggle();
 				$("#btnAdmin").toggle();
 				$("#btnLogout").toggle();
@@ -148,12 +150,15 @@ button {
 				$("#btnSignup").show();
 				$("#btnLogin").show();
 			});
-
-			//회원가입 버튼 클릭 시 회원가입 창이 보여짐
-			$("#btnSignup").click(function() {
-				$("#registrationForm").show();
-			});
 		});
+
+		// 추천 버튼을 누르면 카운트 증가
+		let recommendCount = 0;
+
+		function recommend() {
+			recommendCount++;
+			document.getElementById("recommendCount").textContent = recommendCount;
+		}
 	</script>
 </body>
 </html>
