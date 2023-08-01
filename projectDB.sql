@@ -1,5 +1,5 @@
 --------------------------------------------------------
---  ������ ������ - ������-7��-31-2023   
+--  파일이 생성됨 - 월요일-7월-31-2023   
 --------------------------------------------------------
 DROP TABLE "HR"."TENANTBAN";
 DROP TABLE "HR"."TENANTWAIT";
@@ -85,8 +85,8 @@ REM INSERTING into HR.TENANTWAIT
 SET DEFINE OFF;
 REM INSERTING into HR.TENANTCOMPLET
 SET DEFINE OFF;
-Insert into HR.TENANTCOMPLET (ID,NAME,PASSWORD,ACCESSIONDATE,RESIDENCE) values ('asd','ȫ�浿','1234',to_date('23/07/27','RR/MM/DD'),'aa����Ʈ');
-Insert into HR.TENANTCOMPLET (ID,NAME,PASSWORD,ACCESSIONDATE,RESIDENCE) values ('www','ȫ�浿','1234',to_date('23/07/27','RR/MM/DD'),'aa����Ʈ');
+Insert into HR.TENANTCOMPLET (ID,NAME,PASSWORD,ACCESSIONDATE,RESIDENCE) values ('asd','홍길동','1234',to_date('23/07/27','RR/MM/DD'),'aa아파트');
+Insert into HR.TENANTCOMPLET (ID,NAME,PASSWORD,ACCESSIONDATE,RESIDENCE) values ('www','홍길동','1234',to_date('23/07/27','RR/MM/DD'),'aa아파트');
 REM INSERTING into HR.CALENDER
 SET DEFINE OFF;
 REM INSERTING into HR.POST
@@ -183,3 +183,13 @@ SET DEFINE OFF;
   PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
   TABLESPACE "USERS"  ENABLE;
   ALTER TABLE "HR"."POST" MODIFY ("POSTID" NOT NULL ENABLE);
+
+--------------------------------------------------------
+--  파일이 생성됨 - 화요일-8월-01-2023   
+--------------------------------------------------------
+DROP SEQUENCE "HR"."POSTID_SEQ";
+--------------------------------------------------------
+--  DDL for Sequence POSTID_SEQ
+--------------------------------------------------------
+
+   CREATE SEQUENCE  "HR"."POSTID_SEQ"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 1 NOCACHE  NOORDER  NOCYCLE ;
