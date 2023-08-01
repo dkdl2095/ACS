@@ -66,8 +66,7 @@
     </script>
     <style>
         #calendarBox{
-            width: 35%;
-            padding-left: 15%;
+            width: 100%;
         }
 
     </style>
@@ -119,7 +118,9 @@
 				<div class="card">
 					<div class="card-body">
 						<!-- 달력 정보를 표시하는 내용 -->
-						달력
+						<div id="calendarBox">
+        					<div id="calendar"></div>
+    					</div>
 					</div>
 				</div>
 			</div>
@@ -128,9 +129,7 @@
 				<div class="card">
 					<div class="card-body">
 						<!-- 일정 글 목록을 표시하는 내용 -->
-						<div id="calendarBox">
-        					<div id="calendar"></div>
-    					</div>
+						일정
 					</div>
 				</div>
 			</div>
@@ -143,7 +142,7 @@
 						<%
 						// Java 코드 작성 (스크립트릿)
 						// DBSQL 객체 생성
-						DBSQL dbsql = new DBSQL("TENANTCOMPLET");
+						DBSQL dbsql = new DBSQL("TENANTCOMPLET",null,null,null,null);
 
 						// 데이터베이스에서 회원 정보 가져오기
 						List<Object> members = dbsql.DBSelect(); // 적절한 메서드를 호출하여 회원 정보를 가져오도록 수정해야 합니다.

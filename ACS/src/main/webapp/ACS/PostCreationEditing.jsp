@@ -106,16 +106,24 @@
 		</div>
 	</div>
 
-	<div class="container mt-3">
-		<!-- 텍스트 박스 -->
-		<div class="mb-3">
-			<label for="postContent" class="form-label">게시글 내용</label>
-			<textarea class="form-control" id="postContent" rows="5"></textarea>
+	<form id="postForm" action="PostCreationEditing.jsp" method="post">
+		<div class="container mt-3">
+			<!-- 텍스트 박스 -->
+			<div class="mb-3">
+				<label for="postContent" class="form-label">게시글 내용</label>
+				<textarea class="form-control" id="postContent" rows="5"></textarea>
+			</div>
 		</div>
+	</form>
+	<div class="container mt-3">
 		<button onclick="applyFontAndSize()">Apply Style</button>
 		<button onclick="preview()">Preview</button>
+		<div id="previewArea"></div>
+		<!-- 확인 버튼 -->
+		<button type="submit" class="btn btn-primary" id="btnConfirm">확인</button>
 	</div>
-	<div id="previewArea"></div>
+
+
 	<script>
 		function applyFontAndSize() {
 			var selectedFont = $("#fontSelect").val();
@@ -179,49 +187,77 @@
 			content = content.replace(/\[\/style\]/g, '</span>');
 			document.getElementById("previewArea").innerHTML = content;
 		}
-	</script>
 
-	<div class="container mt-3">
-		<!-- 확인 버튼 -->
-		<a href="#" class="btn btn-primary" id="btnConfirm">확인</a>
-		<% boolean Confirm = true;%>
-	</div>
-	<%-- Java 코드 작성 (스크립트릿) --%>
-	<%
-	// 요청 파라미터에서 confirm 값을 확인하여 데이터 삽입 여부를 결정
-	if (Confirm == true) {
-		// DBSQL 객체 생성	
-		Post newPost = new Post();
-		DBSQL dbsql = new DBSQL("Post",newPost,null,null,null);
-		newPost.setPostid(1); // 원하는 값을 설정합니다.
-		newPost.setType("type");
-		newPost.setText(request.getParameter("postContent"));
-		newPost.setWritingdate(new Date(System.currentTimeMillis()));
-		newPost.setName("name");
-		newPost.setImg("img");
-		newPost.setViewsnum(0);
-		
-		System.out.println("12"+newPost);
-		System.out.println("Post ID: " + newPost.getPostid());
-		System.out.println("Type: " + newPost.getType());
-		System.out.println("Text: " + newPost.getText());
-		System.out.println("Date: " + newPost.getWritingdate());
-		System.out.println("Name: " + newPost.getName());
-		System.out.println("img: " + newPost.getImg());
-		System.out.println("ViewsNum: " + newPost.getViewsnum());
-		// 데이터를 삽입합니다.
-		dbsql.DBInsert();
-		
-	}
-	%>
-	<script>
+		// 페이지 로드 시, 저장된 데이터를 텍스트 박스에 복원합니다.
+		window.onload = function() {
+			var savedFont = localStorage.getItem("selectedFont");
+			var savedSize = localStorage.getItem("selectedSize");
+			var savedColor = localStorage.getItem("selectedColor");
+			var savedContent = localStorage.getItem("postContent");
+			if (savedFont) {
+				$("#fontSelect").val(savedFont);
+			}
+			if (savedSize) {
+				$("#sizeSelect").val(savedSize);
+			}
+			if (savedColor) {
+				$("#colorSelect").val(savedColor);
+			}
+			if (savedContent) {
+				document.getElementById("postContent").value = JSON
+						.parse(savedContent);
+			}
+			console.log("savedFont:", savedFont);
+			console.log("savedSize:", savedSize);
+			console.log("savedColor:", savedColor);
+			console.log("savedContent:", JSON.parse(savedContent));
+		};
+
+		// 페이지가 unload 될 때, 입력된 내용을 저장합니다.
+		window.onbeforeunload = function() {
+			var selectedFont = $("#fontSelect").val();
+			var selectedSize = $("#sizeSelect").val();
+			var selectedColor = $("#colorSelect").val();
+			var textArea = document.getElementById("postContent");
+			localStorage.setItem("selectedFont", selectedFont);
+			localStorage.setItem("selectedSize", selectedSize);
+			localStorage.setItem("selectedColor", selectedColor);
+			localStorage.setItem("postContent", JSON.stringify(textArea.value));
+			console.log("selectedFont:", selectedFont);
+			console.log("selectedSize:", selectedSize);
+			console.log("selectedColor:", selectedColor);
+			console.log("textArea:", JSON.stringify(textArea.value));
+		};
+
 		// 확인 버튼 클릭 이벤트 처리
 		document.getElementById("btnConfirm").addEventListener("click",
 				function() {
-					// 스크립트릿이 동작하도록 confirm 파라미터를 추가하여 현재 페이지를 리로드합니다.
-					window.location.href = "MainView.jsp";
+					var textArea = document.getElementById("postContent");
+					var postContent = textArea.value;
+
+					// AJAX 요청을 보냅니다.
+					$.ajax({
+						url : "PostCreation.jsp",
+						method : "POST",
+						data : {
+							postContent : postContent,
+							btnConfirm : "true"
+						},
+						success : function(response) {
+							// 요청이 성공적으로 처리되었을 때 실행되는 코드
+							console.log("요청이 성공적으로 처리되었습니다.");
+							console.log("서버 응답: ", response); // Log server response to browser console
+							// 여기서 필요한 추가 작업 수행
+						},
+						error : function(xhr, status, error) {
+							// 요청이 실패하거나 에러가 발생했을 때 실행되는 코드
+							console.error("요청이 실패하였습니다.");
+							console.error(xhr, status, error);
+						}
+					});
 				});
 	</script>
+
 	<script>
 		function insertImage() {
 			var textArea = document.getElementById("postContent");
