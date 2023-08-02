@@ -30,30 +30,19 @@
     // 요청 파라미터에서 confirm 값을 확인하여 데이터 삽입 여부를 결정
     if (btnConfirm != null && btnConfirm.equals("true")) {
         // DBSQL 객체 생성
-        Post newPost = new Post();
+        Post post = new Post();
         DBSQL dbsql = new DBSQL("Post");
         //newPost.setPostid(2); // 원하는 값을 설정합니다.
-        newPost.setType(Radio);
-        newPost.setTitle(postTitle);
-        newPost.setText(postContent);
-        newPost.setWritingdate(new Date(System.currentTimeMillis()));
-        newPost.setName("name");
-        newPost.setImg("img");
-        newPost.setViewsnum(0);
-        
-        System.out.println("Postid: " + newPost.getPostid());
-        System.out.println("Type: " + newPost.getType());
-        System.out.println("Title: " + newPost.getTitle());
-        System.out.println("Text: " + newPost.getText());
-        System.out.println("Writingdate: " + newPost.getWritingdate());
-        System.out.println("Name: " + newPost.getName());
-        System.out.println("Img: " + newPost.getImg());
-        System.out.println("Viewsnum: " + newPost.getViewsnum());
+        post.setType(Radio);
+        post.setTitle(postTitle);
+        post.setText(postContent);
+        post.setWritingdate(new Date(System.currentTimeMillis()));
+        post.setName("name");
+        post.setImg("img");
+        post.setViewsnum(0);
         
         // 데이터를 삽입합니다.
-        dbsql.DBInsert(newPost);
-        // 데이터 삽입 후 MainView 뷰로 이동
-        //response.sendRedirect("MainView.jsp");
+        dbsql.DBInsert(post);
 
         // Send the response to the Eclipse console using JSP's 'out' object
         out.println("요청이 성공적으로 처리되었습니다.");

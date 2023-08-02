@@ -47,13 +47,13 @@
 			<ul class="navbar-nav">
 				<!-- 내 정보 버튼 -->
 				<li class="nav-item"><a id="btnMyInfo" class="nav-link"
-					href="#">내 정보</a></li>
+					href="Myinfo.jsp">내 정보</a></li>
 				<!-- 관리자 버튼-->
 				<li class="nav-item"><a id="btnAdmin" class="nav-link"
 					href="AdminView.jsp">관리자</a></li>
 				<!-- 로그아웃 버튼 -->
 				<li class="nav-item"><a id="btnLogout" class="nav-link"
-					href="#">로그아웃</a></li>
+					href="Login.jsp">로그아웃</a></li>
 			</ul>
 		</div>
 	</nav>
@@ -61,9 +61,6 @@
 	<form id="postForm" action="PostCreationEditing.jsp" method="post">
 		<div class="container mt-3">
 			<!-- 체크박스를 게시글 내용 우측에 추가 -->
-			<!-- 
-			
-			 -->
 			<div class="col-md-3">
 				<input type="radio" id="noticeRadio" name="postType" value="notice">
 				<label for="noticeRadio">공지</label> <input type="radio"
@@ -72,14 +69,14 @@
 					id="ScheduleRadio" name="postType" value="Schedule"> <label
 					for="ScheduleRadio">일정</label>
 			</div>
-			<!-- 텍스트 박스 -->
-			<div class="mb-3">
-				<label for="postTitle" class="form-label">제목</label>
-				<textarea class="form-control" id="postTitle" rows="1"></textarea>
-			</div>
 		</div>
 	</form>
 	<div class="container mt-3">
+		<!-- 텍스트 박스 -->
+		<div class="mb-3">
+			<label for="postTitle" class="form-label">제목</label>
+			<textarea class="form-control" id="postTitle" rows="1"></textarea>
+		</div>
 		<!-- 글꼴, 크기, 글 색상 설정 -->
 		<div class="row">
 			<div class="col-md-3">폰트</div>
@@ -286,56 +283,52 @@
 							var postContent = textArea.value;
 							var postTitle = titleArea.value;
 							var notice = document.getElementById("noticeRadio").checked;
-							var Schedule = document.getElementById("ScheduleRadio").checked;
+							var Schedule = document
+									.getElementById("ScheduleRadio").checked;
 							var confirmed = confirm("확인 버튼을 누르면 게시글을 저장합니다. 계속하시겠습니까?");
 
 							if (confirmed) {
 								// AJAX 요청을 보냅니다.
-								$
-										.ajax({
-											url : "PostCreation.jsp",
-											method : "POST",
-											data : {
-												postContent : postContent,
-												postTitle : postTitle,
-												notice : notice,
-												Schedule : Schedule,
-												btnConfirm : "true"
-											},
-											success : function(response) {
-												// 요청이 성공적으로 처리되었을 때 실행되는 코드
-												console
-														.log("요청이 성공적으로 처리되었습니다.");
-												console
-														.log("서버 응답: ",
-																response); // 브라우저 콘솔에 서버 응답 기록
-												// 폰트, 사이즈, 색상 선택을 초기화하고, 게시글 내용을 지웁니다.
-												/*localStorage.setItem(
-														"selectedFont", "Font");
-												localStorage.setItem(
-														"selectedSize", "Size");
-												localStorage.setItem(
-														"selectedColor",
-														"Color");
-												localStorage.setItem(
-														"postContent", "");
-												localStorage.setItem(
-														"postTitle", "");
-												$("#fontSelect").val("Font");
-												$("#sizeSelect").val("Size");
-												$("#colorSelect").val("Color");
-												document
-														.getElementById("postContent").value = "";
-												document
-														.getElementById("postTitle").value = "";*/
-											},
-											error : function(xhr, status, error) {
-												// 요청이 실패하거나 에러가 발생했을 때 실행되는 코드
-												console.error("요청이 실패하였습니다.");
-												console.error(xhr, status,
-														error);
-											}
-										});
+								$.ajax({
+									url : "PostCreation.jsp",
+									method : "POST",
+									data : {
+										postContent : postContent,
+										postTitle : postTitle,
+										notice : notice,
+										Schedule : Schedule,
+										btnConfirm : "true"
+									},
+									success : function(response) {
+										// 요청이 성공적으로 처리되었을 때 실행되는 코드
+										console.log("요청이 성공적으로 처리되었습니다.");
+										console.log("서버 응답: ", response); // 브라우저 콘솔에 서버 응답 기록
+										// 폰트, 사이즈, 색상 선택을 초기화하고, 게시글 내용을 지웁니다.
+										/*localStorage.setItem(
+												"selectedFont", "Font");
+										localStorage.setItem(
+												"selectedSize", "Size");
+										localStorage.setItem(
+												"selectedColor",
+												"Color");
+										localStorage.setItem(
+												"postContent", "");
+										localStorage.setItem(
+												"postTitle", "");
+										$("#fontSelect").val("Font");
+										$("#sizeSelect").val("Size");
+										$("#colorSelect").val("Color");
+										document
+												.getElementById("postContent").value = "";
+										document
+												.getElementById("postTitle").value = "";*/
+									},
+									error : function(xhr, status, error) {
+										// 요청이 실패하거나 에러가 발생했을 때 실행되는 코드
+										console.error("요청이 실패하였습니다.");
+										console.error(xhr, status, error);
+									}
+								});
 							}
 						});
 

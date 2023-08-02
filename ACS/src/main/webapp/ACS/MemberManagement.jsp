@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page import="dbsql.DBSQL"%>
 <%@ page import="table.*"%>
 <%@ page import="java.util.List"%>
@@ -57,14 +58,13 @@
 		</div>
 	</nav>
 
-	<!-- 수락 대기중 라벨과 데이터베이스에서 받아온 정보를 표시하는 div -->
 	<div class="container mt-2">
 		<div class="card">
-			<div class="card-header">수락 대기중</div>
+			<div class="card-header">회원 명단</div>
 			<div class="card-body">
 				<div class="row">
 					<%
-					DBSQL dbsql = new DBSQL("TenantWait");
+					DBSQL dbsql = new DBSQL("TenantComplet");
 					Tenant t = new Tenant();
 
 					// 데이터베이스에서 회원 정보 가져오기
@@ -102,13 +102,18 @@
 							</p>
 						</div>
 						<div class="col-md-2">
-							<button class="btn btn-success btnAccept"
+							<button class="btn btn-danger btnTemporary"
 								data-id="<%=TenantMember.getId()%>"
 								data-name="<%=TenantMember.getName()%>"
 								data-password="<%=TenantMember.getPassword()%>"
 								data-accessiondate="<%=TenantMember.getAccessiondate()%>"
-								data-residence="<%=TenantMember.getResidence()%>">수락</button>
-							<button class="btn btn-danger">거절</button>
+								data-residence="<%=TenantMember.getResidence()%>">임시차단</button>
+							<button class="btn btn-danger btnPermanently"
+								data-id="<%=TenantMember.getId()%>"
+								data-name="<%=TenantMember.getName()%>"
+								data-password="<%=TenantMember.getPassword()%>"
+								data-accessiondate="<%=TenantMember.getAccessiondate()%>"
+								data-residence="<%=TenantMember.getResidence()%>">영구차단</button>
 						</div>
 					</div>
 
@@ -130,23 +135,13 @@
 			</div>
 		</div>
 		<div class="col-lg-8">
-			<a href="MemberManagement.jsp" class="btn btn-primary">회원 관리</a>
+			<a href="AdminView.jsp" class="btn btn-primary">회원 수락</a>
 		</div>
-		<nav aria-label="Page navigation" class="mt-3">
-			<ul class="pagination justify-content-center">
-				<li class="page-item disabled"><a class="page-link" href="#"
-					tabindex="-1" aria-disabled="true">&laquo;</a></li>
-				<li class="page-item active"><a class="page-link" href="#">1</a></li>
-				<li class="page-item"><a class="page-link" href="#">2</a></li>
-				<li class="page-item"><a class="page-link" href="#">3</a></li>
-				<li class="page-item disabled"><a class="page-link" href="#">&raquo;</a></li>
-			</ul>
-		</nav>
 	</div>
 
 	<script>
-		// 수락 버튼에 대한 클릭 이벤트 처리
-		$(".btnAccept").on("click", function() {
+		// 임시 차단 버튼에 대한 클릭 이벤트 처리
+		$(".btnTemporary").on("click", function() {
 			var id = $(this).data("id");
 			var name = $(this).data("name");
 			var password = $(this).data("password");
@@ -163,7 +158,42 @@
 					password : password,
 					accessiondate : accessiondate,
 					residence : residence,
-					btnAccept : "true"
+					btnTemporary : "true"
+				},
+				success : function(response) {
+					// 요청이 성공적으로 처리되었을 때 실행되는 코드
+					console.log("요청이 성공적으로 처리되었습니다.");
+					console.log("서버 응답: ", response); // Log server response to browser console
+
+					location.reload(); // 성공 후 페이지 새로 고침
+				},
+				error : function(xhr, status, error) {
+					// 요청이 실패하거나 에러가 발생했을 때 실행되는 코드
+					console.error("요청이 실패하였습니다.");
+					console.error(xhr, status, error);
+				}
+			});
+		});
+
+		// 영구 차단 버튼에 대한 클릭 이벤트 처리
+		$(".btnPermanently").on("click", function() {
+			var id = $(this).data("id");
+			var name = $(this).data("name");
+			var password = $(this).data("password");
+			var accessiondate = $(this).data("accessiondate");
+			var residence = $(this).data("residence");
+
+			// AJAX 요청을 보냅니다.
+			$.ajax({
+				url : "Tenant.jsp",
+				method : "POST",
+				data : {
+					id : id,
+					name : name,
+					password : password,
+					accessiondate : accessiondate,
+					residence : residence,
+					btnPermanently : "true"
 				},
 				success : function(response) {
 					// 요청이 성공적으로 처리되었을 때 실행되는 코드

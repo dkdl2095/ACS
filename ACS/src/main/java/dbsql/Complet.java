@@ -92,7 +92,7 @@ public class Complet extends HttpServlet {
 			e.printStackTrace();
 		}
 		dao.DBInsert(t);
-		return "Info.jsp";
+		return "MemberManagement.jsp";
 	}
 
 	private String insertwait(HttpServletRequest request, HttpServletResponse response) {
@@ -103,7 +103,7 @@ public class Complet extends HttpServlet {
 			e.printStackTrace();
 		}
 		dao.DBInsert(t);
-		return "Info.jsp";
+		return "MemberManagement.jsp";
 	}
 	
 	private String insertban(HttpServletRequest request, HttpServletResponse response) {
@@ -114,7 +114,7 @@ public class Complet extends HttpServlet {
 			e.printStackTrace();
 		}
 		dao.DBInsert(t);
-		return "Info.jsp";
+		return "MemberManagement.jsp";
 	}
 	
 	private String insertpost(HttpServletRequest request, HttpServletResponse response) {
@@ -125,7 +125,7 @@ public class Complet extends HttpServlet {
 			e.printStackTrace();
 		}
 		dao.DBInsert(p);
-		return "Info.jsp";
+		return "MemberManagement.jsp";
 	}
 	private String insertcalender(HttpServletRequest request, HttpServletResponse response) {
 		dao = new DBSQL("CALENDER");
@@ -135,7 +135,7 @@ public class Complet extends HttpServlet {
 			e.printStackTrace();
 		}
 		dao.DBInsert(p);
-		return "Info.jsp";
+		return "MemberManagement.jsp";
 	}
 
 	private String deletecomplet(HttpServletRequest request, HttpServletResponse response) {
@@ -147,7 +147,7 @@ public class Complet extends HttpServlet {
 			e.printStackTrace();
 		}
 		dao.DBDelete(t, id);
-		return "Info.jsp";
+		return "MemberManagement.jsp";
 	}
 
 	private String deletewait(HttpServletRequest request, HttpServletResponse response) {
@@ -159,7 +159,7 @@ public class Complet extends HttpServlet {
 			e.printStackTrace();
 		}
 		dao.DBDelete(t, id);
-		return "Info.jsp";
+		return "MemberManagement.jsp";
 	}
 
 	private String deleteban(HttpServletRequest request, HttpServletResponse response) {
@@ -171,7 +171,7 @@ public class Complet extends HttpServlet {
 			e.printStackTrace();
 		}
 		dao.DBDelete(b, id);
-		return "Info.jsp";
+		return "MemberManagement.jsp";
 	}
 
 	private String deletepost(HttpServletRequest request, HttpServletResponse response) {
@@ -183,7 +183,7 @@ public class Complet extends HttpServlet {
 			e.printStackTrace();
 		}
 		dao.DBDelete(p, id);
-		return "Info.jsp";
+		return "MemberManagement.jsp";
 	}
 
 	private String deletecalender(HttpServletRequest request, HttpServletResponse response) {
@@ -195,7 +195,7 @@ public class Complet extends HttpServlet {
 			e.printStackTrace();
 		}
 		dao.DBDelete(c, id);
-		return "Info.jsp";
+		return "MemberManagement.jsp";
 	}
 
 	private String update(HttpServletRequest request, HttpServletResponse response) {
@@ -205,36 +205,36 @@ public class Complet extends HttpServlet {
 			e.printStackTrace();
 		}
 		dao.DBUpdate(t);
-		return "Info.jsp";
+		return "MemberManagement.jsp";
 	}
 
 	private String listcomplet(HttpServletRequest request, HttpServletResponse response) {
 		dao = new DBSQL("TENANTCOMPLET");
 		request.setAttribute("complets", dao.DBSelect(t));
-		return "Info.jsp";
+		return "MemberManagement.jsp";
 	}
 
 	private String listwait(HttpServletRequest request, HttpServletResponse response) {
 		dao = new DBSQL("TENANTWAIT");
 		request.setAttribute("waits", dao.DBSelect(t));
-		return "Info.jsp";
+		return "MemberManagement.jsp";
 	}
 
 	private String listban(HttpServletRequest request, HttpServletResponse response) {
 		dao = new DBSQL("TENANTBAN");
 		request.setAttribute("bans", dao.DBSelect(b));
-		return "Info.jsp";
+		return "MemberManagement.jsp";
 	}
 
 	private String listpost(HttpServletRequest request, HttpServletResponse response) {
 		dao = new DBSQL("POST");
 		request.setAttribute("posts", dao.DBSelect(p));
-		return "Info.jsp";
+		return "MemberManagement.jsp";
 	}
 
 	private String listcalender(HttpServletRequest request, HttpServletResponse response) {
 		dao = new DBSQL("Calender");
 		request.setAttribute("calenders", dao.DBSelect(c));
-		return "Info.jsp";
+		return "MemberManagement.jsp";
 	}
 }

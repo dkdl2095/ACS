@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page import="java.sql.Date"%>
+<%@ page import="dbsql.DBSQL"%>
+<%@ page import="table.Post"%>
+<%@ page import="java.util.List"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,6 +21,35 @@
 <title>글 세부 화면</title>
 </head>
 <body>
+	<%-- Java 코드 작성 (스크립트릿) --%>
+	<%
+	// 클라이언트로부터 전송된 데이터 받기
+	String postid = request.getParameter("postid");
+
+	
+		// DBSQL 객체 생성
+		Post post = new Post();
+		DBSQL dbsql = new DBSQL("Post");
+		Post PostMember = null;
+		
+		// 데이터베이스에서 글목록 가져오기
+		List<Object> PostMembers = dbsql.DBSelect(post, postid); // 적절한 메서드를 호출하여 글목록 정보를 가져오도록 수정해야 합니다.
+
+		// 가져온 글목록 정보를 사용하여 HTML 코드 작성
+		if (PostMembers.size() > 0) {
+			for (Object obj : PostMembers) {
+				if (obj instanceof Post) {
+					PostMember = (Post) obj; // Post로 캐스팅
+
+					// Send the response to the Eclipse console using JSP's 'out' object
+					out.println("요청이 성공적으로 처리되었습니다.");
+					out.println("서버 응답: " + "데이터가 성공적으로 저장되었습니다."); // You can customize this message as needed
+				}
+			}
+		} else {
+			// 데이터가 없을 때의 처리 (예: "데이터가 없습니다" 메시지 출력 등)
+		}
+	%>
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<div class="container-fluid">
 			<a class="navbar-brand" href="MainView.jsp"> <!-- 로고 이미지 --> <!-- 
@@ -65,7 +98,7 @@
 				<div class="row">
 					<div class="col-md-3">
 						<p>
-							<strong>타입:</strong> [데이터베이스에서 받아온 타입]
+							<strong>타입:</strong> <%=PostMember.getType()%>
 						</p>
 					</div>
 					<div class="col-md-3">
@@ -114,9 +147,9 @@
 					<div class="col">
 						<!-- 댓글 작성자, 내용, 작성일 라벨 -->
 						<p>
-							<strong>댓글 작성자:</strong> [데이터베이스에서 받아온 댓글 작성자]
-							<strong>댓글 내용:</strong> [데이터베이스에서 받아온 댓글 내용]
-							<strong>작성일:</strong> [데이터베이스에서 받아온 작성일]
+							<strong>댓글 작성자:</strong> [데이터베이스에서 받아온 댓글 작성자] <strong>댓글
+								내용:</strong> [데이터베이스에서 받아온 댓글 내용] <strong>작성일:</strong> [데이터베이스에서 받아온
+							작성일]
 						</p>
 					</div>
 				</div>
@@ -126,32 +159,6 @@
 	</div>
 
 	<script>
-		$(document).ready(function() {
-			// 초기 로그인 상태는 회원가입 버튼만 보이도록 설정
-			$("#btnMyInfo").hide();
-			$("#btnLogout").hide();
-			$("#btnAdmin").hide();
-
-			// 로그인 버튼을 클릭하면 내 정보와 로그아웃 버튼이 토글됨
-			$("#btnLogin").click(function() {
-				$("#btnMyInfo").toggle();
-				$("#btnAdmin").toggle();
-				$("#btnLogout").toggle();
-				$("#btnLogin").hide();
-				$("#btnSignup").hide();
-			});
-
-			// 로그아웃 버튼을 클릭하면 내 정보와 로그아웃 버튼이 사라짐
-			$("#btnLogout").click(function() {
-				$("#btnMyInfo").hide();
-				$("#btnLogout").hide();
-				$("#btnAdmin").hide();
-				// 로그인 버튼과 회원가입 버튼을 보이게 함
-				$("#btnSignup").show();
-				$("#btnLogin").show();
-			});
-		});
-
 		// 추천 버튼을 누르면 카운트 증가
 		let recommendCount = 0;
 
@@ -159,6 +166,23 @@
 			recommendCount++;
 			document.getElementById("recommendCount").textContent = recommendCount;
 		}
+
+		// JavaScript로 URL에서 postid 값을 추출하는 함수
+		function getParameterByName(name) {
+			name = name.replace(/[\[\]]/g, "\\$&");
+			var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"), results = regex
+					.exec(window.location.href);
+			if (!results)
+				return null;
+			if (!results[2])
+				return '';
+			return decodeURIComponent(results[2].replace(/\+/g, " "));
+		}
+
+		// 추출된 postid 값을 변수에 저장
+		var postidValue = getParameterByName('postid');
+		// 추출된 postid 값을 출력해보기
+		console.log('postid:', postidValue);
 	</script>
 </body>
 </html>

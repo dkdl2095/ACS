@@ -1,8 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="dbsql.DBSQL"%>
-<%@ page import="table.Tenant"%>
-<%@ page import="table.Post"%>
+<%@ page import="table.*"%>
 <%@ page import="java.util.List"%>
 <!DOCTYPE html>
 <html>
@@ -18,6 +17,58 @@
 	integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
 	crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- 아래 스크립트는 달력 관련 -->
+<meta http-equiv='X-UA-Compatible' content='IE=edge'>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/fullcalendar@5.7.0/main.min.css">
+<script type="text/javascript"
+	src="https://cdn.jsdelivr.net/npm/fullcalendar@5.7.0/main.min.js"></script>
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+<script type="text/javascript">
+	document.addEventListener('DOMContentLoaded', function() {
+		var calendarEl = document.getElementById('calendar');
+		var calendar = new FullCalendar.Calendar(calendarEl, {
+			timeZone : 'UTC',
+			locale : 'ko', // 한국어 설정
+			initialView : 'dayGridMonth', // 홈페이지에서 다른 형태의 view를 확인할  수 있다.
+
+			events : [ // 일정 데이터 추가 , DB의 event를 가져오려면 JSON 형식으로 변환해 events에 넣어주면된다.
+			{
+				title : '에이펙스하기너무무섭다',
+				start : '2023-07-25',
+				end : '2023-08-08',
+				url : 'https://google.com'
+			}, {
+				title : '문명6달리는날',
+				start : '2023-07-26',
+				end : '2023-08-09',
+				url : 'https://google.com'
+			}, {
+				title : '문명6달리는날',
+				start : '2023-07-26',
+				end : '2023-08-09',
+				url : 'https://google.com'
+			}
+
+			],
+			eventClick : function(info) {//이벤트 클릭 시 알럿창으로 이벤트페이지 정보 및 링크 알림 후, 페이지이동
+				alert('Event: ' + info.event.title);
+
+				// change the border color just for fun
+				info.el.style.borderColor = 'red';
+			},
+			editable : false
+		//치훈이형 일정 드래그해서 바꿀려면 이거 true로 바꿔. 근데 DB적용시키려면 코드 좀 건드려야할듯
+		});
+		calendar.render();
+	});
+</script>
+<style>
+#calendarBox {
+	width: 100%;
+}
+</style>
 <title>메인 화면</title>
 </head>
 <body>
@@ -47,13 +98,13 @@
 			<ul class="navbar-nav">
 				<!-- 내 정보 버튼 -->
 				<li class="nav-item"><a id="btnMyInfo" class="nav-link"
-					href="#">내 정보</a></li>
+					href="Myinfo.jsp">내 정보</a></li>
 				<!-- 관리자 버튼-->
 				<li class="nav-item"><a id="btnAdmin" class="nav-link"
 					href="AdminView.jsp">관리자</a></li>
 				<!-- 로그아웃 버튼 -->
 				<li class="nav-item"><a id="btnLogout" class="nav-link"
-					href="#">로그아웃</a></li>
+					href="Login.jsp">로그아웃</a></li>
 			</ul>
 		</div>
 	</nav>
@@ -66,7 +117,9 @@
 				<div class="card">
 					<div class="card-body">
 						<!-- 달력 정보를 표시하는 내용 -->
-						달력
+						<div id="calendarBox">
+							<div id="calendar"></div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -76,6 +129,42 @@
 					<div class="card-body">
 						<!-- 일정 글 목록을 표시하는 내용 -->
 						일정
+						<%-- Java 코드 작성 (스크립트릿) --%>
+						<!-- 글목록 정보를 표시하는 플레이스홀더 요소 -->
+						<%
+						// Java 코드 작성 (스크립트릿)
+						// DBSQL 객체 생성
+						DBSQL dbsqlScedule = new DBSQL("Post");
+						Post pScedule = new Post();
+
+						// 데이터베이스에서 글목록 가져오기
+						List<Object> SceduleMembers = dbsqlScedule.DBSelect(pScedule, "일정"); // 적절한 메서드를 호출하여 글목록 정보를 가져오도록 수정해야 합니다.
+
+						// 가져온 글목록 정보를 사용하여 HTML 코드 작성
+						if (SceduleMembers.size() > 0) {
+							for (Object obj : SceduleMembers) {
+								if (obj instanceof Post) {
+							Post SceduleMember = (Post) obj; // Post로 캐스팅
+						%>
+						<p>
+							번호 :
+							<%=SceduleMember.getPostid()%>, 타입:
+							<%=SceduleMember.getType()%>, 타이틀:
+							<%=SceduleMember.getTitle()%>, 이름:
+							<%=SceduleMember.getName()%>, 조회수:
+							<%=SceduleMember.getViewsnum()%>, 날짜:
+							<%=SceduleMember.getWritingdate()%>, 텍스트:
+							<%=SceduleMember.getText()%>
+						</p>
+						<%
+						}
+						}
+						} else {
+						%>
+						<p>게시글이 없습니다.</p>
+						<%
+						}
+						%>
 					</div>
 				</div>
 			</div>
@@ -88,11 +177,11 @@
 						<%
 						// Java 코드 작성 (스크립트릿)
 						// DBSQL 객체 생성
-						DBSQL dbsqlTenant = new DBSQL("TENANTCOMPLET");
+						DBSQL dbsql = new DBSQL("TENANTCOMPLET");
 						Tenant t = new Tenant();
 
 						// 데이터베이스에서 회원 정보 가져오기
-						List<Object> TenantMembers = dbsqlTenant.DBSelect(t); // 적절한 메서드를 호출하여 회원 정보를 가져오도록 수정해야 합니다.
+						List<Object> TenantMembers = dbsql.DBSelect(t); // 적절한 메서드를 호출하여 회원 정보를 가져오도록 수정해야 합니다.
 
 						// 가져온 회원 정보를 사용하여 HTML 코드 작성
 						if (TenantMembers.size() > 0) {
@@ -136,10 +225,10 @@
 				// Java 코드 작성 (스크립트릿)
 				// DBSQL 객체 생성
 				DBSQL dbsqlPost = new DBSQL("Post");
-				Post p = new Post();
+				Post pPost = new Post();
 
 				// 데이터베이스에서 글목록 가져오기
-				List<Object> PostMembers = dbsqlPost.DBSelect(p); // 적절한 메서드를 호출하여 글목록 정보를 가져오도록 수정해야 합니다.
+				List<Object> PostMembers = dbsqlPost.DBSelect(pPost); // 적절한 메서드를 호출하여 글목록 정보를 가져오도록 수정해야 합니다.
 
 				// 가져온 글목록 정보를 사용하여 HTML 코드 작성
 				if (PostMembers.size() > 0) {
@@ -147,18 +236,19 @@
 						if (obj instanceof Post) {
 					Post PostMember = (Post) obj; // Post로 캐스팅
 				%>
-				<p>
-					번호 :
-					<%=PostMember.getPostid()%>, 타입:
-					<%=PostMember.getType()%>, 타이틀:
-					<%=PostMember.getTitle()%>, 이름:
-					<%=PostMember.getName()%>, 조회수:
-					<%=PostMember.getViewsnum()%>, 날짜:
-					<%=PostMember.getWritingdate()%>, 텍스트:
-					<%=PostMember.getText()%>
-					
-					<%System.out.println(PostMember.getPostid()); %>
-				</p>
+				<button class="btn btn-link"
+					onclick="viewPostDetails(<%=PostMember.getPostid()%>)">
+					<p id="postDetails">
+						번호 :
+						<%=PostMember.getPostid()%>, 타입:
+						<%=PostMember.getType()%>, 타이틀:
+						<%=PostMember.getTitle()%>, 이름:
+						<%=PostMember.getName()%>, 조회수:
+						<%=PostMember.getViewsnum()%>, 날짜:
+						<%=PostMember.getWritingdate()%>, 텍스트:
+						<%=PostMember.getText()%>
+					</p>
+				</button>
 				<%
 				}
 				}
@@ -200,33 +290,23 @@
 			</div>
 		</div>
 	</div>
-
 	<script>
-		$(document).ready(function() {
-			// 초기 로그인 상태는 회원가입 버튼만 보이도록 설정
-			/*$("#btnMyInfo").hide();
-			$("#btnLogout").hide();
-			$("#btnAdmin").hide();
-
-			// 로그인 버튼을 클릭하면 내 정보와 로그아웃 버튼이 토글됨
-			$("#btnLogin").click(function() {
-				$("#btnMyInfo").toggle();
-				$("#btnAdmin").toggle();
-				$("#btnLogout").toggle();
-				$("#btnLogin").hide();
-				$("#btnSignup").hide();
-			});
-
-			// 로그아웃 버튼을 클릭하면 내 정보와 로그아웃 버튼이 사라짐
-			$("#btnLogout").click(function() {
-				$("#btnMyInfo").hide();
-				$("#btnLogout").hide();
-				$("#btnAdmin").hide();
-				// 로그인 버튼과 회원가입 버튼을 보이게 함
-				$("#btnSignup").show();
-				$("#btnLogin").show();
-			});*/
-		});
-	</script>
+    function viewPostDetails(postid) {
+        // AJAX를 이용하여 서버에 글 상세 정보 요청
+        $.ajax({
+            url: "PostDetailsView.jsp",
+            type: "POST", // POST 메소드 사용
+            data: { postid: postid },
+            success: function(response) {
+                // 성공시, 받은 응답으로 postdetailsview.jsp 페이지로 이동
+                window.location.href = "PostDetailsView.jsp?postid=" + postid;
+            },
+            error: function(xhr, status, error) {
+                // 필요한 경우 에러 처리
+                console.error(error);
+            }
+        });
+    }
+</script>
 </body>
 </html>
