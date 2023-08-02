@@ -2,7 +2,6 @@ package Login;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import table.Tenant;
-
 
 @WebServlet("/lc")
 public class LoginController extends HttpServlet {
