@@ -72,14 +72,12 @@ button {
 					href="AdminView.jsp">관리자</a></li>
 				<!-- 로그아웃 버튼 -->
 				<li class="nav-item"><a id="btnLogout" class="nav-link"
-					href="Login.jsp">로그인</a></li>
+					href="Login.jsp">로그아웃</a></li>
 			</ul>
 		</div>
 	</nav>
 
-
-
-	<div class="container" id="registrationForm" style="display: none;">
+	<div class="container" id="registrationForm">
 		<h2>회원가입</h2>
 		<hr>
 		<p>아래 내용을 기재하여 가입하세요.</p>
@@ -115,40 +113,5 @@ button {
 			<button class="btn btn-secondary" type="button">취소</button>
 		</div>
 	</div>
-
-	<script>
-		$(document).ready(function() {
-			// 초기 로그인 상태는 로그아웃 버튼만 보이도록 설정
-			$("#btnMyInfo").show();
-			$("#btnLogout").show();
-			$("#btnAdmin").hide();
-			$("#btnLogin").hide();
-			$("#btnSignup").hide();
-
-			// 로그아웃 버튼을 클릭하면 내 정보와 로그아웃 버튼이 토글됨
-			$("#btnLogout").click(function() {
-				$("#btnMyInfo").toggle();
-				$("#btnAdmin").toggle();
-				$("#btnLogout").toggle();
-				$("#btnLogin").hide();
-				$("#btnSignup").hide();
-			});
-
-			// 로그아웃 버튼을 클릭하면 내 정보와 로그아웃 버튼이 사라짐
-			$("#btnLogout").click(function() {
-				$("#btnMyInfo").hide();
-				$("#btnLogout").hide();
-				$("#btnAdmin").hide();
-				// 로그인 버튼과 회원가입 버튼을 보이게 함
-				$("#btnSignup").show();
-				$("#btnLogin").show();
-			});
-
-			//회원가입 버튼 클릭 시 회원가입 창이 보여짐
-			$("#btnSignup").click(function() {
-				$("#registrationForm").show();
-			});
-		});
-	</script>
 </body>
 </html>
