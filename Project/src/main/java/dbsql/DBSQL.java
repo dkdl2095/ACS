@@ -48,7 +48,8 @@ public class DBSQL {
 		open();
 		List<Object> tenants = new ArrayList<>();
 		String sql = "SELECT * FROM " + table;
-		try (PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()){
+		try (PreparedStatement pstmt = conn.prepareStatement(sql)){
+			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				t = new Tenant();
 				t.setId(rs.getString("id"));
@@ -71,8 +72,9 @@ public class DBSQL {
 		open();
 		List<Object> tenants = new ArrayList<>();
 		String sql = "SELECT * FROM " + table + " WHERE id=?";
-		try (PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()){
+		try (PreparedStatement pstmt = conn.prepareStatement(sql)){
 			pstmt.setInt(1, id);
+			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				t = new Tenant();
 				t.setId(rs.getString("id"));
@@ -95,7 +97,8 @@ public class DBSQL {
 		open();
 		List<Object> posts = new ArrayList<>();
 		String sql = "SELECT * FROM " + table;
-		try (PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()){
+		try (PreparedStatement pstmt = conn.prepareStatement(sql)){
+			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				p = new Post();
 				p.setPostid(rs.getInt("postid"));
@@ -121,8 +124,9 @@ public class DBSQL {
 		open();
 		List<Object> posts = new ArrayList<>();
 		String sql = "SELECT * FROM " + table + " WHERE postid=?";
-		try (PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()){
+		try (PreparedStatement pstmt = conn.prepareStatement(sql)){
 			pstmt.setInt(1, postid);
+			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				p = new Post();
 				p.setPostid(rs.getInt("postid"));
@@ -148,8 +152,9 @@ public class DBSQL {
 		open();
 		List<Object> posts = new ArrayList<>();
 		String sql = "SELECT * FROM " + table + " WHERE type=?";
-		try (PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()){
+		try (PreparedStatement pstmt = conn.prepareStatement(sql)){
 			pstmt.setString(1, type);
+			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				p = new Post();
 				p.setPostid(rs.getInt("postid"));
@@ -175,7 +180,8 @@ public class DBSQL {
 		open();
 		List<Object> calenders = new ArrayList<>();
 		String sql = "SELECT * FROM " + table;
-		try (PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()){
+		try (PreparedStatement pstmt = conn.prepareStatement(sql)){
+			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				c = new Calender();
 				c.setCalid(rs.getInt("calid"));
@@ -197,7 +203,8 @@ public class DBSQL {
 		open();
 		List<Object> calenders = new ArrayList<>();
 		String sql = "SELECT * FROM " + table + " WHERE calid=?";
-		try (PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()){
+		try (PreparedStatement pstmt = conn.prepareStatement(sql)){
+			ResultSet rs = pstmt.executeQuery();
 			pstmt.setInt(1, calid);
 			while (rs.next()) {
 				c = new Calender();
@@ -220,7 +227,8 @@ public class DBSQL {
 		open();
 		List<Object> ban = new ArrayList<>();
 		String sql = "SELECT * FROM " + table;
-		try (PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()){
+		try (PreparedStatement pstmt = conn.prepareStatement(sql)){
+			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				b = new TenantBan();
 				b.setBanid(rs.getString("banid"));
@@ -240,7 +248,8 @@ public class DBSQL {
 		open();
 		List<Object> ban = new ArrayList<>();
 		String sql = "SELECT * FROM " + table + " WHERE banid=?";
-		try (PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()){
+		try (PreparedStatement pstmt = conn.prepareStatement(sql)){
+			ResultSet rs = pstmt.executeQuery();
 			pstmt.setInt(1, banid);
 			while (rs.next()) {
 				b = new TenantBan();
