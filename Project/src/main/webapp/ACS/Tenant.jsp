@@ -14,6 +14,7 @@
 <%-- Java 코드 작성 (스크립트릿) --%>
 <%
     // 클라이언트로부터 전송된 데이터 받기
+    String btnRequest = request.getParameter("btnRequest");
     String btnAccept = request.getParameter("btnAccept");
 	String btnTemporary = request.getParameter("btnTemporary");
 	String btnPermanently = request.getParameter("btnPermanently");
@@ -24,6 +25,24 @@
     String residence = request.getParameter("residence");
     
     // 요청 파라미터에서 confirm 값을 확인하여 데이터 삽입 여부를 결정
+    if (btnRequest != null && btnRequest.equals("true")) {
+        // DBSQL 객체 생성
+        Tenant tenant = new Tenant();
+        DBSQL dbsql = new DBSQL("TenantWait");
+        tenant.setId(id);
+        tenant.setName(name);
+        tenant.setPassword(password);
+        tenant.setAccessiondate(accessiondate);
+        tenant.setResidence(residence);
+
+        // 데이터를 삽입합니다.
+        dbsql.DBInsert(tenant);
+
+        // Send the response to the Eclipse console using JSP's 'out' object
+        out.println("요청이 성공적으로 처리되었습니다.");
+        out.println("서버 응답: " + "데이터가 성공적으로 저장되었습니다."); // You can customize this message as needed
+    }
+    
     if (btnAccept != null && btnAccept.equals("true")) {
         // DBSQL 객체 생성
         Tenant tenant = new Tenant();

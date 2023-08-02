@@ -109,9 +109,51 @@ button {
 				type="text" id="address" name="address" class="form-control">
 		</div>
 		<div class="d-grid gap-2">
-			<button class="btn btn-primary" type="button">가입승인요청</button>
-			<button class="btn btn-secondary" type="button">취소</button>
+			<button class="btn btn-primary btnRequest">가입승인요청</button>
+			<button class="btn btn-secondary btnCancel">취소</button>
 		</div>
 	</div>
+
+	<script>
+		// 가입승인요청 버튼에 대한 클릭 이벤트 처리
+		$(".btnRequest").on("click", function() {
+			var id = document.getElementById("ID");
+			var name = document.getElementById("name");
+			var password = document.getElementById("PW");
+			var accessiondate = new Date().toISOString().split('T')[0]; // 현재 날짜
+			var residence = document.getElementById("address");
+
+			// AJAX 요청을 보냅니다.
+			$.ajax({
+				url : "Tenant.jsp",
+				method : "POST",
+				data : {
+					id : id.value, // Get the value from the input field
+					name : name.value,
+					password : password.value,
+					accessiondate : accessiondate,
+					residence : residence.value,
+					btnRequest : "true"
+				},
+				success : function(response) {
+					// 요청이 성공적으로 처리되었을 때 실행되는 코드
+					console.log("요청이 성공적으로 처리되었습니다.");
+					console.log("서버 응답: ", response); // Log server response to browser console
+
+					location.reload(); // 성공 후 페이지 새로 고침
+				},
+				error : function(xhr, status, error) {
+					// 요청이 실패하거나 에러가 발생했을 때 실행되는 코드
+					console.error("요청이 실패하였습니다.");
+					console.error(xhr, status, error);
+				}
+			});
+		});
+		
+		// 가입승인요청 버튼에 대한 클릭 이벤트 처리
+		$(".btnCancel").on("click", function() {
+			location.reload(); // 페이지 새로 고침
+		});
+	</script>
 </body>
 </html>
