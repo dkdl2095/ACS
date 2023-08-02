@@ -46,13 +46,13 @@
 			<ul class="navbar-nav">
 				<!-- 내 정보 버튼 -->
 				<li class="nav-item"><a id="btnMyInfo" class="nav-link"
-					href="#">내 정보</a></li>
+					href="Myinfo.jsp">내 정보</a></li>
 				<!-- 관리자 버튼-->
 				<li class="nav-item"><a id="btnAdmin" class="nav-link"
 					href="AdminView.jsp">관리자</a></li>
 				<!-- 로그아웃 버튼 -->
 				<li class="nav-item"><a id="btnLogout" class="nav-link"
-					href="#">로그아웃</a></li>
+					href="Login.jsp">로그아웃</a></li>
 			</ul>
 		</div>
 	</nav>
@@ -145,32 +145,6 @@
 	</div>
 
 	<script>
-		$(document).ready(function() {
-			// 초기 로그인 상태는 회원가입 버튼만 보이도록 설정
-			$("#btnMyInfo").hide();
-			$("#btnLogout").hide();
-			$("#btnAdmin").hide();
-
-			// 로그인 버튼을 클릭하면 내 정보와 로그아웃 버튼이 토글됨
-			$("#btnLogin").click(function() {
-				$("#btnMyInfo").toggle();
-				$("#btnAdmin").toggle();
-				$("#btnLogout").toggle();
-				$("#btnLogin").hide();
-				$("#btnSignup").hide();
-			});
-
-			// 로그아웃 버튼을 클릭하면 내 정보와 로그아웃 버튼이 사라짐
-			$("#btnLogout").click(function() {
-				$("#btnMyInfo").hide();
-				$("#btnLogout").hide();
-				$("#btnAdmin").hide();
-				// 로그인 버튼과 회원가입 버튼을 보이게 함
-				$("#btnSignup").show();
-				$("#btnLogin").show();
-			});
-		});
-
 		// 수락 버튼에 대한 클릭 이벤트 처리
 		$(".btnAccept").on("click", function() {
 			var id = $(this).data("id");

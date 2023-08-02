@@ -47,13 +47,13 @@
 			<ul class="navbar-nav">
 				<!-- 내 정보 버튼 -->
 				<li class="nav-item"><a id="btnMyInfo" class="nav-link"
-					href="#">내 정보</a></li>
+					href="Myinfo.jsp">내 정보</a></li>
 				<!-- 관리자 버튼-->
 				<li class="nav-item"><a id="btnAdmin" class="nav-link"
 					href="AdminView.jsp">관리자</a></li>
 				<!-- 로그아웃 버튼 -->
 				<li class="nav-item"><a id="btnLogout" class="nav-link"
-					href="#">로그아웃</a></li>
+					href="Login.jsp">로그아웃</a></li>
 			</ul>
 		</div>
 	</nav>
