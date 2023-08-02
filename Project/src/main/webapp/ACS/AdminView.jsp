@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page import="dbsql.DBSQL"%>
+<%@ page import="table.*"%>
+<%@ page import="java.util.List"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -41,11 +44,6 @@
 			</ul>
 			<!-- 내 정보, 로그아웃 버튼 -->
 			<ul class="navbar-nav">
-				<!-- 회원가입 버튼 -->
-				<li class="nav-item"><a id="btnSignup" class="nav-link"
-					href="#">회원가입</a></li>
-				<!-- 로그인 버튼 -->
-				<li class="nav-item"><a id="btnLogin" class="nav-link" href="#">로그인</a></li>
 				<!-- 내 정보 버튼 -->
 				<li class="nav-item"><a id="btnMyInfo" class="nav-link"
 					href="#">내 정보</a></li>
@@ -60,32 +58,74 @@
 	</nav>
 
 	<!-- 수락 대기중 라벨과 데이터베이스에서 받아온 정보를 표시하는 div -->
-	<div class="container mt-3">
+	<div class="container mt-2">
 		<div class="card">
 			<div class="card-header">수락 대기중</div>
 			<div class="card-body">
 				<div class="row">
-					<!-- 데이터베이스에서 받아온 정보를 한 줄로 배치 -->
-					<div class="col-md-3">
-						<p>
-							<strong>입주자 명:</strong> [데이터베이스에서 받아온 입주자 명]
-						</p>
+					<%
+					DBSQL dbsql = new DBSQL("TenantWait");
+					Tenant t = new Tenant();
+
+					// 데이터베이스에서 회원 정보 가져오기
+					List<Object> TenantMembers = dbsql.DBSelect(t); // 적절한 메서드를 호출하여 회원 정보를 가져오도록 수정해야 합니다.
+
+					// 가져온 회원 정보를 사용하여 HTML 코드 작성
+					if (TenantMembers.size() > 0) {
+						for (Object obj : TenantMembers) {
+							if (obj instanceof Tenant) {
+						Tenant TenantMember = (Tenant) obj; // Tenant로 캐스팅
+					%>
+					<div class="row">
+						<div class="col-md-2">
+							<p>
+								<strong>입주자 아이디:</strong>
+								<%=TenantMember.getId()%>
+							</p>
+						</div>
+						<div class="col-md-2">
+							<p>
+								<strong>입주자 명:</strong>
+								<%=TenantMember.getName()%>
+							</p>
+						</div>
+						<div class="col-md-2">
+							<p>
+								<strong>거주지:</strong>
+								<%=TenantMember.getAccessiondate()%>
+							</p>
+						</div>
+						<div class="col-md-2">
+							<p>
+								<strong>가입일:</strong>
+								<%=TenantMember.getResidence()%>
+							</p>
+						</div>
+						<div class="col-md-2">
+							<button class="btn btn-success btnAccept"
+								data-id="<%=TenantMember.getId()%>"
+								data-name="<%=TenantMember.getName()%>"
+								data-password="<%=TenantMember.getPassword()%>"
+								data-accessiondate="<%=TenantMember.getAccessiondate()%>"
+								data-residence="<%=TenantMember.getResidence()%>">수락</button>
+							<button class="btn btn-danger">거절</button>
+						</div>
 					</div>
-					<div class="col-md-3">
-						<p>
-							<strong>거주지:</strong> [데이터베이스에서 받아온 거주지]
-						</p>
-					</div>
-					<div class="col-md-3">
-						<p>
-							<strong>가입일:</strong> [데이터베이스에서 받아온 가입일]
-						</p>
-					</div>
-					<div class="col-md-3 text-center">
-						<!-- 버튼을 같은 행에 배치 -->
-						<button class="btn btn-success">수락</button>
-						<button class="btn btn-danger">거절</button>
-					</div>
+
+					<%
+					} else {
+					%>
+					<!-- 적절한 타입이 아닌 경우 처리 -->
+					<p>회원 정보가 없습니다.</p>
+					<%
+					}
+					}
+					} else {
+					%>
+					<p>회원 정보가 없습니다.</p>
+					<%
+					}
+					%>
 				</div>
 			</div>
 		</div>
@@ -130,6 +170,41 @@
 				// 로그인 버튼과 회원가입 버튼을 보이게 함
 				$("#btnSignup").show();
 				$("#btnLogin").show();
+			});
+		});
+		
+		// 모든 수락 버튼에 대한 클릭 이벤트 처리
+		$(".btnAccept").on("click", function() {
+			var id = $(this).data("id");
+			var name = $(this).data("name");
+			var password = $(this).data("password");
+			var accessiondate = $(this).data("accessiondate");
+			var residence = $(this).data("residence");
+
+			// AJAX 요청을 보냅니다.
+			$.ajax({
+				url: "TenantComplet.jsp",
+				method: "POST",
+				data: {
+					id: id,
+					name: name,
+					password: password,
+					accessiondate: accessiondate,
+					residence: residence,
+					btnAccept: "true"
+				},
+				success: function(response) {
+					// 요청이 성공적으로 처리되었을 때 실행되는 코드
+					console.log("요청이 성공적으로 처리되었습니다.");
+					console.log("서버 응답: ", response); // Log server response to browser console
+					
+					location.reload(); // 성공 후 페이지 새로 고침
+				},
+				error: function(xhr, status, error) {
+					// 요청이 실패하거나 에러가 발생했을 때 실행되는 코드
+					console.error("요청이 실패하였습니다.");
+					console.error(xhr, status, error);
+				}
 			});
 		});
 	</script>

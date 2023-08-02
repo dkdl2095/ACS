@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page import="dbsql.DBSQL"%>
+<%@ page import="table.*"%>
+<%@ page import="java.util.List"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -55,27 +58,77 @@
 		</div>
 	</nav>
 	
-	<table border="1">
-		<c:forEach items="${complets}" var="s">
-			<tr>
-				<td>${s.id}</td> <td>${s.name}</td> <td>${s.password}</td>
-				<td>${s.accessiondate}</td> <td>${s.residence}</td>
-				<td><a href="/Project/complet?action=insertban&banid=${s.id}"><span
-						class="badgebg-secoundary"> &times;</span></a></td>
-			</tr>
-		</c:forEach>
-	</table>
-	
-	<table border="1">
-		<a>블랙리스트 명단</a>
-		<tr><th>아이디</th>
-		<c:forEach items="${bans}" var="s">
-			<tr>
-				<td>${s.banid}</td>
-				<td><a href="/Project/complet?action=deleteban&id=${s.banid}">
-				<span class="badgebg-secoundary"> &times;</span></a></td>
-			</tr>
-		</c:forEach>
-	</table>
+	<div class="container mt-2">
+		<div class="card">
+			<div class="card-header">회원 명단</div>
+			<div class="card-body">
+				<div class="row">
+					<%
+					DBSQL dbsql = new DBSQL("TenantComplet");
+					Tenant t = new Tenant();
+
+					// 데이터베이스에서 회원 정보 가져오기
+					List<Object> TenantMembers = dbsql.DBSelect(t); // 적절한 메서드를 호출하여 회원 정보를 가져오도록 수정해야 합니다.
+
+					// 가져온 회원 정보를 사용하여 HTML 코드 작성
+					if (TenantMembers.size() > 0) {
+						for (Object obj : TenantMembers) {
+							if (obj instanceof Tenant) {
+						Tenant TenantMember = (Tenant) obj; // Tenant로 캐스팅
+					%>
+					<div class="row">
+						<div class="col-md-2">
+							<p>
+								<strong>입주자 아이디:</strong>
+								<%=TenantMember.getId()%>
+							</p>
+						</div>
+						<div class="col-md-2">
+							<p>
+								<strong>입주자 명:</strong>
+								<%=TenantMember.getName()%>
+							</p>
+						</div>
+						<div class="col-md-2">
+							<p>
+								<strong>거주지:</strong>
+								<%=TenantMember.getAccessiondate()%>
+							</p>
+						</div>
+						<div class="col-md-2">
+							<p>
+								<strong>가입일:</strong>
+								<%=TenantMember.getResidence()%>
+							</p>
+						</div>
+						<div class="col-md-2">
+							<button class="btn btn-success btnAccept"
+								data-id="<%=TenantMember.getId()%>"
+								data-name="<%=TenantMember.getName()%>"
+								data-password="<%=TenantMember.getPassword()%>"
+								data-accessiondate="<%=TenantMember.getAccessiondate()%>"
+								data-residence="<%=TenantMember.getResidence()%>">수락</button>
+							<button class="btn btn-danger">거절</button>
+						</div>
+					</div>
+
+					<%
+					} else {
+					%>
+					<!-- 적절한 타입이 아닌 경우 처리 -->
+					<p>회원 정보가 없습니다.</p>
+					<%
+					}
+					}
+					} else {
+					%>
+					<p>회원 정보가 없습니다.</p>
+					<%
+					}
+					%>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>
