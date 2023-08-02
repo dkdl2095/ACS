@@ -129,21 +129,19 @@
 				</div>
 			</div>
 		</div>
-	</div>
-
-	<nav aria-label="Page navigation" class="mt-3">
-		<ul class="pagination justify-content-center">
-			<li class="page-item disabled"><a class="page-link" href="#"
-				tabindex="-1" aria-disabled="true">&laquo;</a></li>
-			<li class="page-item active"><a class="page-link" href="#">1</a></li>
-			<li class="page-item"><a class="page-link" href="#">2</a></li>
-			<li class="page-item"><a class="page-link" href="#">3</a></li>
-			<li class="page-item disabled"><a class="page-link" href="#">&raquo;</a></li>
-		</ul>
-	</nav>
-
-	<div class="col-lg-8">
-		<a href="MemberManagement.jsp" class="btn btn-primary">회원 관리</a>
+		<div class="col-lg-8">
+			<a href="MemberManagement.jsp" class="btn btn-primary">회원 관리</a>
+		</div>
+		<nav aria-label="Page navigation" class="mt-3">
+			<ul class="pagination justify-content-center">
+				<li class="page-item disabled"><a class="page-link" href="#"
+					tabindex="-1" aria-disabled="true">&laquo;</a></li>
+				<li class="page-item active"><a class="page-link" href="#">1</a></li>
+				<li class="page-item"><a class="page-link" href="#">2</a></li>
+				<li class="page-item"><a class="page-link" href="#">3</a></li>
+				<li class="page-item disabled"><a class="page-link" href="#">&raquo;</a></li>
+			</ul>
+		</nav>
 	</div>
 
 	<script>
@@ -172,8 +170,8 @@
 				$("#btnLogin").show();
 			});
 		});
-		
-		// 모든 수락 버튼에 대한 클릭 이벤트 처리
+
+		// 수락 버튼에 대한 클릭 이벤트 처리
 		$(".btnAccept").on("click", function() {
 			var id = $(this).data("id");
 			var name = $(this).data("name");
@@ -183,24 +181,24 @@
 
 			// AJAX 요청을 보냅니다.
 			$.ajax({
-				url: "TenantComplet.jsp",
-				method: "POST",
-				data: {
-					id: id,
-					name: name,
-					password: password,
-					accessiondate: accessiondate,
-					residence: residence,
-					btnAccept: "true"
+				url : "Tenant.jsp",
+				method : "POST",
+				data : {
+					id : id,
+					name : name,
+					password : password,
+					accessiondate : accessiondate,
+					residence : residence,
+					btnAccept : "true"
 				},
-				success: function(response) {
+				success : function(response) {
 					// 요청이 성공적으로 처리되었을 때 실행되는 코드
 					console.log("요청이 성공적으로 처리되었습니다.");
 					console.log("서버 응답: ", response); // Log server response to browser console
-					
+
 					location.reload(); // 성공 후 페이지 새로 고침
 				},
-				error: function(xhr, status, error) {
+				error : function(xhr, status, error) {
 					// 요청이 실패하거나 에러가 발생했을 때 실행되는 코드
 					console.error("요청이 실패하였습니다.");
 					console.error(xhr, status, error);
