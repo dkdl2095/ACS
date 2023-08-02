@@ -13,7 +13,19 @@
 <%
     // 클라이언트로부터 전송된 데이터 받기
     String postContent = request.getParameter("postContent");
+	String postTitle = request.getParameter("postTitle");
     String btnConfirm = request.getParameter("btnConfirm");
+    String notice = request.getParameter("notice");
+    String Schedule = request.getParameter("Schedule");
+    String Radio ="";
+    
+    if(notice.equals("true")){
+    	Radio = "공지";
+    }else if(Schedule.equals("true")){
+    	Radio = "일정";
+    }else{
+    	Radio = "잡담";
+    }
     
     // 요청 파라미터에서 confirm 값을 확인하여 데이터 삽입 여부를 결정
     if (btnConfirm != null && btnConfirm.equals("true")) {
@@ -21,8 +33,8 @@
         Post newPost = new Post();
         DBSQL dbsql = new DBSQL("Post");
         //newPost.setPostid(2); // 원하는 값을 설정합니다.
-        newPost.setType("type");
-        newPost.setTitle("titi");
+        newPost.setType(Radio);
+        newPost.setTitle(postTitle);
         newPost.setText(postContent);
         newPost.setWritingdate(new Date(System.currentTimeMillis()));
         newPost.setName("name");

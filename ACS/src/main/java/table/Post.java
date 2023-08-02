@@ -7,7 +7,7 @@ public class Post {
 	 	CREATE TABLE Post(
     		postid INT NOT NULL PRIMARY KEY, 
 			type VARCHAR2(20), 
-    		title VARCHAR2(20),
+    		title VARCHAR2(2000),
 			text VARCHAR2(2000), 
 			writingdate DATE,
     		name VARCHAR2(20),

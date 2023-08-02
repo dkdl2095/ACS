@@ -154,7 +154,8 @@
 					<%=PostMember.getTitle()%>, 이름:
 					<%=PostMember.getName()%>, 조회수:
 					<%=PostMember.getViewsnum()%>, 날짜:
-					<%=PostMember.getWritingdate()%>
+					<%=PostMember.getWritingdate()%>, 텍스트:
+					<%=PostMember.getText()%>
 					
 					<%System.out.println(PostMember.getPostid()); %>
 				</p>
@@ -223,8 +224,8 @@
 				$("#btnAdmin").hide();
 				// 로그인 버튼과 회원가입 버튼을 보이게 함
 				$("#btnSignup").show();
-				$("#btnLogin").show();*/
-			});
+				$("#btnLogin").show();
+			});*/
 		});
 	</script>
 </body>
