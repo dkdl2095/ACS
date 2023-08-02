@@ -143,6 +143,33 @@ public class DBSQL {
 		}
 		return posts;
 	}
+	
+	public List<Object> DBSelect(Post p, String type) {
+		open();
+		List<Object> posts = new ArrayList<>();
+		String sql = "SELECT * FROM " + table + " WHERE type=?";
+		try (PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()){
+			pstmt.setString(1, type);
+			while (rs.next()) {
+				p = new Post();
+				p.setPostid(rs.getInt("postid"));
+				p.setType(rs.getString("type"));
+				p.setTitle(rs.getString("title"));
+				p.setText(rs.getString("text"));
+				p.setWritingdate(rs.getDate("writingdate"));
+				p.setName(rs.getString("name"));
+				p.setImg(rs.getString("img"));
+				p.setViewsnum(rs.getInt("viewsnum"));
+
+				posts.add(p);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		return posts;
+	}
 
 	public List<Object> DBSelect(Calender c) {
 		open();
