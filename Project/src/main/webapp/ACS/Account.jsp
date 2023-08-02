@@ -72,7 +72,7 @@ button {
 					href="AdminView.jsp">관리자</a></li>
 				<!-- 로그아웃 버튼 -->
 				<li class="nav-item"><a id="btnLogout" class="nav-link"
-					href="Login.jsp">로그아웃</a></li>
+					href="Login.jsp">로그인</a></li>
 			</ul>
 		</div>
 	</nav>

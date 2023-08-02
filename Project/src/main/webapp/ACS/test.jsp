@@ -142,11 +142,11 @@
 						<%
 						// Java 코드 작성 (스크립트릿)
 						// DBSQL 객체 생성
-						DBSQL dbsql = new DBSQL("TENANTCOMPLET");
+						DBSQL dbsqlTenant = new DBSQL("TENANTCOMPLET");
 						Tenant t = new Tenant();
 
 						// 데이터베이스에서 회원 정보 가져오기
-						List<Object> TenantMembers = dbsql.DBSelect(t); // 적절한 메서드를 호출하여 회원 정보를 가져오도록 수정해야 합니다.
+						List<Object> TenantMembers = dbsqlTenant.DBSelect(t); // 적절한 메서드를 호출하여 회원 정보를 가져오도록 수정해야 합니다.
 
 						// 가져온 회원 정보를 사용하여 HTML 코드 작성
 						if (TenantMembers.size() > 0) {
@@ -189,11 +189,11 @@
 				<%
 				// Java 코드 작성 (스크립트릿)
 				// DBSQL 객체 생성
-				dbsql = new DBSQL("Post");
+				DBSQL dbsqlPost = new DBSQL("Post");
 				Post p = new Post();
 
 				// 데이터베이스에서 글목록 가져오기
-				List<Object> PostMembers = dbsql.DBSelect(p); // 적절한 메서드를 호출하여 글목록 정보를 가져오도록 수정해야 합니다.
+				List<Object> PostMembers = dbsqlPost.DBSelect(p); // 적절한 메서드를 호출하여 글목록 정보를 가져오도록 수정해야 합니다.
 
 				// 가져온 글목록 정보를 사용하여 HTML 코드 작성
 				if (PostMembers.size() > 0) {
@@ -204,12 +204,10 @@
 				<p>
 					번호 :
 					<%=PostMember.getPostid()%>, 타입:
-					<%=PostMember.getType()%>, 타이틀:
-					<%=PostMember.getTitle()%>, 이름:
+					<%=PostMember.getType()%>, 이름:
 					<%=PostMember.getName()%>, 조회수:
 					<%=PostMember.getViewsnum()%>, 날짜:
-					<%=PostMember.getWritingdate()%>, 텍스트:
-					<%=PostMember.getText()%>
+					<%=PostMember.getWritingdate()%>
 				</p>
 				<%
 						}
