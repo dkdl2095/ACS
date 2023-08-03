@@ -19,7 +19,7 @@ public class Complet extends HttpServlet {
 	DBSQL dao;
 	Tenant t = new Tenant();
 	Post p = new Post();
-	Calender c = new Calender();
+	Calendar c = new Calendar();
 	TenantBan b = new TenantBan();
 
 	public void init(ServletConfig config) throws ServletException {
