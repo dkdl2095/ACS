@@ -18,58 +18,59 @@
 	crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- 아래 스크립트는 달력 관련 -->
-<meta http-equiv='X-UA-Compatible' content='IE=edge'> 
+<meta http-equiv='X-UA-Compatible' content='IE=edge'>
 <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.7.0/main.min.css">
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/fullcalendar@5.7.0/main.min.js"></script>
-    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
-    <script type="text/javascript">
-    
-        document.addEventListener('DOMContentLoaded', function () {
-            var calendarEl = document.getElementById('calendar');
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                timeZone: 'UTC',
-                locale: 'ko', // 한국어 설정
-                initialView: 'dayGridMonth', // 홈페이지에서 다른 형태의 view를 확인할  수 있다.
-                
-                events:[ // 일정 데이터 추가 , DB의 event를 가져오려면 JSON 형식으로 변환해 events에 넣어주면된다.
-                    {
-                        title:'에이펙스하기너무무섭다',
-                        start:'2023-07-25',
-                        end:'2023-08-08',
-                   		url:'https://google.com'
-                    },
-                    {
-                        title:'문명6달리는날',
-                        start:'2023-07-26',
-                        end:'2023-08-09',
-                        url:'https://google.com'
-                    },
-                    {
-                        title:'문명6달리는날',
-                        start:'2023-07-26',
-                        end:'2023-08-09',
-                        url:'https://google.com'
-                    }
-                    
-                ],
-                eventClick: function(info) {//이벤트 클릭 시 알럿창으로 이벤트페이지 정보 및 링크 알림 후, 페이지이동
-                    alert('Event: ' + info.event.title);
-                    
-                    // change the border color just for fun
-                    info.el.style.borderColor = 'red';
-                  },
-                editable: false //치훈이형 일정 드래그해서 바꿀려면 이거 true로 바꿔. 근데 DB적용시키려면 코드 좀 건드려야할듯
-            });
-            calendar.render();
-        });
-    </script>
-    <style>
-        #calendarBox{
-            width: 100%;
-        }
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/fullcalendar@5.7.0/main.min.css">
+<script type="text/javascript"
+	src="https://cdn.jsdelivr.net/npm/fullcalendar@5.7.0/main.min.js"></script>
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+<!-- FullCalendar 라이브러리를 이용하여 일정을 표시하는 부분 -->
+<script type="text/javascript">
+    // FullCalendar 라이브러리 초기화 및 설정
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            timeZone: 'UTC',
+            locale: 'ko', // 한국어 설정
+            initialView: 'dayGridMonth', // 달력 초기 뷰를 '월' 형태로 설정
 
-    </style>
+            // 이벤트 데이터 설정 (임시 데이터)
+            events: [
+                {
+                    title: '에이펙스하기너무무섭다',
+                    start: '2023-07-25',
+                    end: '2023-08-08',
+                    url: 'https://google.com'
+                },
+                {
+                    title: '문명6달리는날',
+                    start: '2023-07-26',
+                    end: '2023-08-09',
+                    url: 'https://google.com'
+                },
+                {
+                    title: '문명6달리는날',
+                    start: '2023-07-26',
+                    end: '2023-08-09',
+                    url: 'https://google.com'
+                }
+            ],
+            // 이벤트 클릭 시 동작하는 함수
+            eventClick: function(info) {
+                alert('Event: ' + info.event.title);
+                info.el.style.borderColor = 'red'; // 이벤트를 클릭한 요소의 테두리 색상 변경
+            },
+            editable: false // 일정 드래그해서 변경할 수 있는 옵션 (true로 설정하면 일정을 드래그해 수정할 수 있습니다.)
+        });
+        calendar.render(); // 달력 표시
+    });
+</script>
+<style>
+#calendarBox {
+	width: 100%;
+}
+</style>
 <title>메인 화면</title>
 </head>
 <body>
@@ -113,27 +114,19 @@
 	<div class="container mt-3">
 		<!-- 그리드 시스템을 사용하여 달력의 정보, 일정의 글 목록, 로그인 시에만 보이는 회원정보를 한 줄로 배치 -->
 		<div class="row">
-			<div class="col-lg-4">
+			<div class="col-lg-8">
 				<!-- 달력의 정보를 받아들이는 div -->
 				<div class="card">
 					<div class="card-body">
 						<!-- 달력 정보를 표시하는 내용 -->
 						<div id="calendarBox">
-        					<div id="calendar"></div>
-    					</div>
+							<div id="calendar"></div>
+						</div>
 					</div>
 				</div>
 			</div>
 			<div class="col-lg-4">
-				<!-- 일정의 글 목록을 받아들이는 div -->
-				<div class="card">
-					<div class="card-body">
-						<!-- 일정 글 목록을 표시하는 내용 -->
-						일정
-					</div>
-				</div>
-			</div>
-			<div class="col-lg-4">
+				<!-- 회원정보 표시하는 부분 -->
 				<!-- 로그인 시에만 보이는 회원정보 div -->
 				<div id="memberInfo" class="card">
 					<div class="card-body">
@@ -150,9 +143,9 @@
 
 						// 가져온 회원 정보를 사용하여 HTML 코드 작성
 						if (TenantMembers.size() > 0) {
-							for (Tenant tenant : TenantMembers) {
-								if (tenant instanceof Tenant) {
-							Tenant TenantMember = tenant; // Tenant로 캐스팅
+							for (Tenant obj : TenantMembers) {
+								if (obj instanceof Tenant) {
+							Tenant TenantMember = (Tenant) obj; // Tenant로 캐스팅
 						%>
 						<p>
 							아이디:
@@ -161,14 +154,14 @@
 							<%=TenantMember.getAccessiondate()%>, 거주지:
 							<%=TenantMember.getResidence()%></p>
 						<%
-								} else {
+						} else {
 						// 적절한 타입이 아닌 경우 처리
 						%>
 
 						<p>회원 정보가 없습니다.</p>
 						<%
-								}
-							}
+						}
+						}
 						} else {
 						%>
 						<p>회원 정보가 없습니다.</p>
@@ -177,43 +170,105 @@
 						%>
 					</div>
 				</div>
+				<!-- 일정의 글 목록을 받아들이는 div -->
+				<div class="card">
+					<div class="card-body">
+						<!-- 일정 글 목록을 표시하는 내용 -->
+						일정
+						<%-- Java 코드 작성 (스크립트릿) --%>
+						<!-- 글목록 정보를 표시하는 플레이스홀더 요소 -->
+						<%
+						// Java 코드 작성 (스크립트릿)
+						// DBSQL 객체 생성
+						DBSQL dbsqlScedule = new DBSQL("Post");
+						Post pScedule = new Post();
+
+						// 데이터베이스에서 글목록 가져오기
+						List<Post> SceduleMembers = dbsqlScedule.DBSelect(pScedule, "일정"); // 적절한 메서드를 호출하여 글목록 정보를 가져오도록 수정해야 합니다.
+
+						// 가져온 글목록 정보를 사용하여 HTML 코드 작성
+						if (SceduleMembers.size() > 0) {
+							for (Post obj : SceduleMembers) {
+								if (obj instanceof Post) {
+							Post SceduleMember = obj; // Post로 캐스팅
+						%>
+						<p>
+							번호 :
+							<%=SceduleMember.getPostid()%>, 타입:
+							<%=SceduleMember.getType()%>, 타이틀:
+							<%=SceduleMember.getTitle()%>, 이름:
+							<%=SceduleMember.getName()%>, 조회수:
+							<%=SceduleMember.getViewsnum()%>, 날짜:
+							<%=SceduleMember.getWritingdate()%>, 텍스트:
+							<%=SceduleMember.getText()%>
+						</p>
+						<%
+						}
+						}
+						} else {
+						%>
+						<p>게시글이 없습니다.</p>
+						<%
+						}
+						%>
+					</div>
+				</div>
 			</div>
+
+
 		</div>
 	</div>
 
-	<div class="container mt-3">
+	<!-- 글 목록을 표시하는 부분 -->
+	<div class="container mt-5">
 		<div class="card">
+			<div class="row justify-content-center">
+				<div class="col-lg-1"><p>번호</p></div>
+				<div class="col-lg-1"><p>타입</p></div>
+				<div class="col-lg-5"><p>제목</p></div>
+				<div class="col-lg-1"><p>작성자</p></div>
+				<div class="col-lg-2"><p>작성일</p></div>
+				<div class="col-lg-1"><p>조회</p></div>
+				<div class="col-lg-1"><p>추천</p></div>
+			</div>
+			
 			<div class="card-body">
 				<%-- Java 코드 작성 (스크립트릿) --%>
 				<!-- 글목록 정보를 표시하는 플레이스홀더 요소 -->
 				<%
 				// Java 코드 작성 (스크립트릿)
 				// DBSQL 객체 생성
-				dbsql = new DBSQL("Post");
-				Post p = new Post();
+				DBSQL dbsqlPost = new DBSQL("Post");
+				Post post = new Post();
 
 				// 데이터베이스에서 글목록 가져오기
-				List<Post> PostMembers = dbsql.DBSelect(p); // 적절한 메서드를 호출하여 글목록 정보를 가져오도록 수정해야 합니다.
+				List<Post> PostMembers = dbsqlPost.DBSelect(post); // 적절한 메서드를 호출하여 글목록 정보를 가져오도록 수정해야 합니다.
 
 				// 가져온 글목록 정보를 사용하여 HTML 코드 작성
 				if (PostMembers.size() > 0) {
-					for (Post post : PostMembers) {
-						if (post instanceof Post) {
-					Post PostMember = (Post) post; // Post로 캐스팅
+					for (Post obj : PostMembers) {
+						if (obj instanceof Post) {
+					Post PostMember = obj; // Post로 캐스팅
 				%>
-				<p>
-					번호 :
-					<%=PostMember.getPostid()%>, 타입:
-					<%=PostMember.getType()%>, 타이틀:
-					<%=PostMember.getTitle()%>, 이름:
-					<%=PostMember.getName()%>, 조회수:
-					<%=PostMember.getViewsnum()%>, 날짜:
-					<%=PostMember.getWritingdate()%>, 텍스트:
-					<%=PostMember.getText()%>
-				</p>
+				<div class="row">
+                	<div class="col-lg-1"><p><%=PostMember.getPostid()%></p></div>
+                	<div class="col-lg-1"><p><%=PostMember.getType()%></p></div>
+                	<div class="col-lg-5"><button class="btn btn-link"
+					onclick="viewPostDetails(<%=PostMember.getPostid()%>)"><p>
+					<%=PostMember.getTitle()%></p></button></div>
+                	<div class="col-lg-1"><p><%=PostMember.getName()%></p></div>
+                	<div class="col-lg-2"><p><%=PostMember.getWritingdate()%></p></div>
+                	<div class="col-lg-1"><p><%=PostMember.getViewsnum()%></p></div>
+                	<div class="col-lg-1"><p>추천</p></div>
+            	</div>
+				
+				<button class="btn btn-link"
+					onclick="viewPostDetails(<%=PostMember.getPostid()%>)">
+						
+				</button>
 				<%
-						}
-					}
+				}
+				}
 				} else {
 				%>
 				<p>게시글이 없습니다.</p>
@@ -223,7 +278,6 @@
 			</div>
 		</div>
 	</div>
-
 
 	<!-- 페이지 -->
 	<nav aria-label="Page navigation" class="mt-3">
@@ -252,5 +306,25 @@
 			</div>
 		</div>
 	</div>
+
+	<script>
+    function viewPostDetails(postid) {
+        // AJAX를 이용하여 서버에 글 상세 정보 요청
+        console.log("ajax 보내기 전",postid);
+        $.ajax({
+            url: "PostDetailsView.jsp",
+            type: "POST", // POST 메소드 사용
+            data: { postid : postid },
+            success: function(response) {
+                // 성공시, 받은 응답으로 postdetailsview.jsp 페이지로 이동
+                window.location.href = "PostDetailsView.jsp?postid=" + postid;
+            },
+            error: function(xhr, status, error) {
+                // 필요한 경우 에러 처리
+                console.error(error);
+            }
+        });
+    }
+</script>
 </body>
 </html>

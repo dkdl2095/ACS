@@ -22,15 +22,6 @@
     
  	// PostManagement.jsp
     String btnPostDelete = request.getParameter("btnPostDelete");
-   	int postid = Integer.parseInt(request.getParameter("id"));
-    
-    if(notice.equals("true")){
-    	Radio = "공지";
-    }else if(Schedule.equals("true")){
-    	Radio = "일정";
-    }else{
-    	Radio = "잡담";
-    }
     
     // 요청 파라미터에서 confirm 값을 확인하여 데이터 삽입 여부를 결정
     if (btnConfirm != null && btnConfirm.equals("true")) {
@@ -38,6 +29,14 @@
         Post post = new Post();
         DBSQL dbsql = new DBSQL("Post");
         //newPost.setPostid(2); // 원하는 값을 설정합니다.
+        
+        if(notice.equals("true")){
+        	Radio = "공지";
+        }else if(Schedule.equals("true")){
+        	Radio = "일정";
+        }else{
+        	Radio = "잡담";
+        }
         post.setType(Radio);
         post.setTitle(postTitle);
         post.setText(postContent);
@@ -59,6 +58,8 @@
         // DBSQL 객체 생성
         Post post = new Post();
         DBSQL dbsql = new DBSQL("Post");
+        
+        int postid = Integer.parseInt(request.getParameter("id"));
         
         // 데이터를 삽입합니다.
         dbsql.DBDelete(post, postid);

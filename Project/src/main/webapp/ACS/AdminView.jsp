@@ -131,8 +131,6 @@
 		</div>
 		<div class="col-lg-8">
 			<a href="MemberManagement.jsp" class="btn btn-primary">회원 관리</a>
-		</div>
-		<div class="col-lg-8">
 			<a href="PostManagement.jsp" class="btn btn-primary">글 관리</a>
 		</div>
 		<nav aria-label="Page navigation" class="mt-3">
