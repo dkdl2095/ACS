@@ -114,7 +114,7 @@
 	<div class="container mt-3">
 		<!-- 그리드 시스템을 사용하여 달력의 정보, 일정의 글 목록, 로그인 시에만 보이는 회원정보를 한 줄로 배치 -->
 		<div class="row">
-			<div class="col-lg-4">
+			<div class="col-lg-8">
 				<!-- 달력의 정보를 받아들이는 div -->
 				<div class="card">
 					<div class="card-body">
@@ -126,6 +126,50 @@
 				</div>
 			</div>
 			<div class="col-lg-4">
+				<!-- 회원정보 표시하는 부분 -->
+					<!-- 로그인 시에만 보이는 회원정보 div -->
+					<div id="memberInfo" class="card">
+						<div class="card-body">
+							<%-- Java 코드 작성 (스크립트릿) --%>
+							<!-- 회원정보를 표시하는 플레이스홀더 요소 -->
+							<%
+							// Java 코드 작성 (스크립트릿)
+							// DBSQL 객체 생성
+							DBSQL dbsql = new DBSQL("TENANTCOMPLET");
+							Tenant t = new Tenant();
+
+							// 데이터베이스에서 회원 정보 가져오기
+							List<Object> TenantMembers = dbsql.DBSelect(t); // 적절한 메서드를 호출하여 회원 정보를 가져오도록 수정해야 합니다.
+
+							// 가져온 회원 정보를 사용하여 HTML 코드 작성
+							if (TenantMembers.size() > 0) {
+								for (Object obj : TenantMembers) {
+									if (obj instanceof Tenant) {
+								Tenant TenantMember = (Tenant) obj; // Tenant로 캐스팅
+							%>
+							<p>
+								아이디:
+								<%=TenantMember.getId()%>, 이름:
+								<%=TenantMember.getName()%>, 가입날짜:
+								<%=TenantMember.getAccessiondate()%>, 거주지:
+								<%=TenantMember.getResidence()%></p>
+							<%
+							} else {
+							// 적절한 타입이 아닌 경우 처리
+							%>
+
+							<p>회원 정보가 없습니다.</p>
+							<%
+							}
+							}
+							} else {
+							%>
+							<p>회원 정보가 없습니다.</p>
+							<%
+							}
+							%>
+						</div>
+					</div>
 				<!-- 일정의 글 목록을 받아들이는 div -->
 				<div class="card">
 					<div class="card-body">
@@ -170,53 +214,8 @@
 					</div>
 				</div>
 			</div>
-			
-			<!-- 회원정보 표시하는 부분 -->
-			<div class="col-lg-4">
-				<!-- 로그인 시에만 보이는 회원정보 div -->
-				<div id="memberInfo" class="card">
-					<div class="card-body">
-						<%-- Java 코드 작성 (스크립트릿) --%>
-						<!-- 회원정보를 표시하는 플레이스홀더 요소 -->
-						<%
-						// Java 코드 작성 (스크립트릿)
-						// DBSQL 객체 생성
-						DBSQL dbsql = new DBSQL("TENANTCOMPLET");
-						Tenant t = new Tenant();
 
-						// 데이터베이스에서 회원 정보 가져오기
-						List<Object> TenantMembers = dbsql.DBSelect(t); // 적절한 메서드를 호출하여 회원 정보를 가져오도록 수정해야 합니다.
 
-						// 가져온 회원 정보를 사용하여 HTML 코드 작성
-						if (TenantMembers.size() > 0) {
-							for (Object obj : TenantMembers) {
-								if (obj instanceof Tenant) {
-							Tenant TenantMember = (Tenant) obj; // Tenant로 캐스팅
-						%>
-						<p>
-							아이디:
-							<%=TenantMember.getId()%>, 이름:
-							<%=TenantMember.getName()%>, 가입날짜:
-							<%=TenantMember.getAccessiondate()%>, 거주지:
-							<%=TenantMember.getResidence()%></p>
-						<%
-						} else {
-						// 적절한 타입이 아닌 경우 처리
-						%>
-
-						<p>회원 정보가 없습니다.</p>
-						<%
-						}
-						}
-						} else {
-						%>
-						<p>회원 정보가 없습니다.</p>
-						<%
-						}
-						%>
-					</div>
-				</div>
-			</div>
 		</div>
 	</div>
 
@@ -294,7 +293,7 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<script>
     function viewPostDetails(postid) {
         // AJAX를 이용하여 서버에 글 상세 정보 요청
