@@ -323,6 +323,7 @@
 												.getElementById("postContent").value = "";
 										document
 												.getElementById("postTitle").value = "";*/
+										window.location.href = "MainView.jsp";
 									},
 									error : function(xhr, status, error) {
 										// 요청이 실패하거나 에러가 발생했을 때 실행되는 코드

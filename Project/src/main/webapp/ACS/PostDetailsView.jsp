@@ -65,32 +65,38 @@
 	<%-- Java 코드 작성 (스크립트릿) --%>
 	<%
 	// 클라이언트로부터 전송된 데이터 받기
-	String postidStr = request.getParameter("postid");
-	System.out.println(postidStr);
-
+	String postidStr = null;	
+	Post post = null;
+	DBSQL dbsql = null;
+	Post PostMember = null;
+	List<Post> PostMembers = null;
+	
+	postidStr = request.getParameter("postid");
+	System.out.println("postidStr: "+postidStr);
 	int postid = 0; // 기본값으로 초기화
 	// postidStr이 null이 아니고 숫자 형태일 경우에만 Integer로 변환
 	if (postidStr != null && postidStr.matches("\\d+")) {
 		postid = Integer.parseInt(postidStr);
-	}
+		
+		// DBSQL 객체 생성
+		post = new Post();
+		dbsql = new DBSQL("Post");	
 
-	// DBSQL 객체 생성
-	Post post = new Post();
-	DBSQL dbsql = new DBSQL("Post");
-	Post PostMember = null;
+		// 데이터베이스에서 글목록 가져오기
+		PostMembers = dbsql.DBSelect(post, postid); // 적절한 메서드를 호출하여 글목록 정보를 가져오도록 수정해야 합니다.
 
-	// 데이터베이스에서 글목록 가져오기
-	List<Post> PostMembers = dbsql.DBSelect(post, postid); // 적절한 메서드를 호출하여 글목록 정보를 가져오도록 수정해야 합니다.
-
-	// 가져온 글목록 정보를 사용하여 HTML 코드 작성
-	if (PostMembers.size() > 0) {
-		for (Post obj : PostMembers) {
-			if (obj instanceof Post) {
-				PostMember = obj; // Post로 캐스팅
+		if (PostMembers != null && PostMembers.size() > 0) {
+			for (Post obj : PostMembers) {
+				if (obj instanceof Post) {
+					PostMember = obj; // Post로 캐스팅
+				}
 			}
+		} else {
+			System.out.println("PostMembers 오류");
 		}
-	} else {
-		// 데이터가 없을 때의 처리 (예: "데이터가 없습니다" 메시지 출력 등)
+		
+		dbsql.DBUpdate(post, postid, PostMember.getViewsnum());
+		System.out.println("조회수: "+PostMember.getViewsnum());
 	}
 	%>
 	<div class="container mt-3">

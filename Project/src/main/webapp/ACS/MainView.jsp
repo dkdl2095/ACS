@@ -65,11 +65,16 @@
         });
         calendar.render(); // 달력 표시
     });
+    
 </script>
 <style>
 #calendarBox {
 	width: 100%;
 }
+a.btn-link {
+        text-decoration: none;
+        color: black;
+    }
 </style>
 <title>메인 화면</title>
 </head>
@@ -253,9 +258,8 @@
 				<div class="row">
                 	<div class="col-lg-1"><p><%=PostMember.getPostid()%></p></div>
                 	<div class="col-lg-1"><p><%=PostMember.getType()%></p></div>
-                	<div class="col-lg-5"><button class="btn btn-link"
-					onclick="viewPostDetails(<%=PostMember.getPostid()%>)"><p>
-					<%=PostMember.getTitle()%></p></button></div>
+                	<div class="col-lg-5"><a class="btn btn-link" onclick="viewPostDetails(<%=PostMember.getPostid()%>)">
+    					<%=PostMember.getTitle()%></a></div>
                 	<div class="col-lg-1"><p><%=PostMember.getName()%></p></div>
                 	<div class="col-lg-2"><p><%=PostMember.getWritingdate()%></p></div>
                 	<div class="col-lg-1"><p><%=PostMember.getViewsnum()%></p></div>
