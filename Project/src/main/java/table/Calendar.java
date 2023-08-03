@@ -2,7 +2,7 @@ package table;
 
 import java.sql.Date;
 
-public class Calender {
+public class Calendar {
 	private int calid;
 	private Date cdate;
 	private String text;
