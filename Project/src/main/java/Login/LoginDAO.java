@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+import java.sql.Date;
 import table.Tenant;
 
 public class LoginDAO {
@@ -44,7 +44,7 @@ public class LoginDAO {
 		Tenant result = new Tenant();
 		
 		try {
-			String query = "SELECT id, password, name, residence FROM TenantComplet WHERE id = ? AND password = ?";   //DB TenantComplet테이블 데이터 비교할 쿼리문
+			String query = "SELECT id, password, name, residence, accessiondate FROM TenantComplet WHERE id = ? AND password = ?";   //DB TenantComplet테이블 데이터 비교할 쿼리문
 			PreparedStatement pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, id);
 			pstmt.setString(2, password);
@@ -56,8 +56,10 @@ public class LoginDAO {
 				String getpassword = rs.getString("password");
 				String getname = rs.getString("name");
 				String getResidence = rs.getString("residence");
+				Date getAccessiondate = rs.getDate("accessiondate");
 				System.out.println("ID: " + getid + ", Password: " + getpassword);
 				System.out.println("name: " + getname + ", residence: " + getResidence);
+				System.out.println("Accessiondate: " + getAccessiondate);
 
 				String storedPassword = rs.getString("password");
 				System.out.println(rs);
@@ -67,6 +69,7 @@ public class LoginDAO {
 					result.setPassword(storedPassword);
 					result.setName(getname);
 					result.setResidence(getResidence);
+					result.setAccessiondate(getAccessiondate);
 					return result;
 				} else {
 					System.out.println("아이디 or 비밀번호 다릅니다.");  //password 다를시 문구 출력

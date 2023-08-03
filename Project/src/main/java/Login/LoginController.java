@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import table.Tenant;
 
@@ -52,19 +54,24 @@ public class LoginController extends HttpServlet {
         if (req.getMethod().equalsIgnoreCase("post")) {
             String id = req.getParameter("ID");
             String pass = req.getParameter("PW");
+            
 
             HttpSession session = req.getSession(true);
 
             Tenant result = dao.login(id, pass);
 
             if (!result.getId().contains("Error")) {
+            	Date getAccessiondate = result.getAccessiondate();
+            	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            	String accessiondateStr = dateFormat.format(getAccessiondate);
                 session.setAttribute("result", "로그인에 성공했습니다.");
                 
                 session.setAttribute("loginuser", result);
                 session.setAttribute("ID", result.getId()); //ID를 세션에 저장
                 session.setAttribute("NAME", result.getName());  //이름을 세션에 저장
                 session.setAttribute("RESIDENCE", result.getResidence()); //입주정보를 세션에 저장
-                //System.out.println("1"+result+result.getId() + result.getPassword() + result.getName() + result.getResidence());
+                session.setAttribute("ACCESSIONDATE", accessiondateStr);
+                System.out.println("1"+result+result.getId() + result.getPassword() + result.getName() + result.getResidence() + result.getAccessiondate()+ accessiondateStr);
                 return "redirect:/Project/ACS/MainView.jsp";  //로그인 성공하면 메인뷰로 이동
             } else {
             	// "Error:-1" -> ["Error", "-1"]
