@@ -441,6 +441,22 @@ public class DBSQL {
 			close();
 		}
 	}
+	
+	public void DBUpdate(Post p, int id, int viewsnum) {
+		open();
+		String sql = "UPDATE " + table + " SET postid=?, viewsnum=?";
+
+		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			pstmt.setInt(1, p.getPostid());
+			pstmt.setInt(2, p.getViewsnum());
+
+			pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+	}
 
 	public void DBUpdate(Calender c) {
 		open();
