@@ -21,35 +21,6 @@
 <title>글 세부 화면</title>
 </head>
 <body>
-	<%-- Java 코드 작성 (스크립트릿) --%>
-	<%
-	// 클라이언트로부터 전송된 데이터 받기
-	String postid = request.getParameter("postid");
-
-	
-		// DBSQL 객체 생성
-		Post post = new Post();
-		DBSQL dbsql = new DBSQL("Post");
-		Post PostMember = null;
-		
-		// 데이터베이스에서 글목록 가져오기
-		List<Object> PostMembers = dbsql.DBSelect(post, postid); // 적절한 메서드를 호출하여 글목록 정보를 가져오도록 수정해야 합니다.
-
-		// 가져온 글목록 정보를 사용하여 HTML 코드 작성
-		if (PostMembers.size() > 0) {
-			for (Object obj : PostMembers) {
-				if (obj instanceof Post) {
-					PostMember = (Post) obj; // Post로 캐스팅
-
-					// Send the response to the Eclipse console using JSP's 'out' object
-					out.println("요청이 성공적으로 처리되었습니다.");
-					out.println("서버 응답: " + "데이터가 성공적으로 저장되었습니다."); // You can customize this message as needed
-				}
-			}
-		} else {
-			// 데이터가 없을 때의 처리 (예: "데이터가 없습니다" 메시지 출력 등)
-		}
-	%>
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<div class="container-fluid">
 			<a class="navbar-brand" href="MainView.jsp"> <!-- 로고 이미지 --> <!-- 
@@ -91,36 +62,72 @@
 			</ul>
 		</div>
 	</nav>
+	<%-- Java 코드 작성 (스크립트릿) --%>
+	<%
+	// 클라이언트로부터 전송된 데이터 받기
+	String postidStr = request.getParameter("postid");
+	System.out.println(postidStr);
 
+	int postid = 0; // 기본값으로 초기화
+	// postidStr이 null이 아니고 숫자 형태일 경우에만 Integer로 변환
+	if (postidStr != null && postidStr.matches("\\d+")) {
+		postid = Integer.parseInt(postidStr);
+	}
+
+	// DBSQL 객체 생성
+	Post post = new Post();
+	DBSQL dbsql = new DBSQL("Post");
+	Post PostMember = null;
+
+	// 데이터베이스에서 글목록 가져오기
+	List<Object> PostMembers = dbsql.DBSelect(post, postid); // 적절한 메서드를 호출하여 글목록 정보를 가져오도록 수정해야 합니다.
+
+	// 가져온 글목록 정보를 사용하여 HTML 코드 작성
+	if (PostMembers.size() > 0) {
+		for (Object obj : PostMembers) {
+			if (obj instanceof Post) {
+				PostMember = (Post) obj; // Post로 캐스팅
+			}
+		}
+	} else {
+		// 데이터가 없을 때의 처리 (예: "데이터가 없습니다" 메시지 출력 등)
+	}
+	%>
 	<div class="container mt-3">
 		<div class="card">
 			<div class="card-header">
 				<div class="row">
 					<div class="col-md-3">
 						<p>
-							<strong>타입:</strong> <%=PostMember.getType()%>
+							<strong>타입:</strong>
+							<%=(PostMember != null) ? PostMember.getType() : "데이터가 없습니다"%>
 						</p>
 					</div>
 					<div class="col-md-3">
 						<p>
-							<strong>제목:</strong> [데이터베이스에서 받아온 제목]
+							<strong>제목:</strong>
+							<%=(PostMember != null) ? PostMember.getTitle() : "데이터가 없습니다"%>
 						</p>
 					</div>
 					<div class="col-md-3">
 						<p>
-							<strong>작성자:</strong> [데이터베이스에서 받아온 작성자]
+							<strong>작성자:</strong>
+							<%=(PostMember != null) ? PostMember.getName() : "데이터가 없습니다"%>
 						</p>
 					</div>
 					<div class="col-md-3">
 						<p>
-							<strong>조회수:</strong> [데이터베이스에서 받아온 조회수]
+							<strong>조회수:</strong>
+							<%=(PostMember != null) ? PostMember.getViewsnum() : "데이터가 없습니다"%>
 						</p>
 					</div>
 				</div>
 			</div>
 			<div class="card-body">
 				<div class="col">
-					<p>[데이터베이스에서 받아온 글]</p>
+					<div id="textArea">
+						<p><%=(PostMember != null) ? PostMember.getText() : "데이터가 없습니다"%></p>
+					</div>
 					<div class="text-center">
 						<p>
 							<strong>추천수:</strong> <span id="recommendCount">0</span>
@@ -154,7 +161,6 @@
 					</div>
 				</div>
 			</div>
-
 		</div>
 	</div>
 
@@ -166,23 +172,18 @@
 			recommendCount++;
 			document.getElementById("recommendCount").textContent = recommendCount;
 		}
+		function textAreaView() {
+	        var textArea = document.getElementById("textArea");
+	        var content = textArea.innerHTML;
+	        content = content.replace(/\[style (.*?)\]/g, function(_, style) {
+	            return '<span style="' + style + '">';
+	        });
+	        content = content.replace(/\[\/style\]/g, '</span>');
+	        textArea.innerHTML = content;
+	    }
 
-		// JavaScript로 URL에서 postid 값을 추출하는 함수
-		function getParameterByName(name) {
-			name = name.replace(/[\[\]]/g, "\\$&");
-			var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"), results = regex
-					.exec(window.location.href);
-			if (!results)
-				return null;
-			if (!results[2])
-				return '';
-			return decodeURIComponent(results[2].replace(/\+/g, " "));
-		}
-
-		// 추출된 postid 값을 변수에 저장
-		var postidValue = getParameterByName('postid');
-		// 추출된 postid 값을 출력해보기
-		console.log('postid:', postidValue);
+	    // 함수 호출
+	    textAreaView();
 	</script>
 </body>
 </html>

@@ -25,44 +25,46 @@
 <script type="text/javascript"
 	src="https://cdn.jsdelivr.net/npm/fullcalendar@5.7.0/main.min.js"></script>
 <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+<!-- FullCalendar 라이브러리를 이용하여 일정을 표시하는 부분 -->
 <script type="text/javascript">
-	document.addEventListener('DOMContentLoaded', function() {
-		var calendarEl = document.getElementById('calendar');
-		var calendar = new FullCalendar.Calendar(calendarEl, {
-			timeZone : 'UTC',
-			locale : 'ko', // 한국어 설정
-			initialView : 'dayGridMonth', // 홈페이지에서 다른 형태의 view를 확인할  수 있다.
+    // FullCalendar 라이브러리 초기화 및 설정
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            timeZone: 'UTC',
+            locale: 'ko', // 한국어 설정
+            initialView: 'dayGridMonth', // 달력 초기 뷰를 '월' 형태로 설정
 
-			events : [ // 일정 데이터 추가 , DB의 event를 가져오려면 JSON 형식으로 변환해 events에 넣어주면된다.
-			{
-				title : '에이펙스하기너무무섭다',
-				start : '2023-07-25',
-				end : '2023-08-08',
-				url : 'https://google.com'
-			}, {
-				title : '문명6달리는날',
-				start : '2023-07-26',
-				end : '2023-08-09',
-				url : 'https://google.com'
-			}, {
-				title : '문명6달리는날',
-				start : '2023-07-26',
-				end : '2023-08-09',
-				url : 'https://google.com'
-			}
-
-			],
-			eventClick : function(info) {//이벤트 클릭 시 알럿창으로 이벤트페이지 정보 및 링크 알림 후, 페이지이동
-				alert('Event: ' + info.event.title);
-
-				// change the border color just for fun
-				info.el.style.borderColor = 'red';
-			},
-			editable : false
-		//치훈이형 일정 드래그해서 바꿀려면 이거 true로 바꿔. 근데 DB적용시키려면 코드 좀 건드려야할듯
-		});
-		calendar.render();
-	});
+            // 이벤트 데이터 설정 (임시 데이터)
+            events: [
+                {
+                    title: '에이펙스하기너무무섭다',
+                    start: '2023-07-25',
+                    end: '2023-08-08',
+                    url: 'https://google.com'
+                },
+                {
+                    title: '문명6달리는날',
+                    start: '2023-07-26',
+                    end: '2023-08-09',
+                    url: 'https://google.com'
+                },
+                {
+                    title: '문명6달리는날',
+                    start: '2023-07-26',
+                    end: '2023-08-09',
+                    url: 'https://google.com'
+                }
+            ],
+            // 이벤트 클릭 시 동작하는 함수
+            eventClick: function(info) {
+                alert('Event: ' + info.event.title);
+                info.el.style.borderColor = 'red'; // 이벤트를 클릭한 요소의 테두리 색상 변경
+            },
+            editable: false // 일정 드래그해서 변경할 수 있는 옵션 (true로 설정하면 일정을 드래그해 수정할 수 있습니다.)
+        });
+        calendar.render(); // 달력 표시
+    });
 </script>
 <style>
 #calendarBox {
@@ -168,6 +170,8 @@
 					</div>
 				</div>
 			</div>
+			
+			<!-- 회원정보 표시하는 부분 -->
 			<div class="col-lg-4">
 				<!-- 로그인 시에만 보이는 회원정보 div -->
 				<div id="memberInfo" class="card">
@@ -216,6 +220,7 @@
 		</div>
 	</div>
 
+	<!-- 글 목록을 표시하는 부분 -->
 	<div class="container mt-3">
 		<div class="card">
 			<div class="card-body">
@@ -262,7 +267,6 @@
 		</div>
 	</div>
 
-
 	<!-- 페이지 -->
 	<nav aria-label="Page navigation" class="mt-3">
 		<ul class="pagination justify-content-center">
@@ -290,13 +294,15 @@
 			</div>
 		</div>
 	</div>
+	
 	<script>
     function viewPostDetails(postid) {
         // AJAX를 이용하여 서버에 글 상세 정보 요청
+        console.log("ajax 보내기 전",postid);
         $.ajax({
             url: "PostDetailsView.jsp",
             type: "POST", // POST 메소드 사용
-            data: { postid: postid },
+            data: { postid : postid },
             success: function(response) {
                 // 성공시, 받은 응답으로 postdetailsview.jsp 페이지로 이동
                 window.location.href = "PostDetailsView.jsp?postid=" + postid;
