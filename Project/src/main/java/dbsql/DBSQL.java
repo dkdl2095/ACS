@@ -22,7 +22,7 @@ public class DBSQL {
 		this.table = table.toUpperCase();
 	}
 
-	public void open() {
+	public void open() { // DB 연결 연결
 		try {
 			Class.forName(JDBC_DRIVER);
 			conn = DriverManager.getConnection(JDBC_URL, "hr", "hr");
@@ -31,7 +31,7 @@ public class DBSQL {
 		}
 	}
 
-	public void close() {
+	public void close() { // DB 연결 해제
 		try {
 			if (pstmt != null) {
 				pstmt.close();
@@ -44,13 +44,13 @@ public class DBSQL {
 		}
 	}
 
-	public List<Object> DBSelect(Tenant t) {
-		open();
-		List<Object> tenants = new ArrayList<>();
-		String sql = "SELECT * FROM " + table;
+	public List<Tenant> DBSelect(Tenant t) { // TenantComplet, TenantWait 테이블을 Select하는 함수
+		open(); // DB 연결
+		List<Tenant> tenants = new ArrayList<>();
+		String sql = "SELECT * FROM " + table; // sql 쿼리문  
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)){
 			ResultSet rs = pstmt.executeQuery();
-			while (rs.next()) {
+			while (rs.next()) { // 데이터 베이스에서 가져온 데이터를 Tenant 객체에 할당
 				t = new Tenant();
 				t.setId(rs.getString("id"));
 				t.setName(rs.getString("name"));
@@ -63,14 +63,14 @@ public class DBSQL {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			close();
+			close(); // DB 연결 해제
 		}
 		return tenants;
 	}
 	
-	public List<Object> DBSelect(Tenant t, int id) {
+	public List<Tenant> DBSelect(Tenant t, int id) { 
 		open();
-		List<Object> tenants = new ArrayList<>();
+		List<Tenant> tenants = new ArrayList<>();
 		String sql = "SELECT * FROM " + table + " WHERE id=?";
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)){
 			pstmt.setInt(1, id);
@@ -93,9 +93,9 @@ public class DBSQL {
 		return tenants;
 	}
 
-	public List<Object> DBSelect(Post p) {
+	public List<Post> DBSelect(Post p) {
 		open();
-		List<Object> posts = new ArrayList<>();
+		List<Post> posts = new ArrayList<>();
 		String sql = "SELECT * FROM " + table;
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)){
 			ResultSet rs = pstmt.executeQuery();
@@ -120,9 +120,9 @@ public class DBSQL {
 		return posts;
 	}
 	
-	public List<Object> DBSelect(Post p, int postid) {
+	public List<Post> DBSelect(Post p, int postid) {
 		open();
-		List<Object> posts = new ArrayList<>();
+		List<Post> posts = new ArrayList<>();
 		String sql = "SELECT * FROM " + table + " WHERE postid=?";
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)){
 			pstmt.setInt(1, postid);
@@ -148,9 +148,9 @@ public class DBSQL {
 		return posts;
 	}
 	
-	public List<Object> DBSelect(Post p, String type) {
+	public List<Post> DBSelect(Post p, String type) {
 		open();
-		List<Object> posts = new ArrayList<>();
+		List<Post> posts = new ArrayList<>();
 		String sql = "SELECT * FROM " + table + " WHERE type=?";
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)){
 			pstmt.setString(1, type);
@@ -176,9 +176,9 @@ public class DBSQL {
 		return posts;
 	}
 
-	public List<Object> DBSelect(Calender c) {
+	public List<Calender> DBSelect(Calender c) {
 		open();
-		List<Object> calenders = new ArrayList<>();
+		List<Calender> calenders = new ArrayList<>();
 		String sql = "SELECT * FROM " + table;
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)){
 			ResultSet rs = pstmt.executeQuery();
@@ -199,9 +199,9 @@ public class DBSQL {
 		return calenders;
 	}
 	
-	public List<Object> DBSelect(Calender c, int calid) {
+	public List<Calender> DBSelect(Calender c, int calid) {
 		open();
-		List<Object> calenders = new ArrayList<>();
+		List<Calender> calenders = new ArrayList<>();
 		String sql = "SELECT * FROM " + table + " WHERE calid=?";
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)){
 			ResultSet rs = pstmt.executeQuery();
@@ -223,9 +223,9 @@ public class DBSQL {
 		return calenders;
 	}
 
-	public List<Object> DBSelect(TenantBan b) {
+	public List<TenantBan> DBSelect(TenantBan b) {
 		open();
-		List<Object> ban = new ArrayList<>();
+		List<TenantBan> ban = new ArrayList<>();
 		String sql = "SELECT * FROM " + table;
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)){
 			ResultSet rs = pstmt.executeQuery();
@@ -244,9 +244,9 @@ public class DBSQL {
 		return ban;
 	}
 	
-	public List<Object> DBSelect(TenantBan b, int banid) {
+	public List<TenantBan> DBSelect(TenantBan b, int banid) {
 		open();
-		List<Object> ban = new ArrayList<>();
+		List<TenantBan> ban = new ArrayList<>();
 		String sql = "SELECT * FROM " + table + " WHERE banid=?";
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)){
 			ResultSet rs = pstmt.executeQuery();
