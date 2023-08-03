@@ -72,9 +72,7 @@
 		</div>
 	</nav>
 	
-	
-
-    <div class="container" id="MyInfoForm" style="display: none;">
+    <div class="container" id="MyInfoForm">
         <h2>내 정보 관리</h2>
         <hr>
         <p>소중한 내 정보를 확인하세요.</p>

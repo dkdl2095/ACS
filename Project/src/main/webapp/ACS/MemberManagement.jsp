@@ -68,13 +68,13 @@
 					Tenant t = new Tenant();
 
 					// 데이터베이스에서 회원 정보 가져오기
-					List<Object> TenantMembers = dbsql.DBSelect(t); // 적절한 메서드를 호출하여 회원 정보를 가져오도록 수정해야 합니다.
+					List<Tenant> TenantMembers = dbsql.DBSelect(t); // 적절한 메서드를 호출하여 회원 정보를 가져오도록 수정해야 합니다.
 
 					// 가져온 회원 정보를 사용하여 HTML 코드 작성
 					if (TenantMembers.size() > 0) {
-						for (Object obj : TenantMembers) {
-							if (obj instanceof Tenant) {
-						Tenant TenantMember = (Tenant) obj; // Tenant로 캐스팅
+						for (Tenant tenant : TenantMembers) {
+							if (tenant instanceof Tenant) {
+						Tenant TenantMember = tenant; // Tenant로 캐스팅
 					%>
 					<div class="row">
 						<div class="col-md-2">
