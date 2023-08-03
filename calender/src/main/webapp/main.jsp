@@ -32,39 +32,48 @@
                 locale: 'ko', // 한국어 설정
                 initialView: 'dayGridMonth', // 홈페이지에서 다른 형태의 view를 확인할  수 있다.
                 
-                events:[ // 일정 데이터 추가 , DB의 event를 가져오려면 JSON 형식으로 변환해 events에 넣어주면된다.
-                    {
-                        title:'에이펙스하기너무무섭다',
-                        start:'2023-07-25',
-                        end:'2023-08-08',
-                   		url:'https://google.com'
-                    },
-                    {
-                        title:'문명6달리는날',
-                        start:'2023-07-26',
-                        end:'2023-08-09',
-                        url:'https://google.com'
-                    },
-                    {
-                        title:'문명6달리는날',
-                        start:'2023-07-26',
-                        end:'2023-08-09',
-                        url:'https://google.com'
-                    }
+                events: <%= getEventsFromDB() %>,// 일정 데이터 추가 , DB의 event를 가져오려면 JSON 형식으로 변환해 events에 넣어주면된다.
                     
-                ],
                 eventClick: function(info) {//이벤트 클릭 시 알럿창으로 이벤트페이지 정보 및 링크 알림 후, 페이지이동
                     alert('Event: ' + info.event.title);
                     
-                    // change the border color just for fun
+                    // 보더(테두리) 색 바꾸기
                     info.el.style.borderColor = 'red';
                   },
-                editable: false //치훈이형 일정 드래그해서 바꿀려면 이거 true로 바꿔. 근데 DB적용시키려면 코드 좀 건드려야할듯
+                editable: false, //드래그로 수정하기 원할경우 true
+                dayMaxEvents: true, //최대 이벤트 개수 초과 시 아래에 따로 기재
+                expandRows: true //화면에 맞게 확장/축소
             });
             calendar.render();
         });
+        function getEventsFromDB() {
+            <%-- Java 코드 작성 (스크립트릿) --%>
+            <%-- DBSQL 객체 생성 --%>
+            var dbsql = new dbsql.DBSQL("CALENDER");
+            <%-- 데이터베이스에서 일정 정보 가져오기 --%>
+            var eventsData = dbsql.DBSelect("CALENDER");
+
+            <%-- 가져온 회원 정보를 사용하여 JSON 형식으로 일정 데이터 생성 --%>
+            var events = [];
+            <% if (eventsData.size() > 0) {
+                for (Object obj : eventsData) {
+                    if (obj instanceof Calender) {
+                        Tenant event = (Calender) obj; // Tenant로 캐스팅
+            %>
+            events.push({
+                title: '<%= event.getName() %>', // 일정 제목으로 회원 이름 사용
+                start: '<%= event.getStartDate() %>', // 일정의 시작 날짜
+                end: '<%= event.getEndDate() %>', // 일정의 종료 날짜
+                id: '<%= event.getId() %>' // 일정을 클릭했을 때 이동할 링크
+            });
+            <% }} %>
+
+            <%-- 생성한 일정 데이터를 반환 --%>
+            return events;
+        }
     </script>
-    <style>
+    <!--달력 스타일-->
+    <style> 
         #calendarBox{
             width: 100%;
         }
@@ -78,7 +87,7 @@
 			<a class="navbar-brand" href="MainView.jsp"> <!-- 로고 이미지 --> <!-- 
         로고 출처 
         https://pixabay.com/ko/vectors/%EB%8F%84%EC%8B%9C-%EB%8F%84%EB%A1%9C-%EC%A7%80%EC%97%AD-%EC%82%AC%ED%9A%8C-%EA%B1%B4%EB%AC%BC-2042634/
-        pixabay - Ricinator
+        pixabay - Ricinators
         --> <img src="Logo.png" alt="로고"
 				style="width: 20%; height: auto; margin: 0 auto; display: block;">
 			</a>

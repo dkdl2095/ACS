@@ -17,6 +17,68 @@
 	integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
 	crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- 아래 스크립트는 달력 관련 -->
+<meta http-equiv='X-UA-Compatible' content='IE=edge'> 
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.7.0/main.min.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/fullcalendar@5.7.0/main.min.js"></script>
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+    <script type="text/javascript">
+    
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                timeZone: 'UTC',
+                locale: 'ko', // 한국어 설정
+                initialView: 'dayGridMonth', // 홈페이지에서 다른 형태의 view를 확인할  수 있다.
+                
+                events: <%= getEventsFromDB() %>,// 일정 데이터 추가 , DB의 event를 가져오려면 JSON 형식으로 변환해 events에 넣어주면된다.
+                    
+                eventClick: function(info) {//이벤트 클릭 시 알럿창으로 이벤트페이지 정보 및 링크 알림 후, 페이지이동
+                    alert('Event: ' + info.event.title);
+                    
+                    // 보더(테두리) 색 바꾸기
+                    info.el.style.borderColor = 'red';
+                  },
+                editable: false, //드래그로 수정하기 원할경우 true
+                dayMaxEvents: true, //최대 이벤트 개수 초과 시 아래에 따로 기재
+                expandRows: true //화면에 맞게 확장/축소
+            });
+            calendar.render();
+        });
+        function getEventsFromDB() {
+            <%-- Java 코드 작성 (스크립트릿) --%>
+            <%-- DBSQL 객체 생성 --%>
+            var dbsql = new dbsql.DBSQL("CALENDER");
+            <%-- 데이터베이스에서 일정 정보 가져오기 --%>
+            var eventsData = dbsql.DBSelect("CALENDER");
+
+            <%-- 가져온 회원 정보를 사용하여 JSON 형식으로 일정 데이터 생성 --%>
+            var events = [];
+            <% if (eventsData.size() > 0) {
+                for (Object obj : eventsData) {
+                    if (obj instanceof Calender) {
+                        Tenant event = (Calender) obj; // Tenant로 캐스팅
+            %>
+            events.push({
+                title: '<%= event.getName() %>', // 일정 제목으로 회원 이름 사용
+                start: '<%= event.getStartDate() %>', // 일정의 시작 날짜
+                end: '<%= event.getEndDate() %>', // 일정의 종료 날짜
+                id: '<%= event.getId() %>' // 일정을 클릭했을 때 이동할 링크
+            });
+            <% }} %>
+
+            <%-- 생성한 일정 데이터를 반환 --%>
+            return events;
+        }
+    </script>
+    <!--달력 스타일-->
+    <style> 
+        #calendarBox{
+            width: 100%;
+        }
+
+    </style>
 <title>메인 화면</title>
 </head>
 <body>

@@ -12,44 +12,52 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript">
     
-        document.addEventListener('DOMContentLoaded', function () {
-            var calendarEl = document.getElementById('calendar');
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                timeZone: 'UTC',
-                locale: 'ko', // 한국어 설정
-                initialView: 'dayGridMonth', // 홈페이지에서 다른 형태의 view를 확인할  수 있다.
+    document.addEventListener('DOMContentLoaded', function () {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            timeZone: 'UTC',
+            locale: 'ko', // 한국어 설정
+            initialView: 'dayGridMonth', // 홈페이지에서 다른 형태의 view를 확인할  수 있다.
+            
+            events:[ // 일정 데이터 추가 , DB의 event를 가져오려면 JSON 형식으로 변환해 events에 넣어주면된다.
+                {
+                    title:'에이펙스하기너무무섭다',
+                    start:'2023-07-25',
+                    end:'2023-08-08',
+               		url:'https://google.com'
+                },
+                {
+                    title:'문명6달리는날',
+                    start:'2023-07-26',
+                    end:'2023-08-09',
+                    url:'https://google.com'
+                },
+                {
+                    title:'문명6달리는날',
+                    start:'2023-07-26',
+                    end:'2023-08-09',
+                    url:'https://google.com'
+                }
                 
-                events:[ // 일정 데이터 추가 , DB의 event를 가져오려면 JSON 형식으로 변환해 events에 넣어주면된다.
-                    {
-                        title:'에이펙스하기너무무섭다',
-                        start:'2023-07-25',
-                        end:'2023-08-08',
-                   		url:'https://google.com'
-                    },
-                    {
-                        title:'문명6달리는날',
-                        start:'2023-07-26',
-                        end:'2023-08-09',
-                        url:'https://google.com'
-                    },
-                    {
-                        title:'문명6달리는날',
-                        start:'2023-07-26',
-                        end:'2023-08-09',
-                        url:'https://google.com'
-                    }
-                    
-                ],
-                eventClick: function(info) {//이벤트 클릭 시 알럿창으로 이벤트페이지 정보 및 링크 알림 후, 페이지이동
-                    alert('Event: ' + info.event.title);
-                    
-                    // change the border color just for fun
-                    info.el.style.borderColor = 'red';
-                  },
-                editable: false //치훈이형 일정 드래그해서 바꿀려면 이거 true로 바꿔. 근데 DB적용시키려면 코드 좀 건드려야할듯
-            });
-            calendar.render();
+            ],
+            eventClick: function(info) {//이벤트 클릭 시 알럿창으로 이벤트페이지 정보 및 링크 알림 후, 페이지이동
+                alert('Event: ' + info.event.title);
+                
+                // change the border color just for fun
+                info.el.style.borderColor = 'red';
+              },
+            editable: false, //치훈이형 일정 드래그해서 바꿀려면 이거 true로 바꿔. 근데 DB적용시키려면 코드 좀 건드려야할듯
+            dayMaxEvents: true, //최대 이벤트 개수 초과 시 아래에 따로 기재
+            expandRows: true //화면에 맞게 확장/축소
         });
+        calendar.render();
+    });
+</script>
+<!--달력 스타일-->
+<style> 
+    #calendarBox{
+        width: 100%;
+    }
     </script>
     <style>
         #calendarBox{
