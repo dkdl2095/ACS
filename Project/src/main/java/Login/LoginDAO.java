@@ -44,7 +44,7 @@ public class LoginDAO {
 		Tenant result = new Tenant();
 		
 		try {
-			String query = "SELECT id, password, name FROM TenantComplet WHERE id = ? AND password = ?";
+			String query = "SELECT id, password, name, residence FROM TenantComplet WHERE id = ? AND password = ?";   //DB TenantComplet테이블 데이터 비교할 쿼리문
 			PreparedStatement pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, id);
 			pstmt.setString(2, password);
@@ -55,18 +55,21 @@ public class LoginDAO {
 				String getid = rs.getString("id");
 				String getpassword = rs.getString("password");
 				String getname = rs.getString("name");
+				String getResidence = rs.getString("residence");
 				System.out.println("ID: " + getid + ", Password: " + getpassword);
+				System.out.println("name: " + getname + ", residence: " + getResidence);
 
 				String storedPassword = rs.getString("password");
 				System.out.println(rs);
-				if (storedPassword.equals(password)) {
+				if (storedPassword.equals(password)) {  //password 일치시 로그인 출력
 					System.out.println("로그인.");
 					result.setId(getid);
 					result.setPassword(storedPassword);
 					result.setName(getname);
+					result.setResidence(getResidence);
 					return result;
 				} else {
-					System.out.println("아이디 or 비밀번호 다릅니다.");
+					System.out.println("아이디 or 비밀번호 다릅니다.");  //password 다를시 문구 출력
 					result.setId("Error:-1");
 				}
 			}
