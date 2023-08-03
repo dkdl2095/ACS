@@ -92,13 +92,13 @@
 						<div class="col-md-2">
 							<p>
 								<strong>거주지:</strong>
-								<%=TenantMember.getAccessiondate()%>
+								<%=TenantMember.getResidence()%>
 							</p>
 						</div>
 						<div class="col-md-2">
 							<p>
 								<strong>가입일:</strong>
-								<%=TenantMember.getResidence()%>
+								<%=TenantMember.getAccessiondate()%>
 							</p>
 						</div>
 						<div class="col-md-2">
