@@ -125,6 +125,7 @@
 			<div class="mb-3">
 				<label for="postContent" class="form-label">게시글 내용</label>
 				<textarea class="form-control" id="postContent" rows="20"></textarea>
+				<div id="editor" contenteditable="true"></div>
 			</div>
 		</div>
 	</form>
@@ -336,6 +337,35 @@
 			var textArea = document.getElementById("postContent");
 			textArea.value += "\n"; // 이미지 첨부 후 줄 바꿈 처리
 		}
+
+		// 이미지 드래그 앤 드랍
+		var editor = document.getElementById('editor');
+
+		editor.addEventListener('dragover', function(e) {
+			e.stopPropagation();
+			e.preventDefault();
+			e.dataTransfer.dropEffect = 'copy';
+		});
+
+		editor.addEventListener('drop', function(e) {
+			e.stopPropagation();
+			e.preventDefault();
+
+			var files = e.dataTransfer.files;
+			var file = files[0];
+
+			if (file.type.match('image.*')) {
+				var reader = new FileReader();
+
+				reader.onload = function(e) {
+					var img = document.createElement('img');
+					img.src = e.target.result;
+					editor.appendChild(img);
+				};
+
+				reader.readAsDataURL(file);
+			}
+		});
 	</script>
 </body>
 </html>
