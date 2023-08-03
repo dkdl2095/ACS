@@ -11,13 +11,18 @@
 <body>
 <%-- Java 코드 작성 (스크립트릿) --%>
 <%
-    // 클라이언트로부터 전송된 데이터 받기
+    // 클라이언트로부터 전송된 데이터 받기   
+    // PostCreationEditing.jsp
     String postContent = request.getParameter("postContent");
 	String postTitle = request.getParameter("postTitle");
     String btnConfirm = request.getParameter("btnConfirm");
     String notice = request.getParameter("notice");
     String Schedule = request.getParameter("Schedule");
     String Radio ="";
+    
+ 	// PostManagement.jsp
+    String btnPostDelete = request.getParameter("btnPostDelete");
+   	int postid = Integer.parseInt(request.getParameter("id"));
     
     if(notice.equals("true")){
     	Radio = "공지";
@@ -43,6 +48,20 @@
         
         // 데이터를 삽입합니다.
         dbsql.DBInsert(post);
+
+        // Send the response to the Eclipse console using JSP's 'out' object
+        out.println("요청이 성공적으로 처리되었습니다.");
+        out.println("서버 응답: " + "데이터가 성공적으로 저장되었습니다."); // You can customize this message as needed
+    }
+    
+    // 관리자가 글 삭제
+    if (btnPostDelete != null && btnPostDelete.equals("true")) {
+        // DBSQL 객체 생성
+        Post post = new Post();
+        DBSQL dbsql = new DBSQL("Post");
+        
+        // 데이터를 삽입합니다.
+        dbsql.DBDelete(post, postid);
 
         // Send the response to the Eclipse console using JSP's 'out' object
         out.println("요청이 성공적으로 처리되었습니다.");

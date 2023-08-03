@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page import="dbsql.DBSQL"%>
 <%@ page import="table.*"%>
 <%@ page import="java.util.List"%>
@@ -56,105 +57,57 @@
 			</ul>
 		</div>
 	</nav>
-
-	<!-- 수락 대기중 라벨과 데이터베이스에서 받아온 정보를 표시하는 div -->
-	<div class="container mt-2">
+	<div class="container mt-3">
 		<div class="card">
-			<div class="card-header">수락 대기중</div>
 			<div class="card-body">
-				<div class="row">
-					<%
-					DBSQL dbsql = new DBSQL("TenantWait");
-					Tenant t = new Tenant();
+				<%-- Java 코드 작성 (스크립트릿) --%>
+				<!-- 글목록 정보를 표시하는 플레이스홀더 요소 -->
+				<%
+				// Java 코드 작성 (스크립트릿)
+				// DBSQL 객체 생성
+				DBSQL dbsql = new DBSQL("Post");
+				Post p = new Post();
 
-					// 데이터베이스에서 회원 정보 가져오기
-					List<Tenant> TenantMembers = dbsql.DBSelect(t); // 적절한 메서드를 호출하여 회원 정보를 가져오도록 수정해야 합니다.
+				// 데이터베이스에서 글목록 가져오기
+				List<Post> PostMembers = dbsql.DBSelect(p); // 적절한 메서드를 호출하여 글목록 정보를 가져오도록 수정해야 합니다.
 
-					// 가져온 회원 정보를 사용하여 HTML 코드 작성
-					if (TenantMembers.size() > 0) {
-						for (Tenant tenant : TenantMembers) {
-							if (tenant instanceof Tenant) {
-						Tenant TenantMember = tenant; // Tenant로 캐스팅
-					%>
-					<div class="row">
-						<div class="col-md-2">
-							<p>
-								<strong>입주자 아이디:</strong>
-								<%=TenantMember.getId()%>
-							</p>
-						</div>
-						<div class="col-md-2">
-							<p>
-								<strong>입주자 명:</strong>
-								<%=TenantMember.getName()%>
-							</p>
-						</div>
-						<div class="col-md-2">
-							<p>
-								<strong>거주지:</strong>
-								<%=TenantMember.getAccessiondate()%>
-							</p>
-						</div>
-						<div class="col-md-2">
-							<p>
-								<strong>가입일:</strong>
-								<%=TenantMember.getResidence()%>
-							</p>
-						</div>
-						<div class="col-md-2">
-							<button class="btn btn-success btnAccept"
-								data-id="<%=TenantMember.getId()%>"
-								data-name="<%=TenantMember.getName()%>"
-								data-password="<%=TenantMember.getPassword()%>"
-								data-accessiondate="<%=TenantMember.getAccessiondate()%>"
-								data-residence="<%=TenantMember.getResidence()%>">수락</button>
-							<button class="btn btn-danger">거절</button>
-						</div>
-					</div>
-
-					<%
-					} else {
-					%>
-					<!-- 적절한 타입이 아닌 경우 처리 -->
-					<p>회원 정보가 없습니다.</p>
-					<%
-					}
-					}
-					} else {
-					%>
-					<p>회원 정보가 없습니다.</p>
-					<%
-					}
-					%>
+				// 가져온 글목록 정보를 사용하여 HTML 코드 작성
+				if (PostMembers.size() > 0) {
+					for (Post post : PostMembers) {
+						if (post instanceof Post) {
+					Post PostMember = (Post) post; // Post로 캐스팅
+				%>
+				<p>
+					<%=PostMember.getPostid()%>
+					[<%=PostMember.getType()%>] 제목:
+					<%=PostMember.getTitle()%>
+					작성자:
+					<%=PostMember.getName()%>
+					조회수:
+					<%=PostMember.getViewsnum()%>
+					날짜:
+					<%=PostMember.getWritingdate()%>
+				</p>
+				<div class="col-md-2">
+					<button class="btn btn-danger btnPostDelete"
+						data-id="<%=PostMember.getPostid()%>">글 삭제</button>
 				</div>
+				<%
+				}
+				}
+				} else {
+				%>
+				<p>게시글이 없습니다.</p>
+				<%
+				}
+				%>
 			</div>
 		</div>
-		<div class="col-lg-8">
-			<a href="MemberManagement.jsp" class="btn btn-primary">회원 관리</a>
-		</div>
-		<div class="col-lg-8">
-			<a href="PostManagement.jsp" class="btn btn-primary">글 관리</a>
-		</div>
-		<nav aria-label="Page navigation" class="mt-3">
-			<ul class="pagination justify-content-center">
-				<li class="page-item disabled"><a class="page-link" href="#"
-					tabindex="-1" aria-disabled="true">&laquo;</a></li>
-				<li class="page-item active"><a class="page-link" href="#">1</a></li>
-				<li class="page-item"><a class="page-link" href="#">2</a></li>
-				<li class="page-item"><a class="page-link" href="#">3</a></li>
-				<li class="page-item disabled"><a class="page-link" href="#">&raquo;</a></li>
-			</ul>
-		</nav>
 	</div>
-
 	<script>
-		// 회원 관리 버튼에 대한 클릭 이벤트 처리
-		$(".btnAccept").on("click", function() {
+		// 임시 차단 버튼에 대한 클릭 이벤트 처리
+		$(".btnPostDelete").on("click", function() {
 			var id = $(this).data("id");
-			var name = $(this).data("name");
-			var password = $(this).data("password");
-			var accessiondate = $(this).data("accessiondate");
-			var residence = $(this).data("residence");
 
 			// AJAX 요청을 보냅니다.
 			$.ajax({
@@ -162,11 +115,7 @@
 				method : "POST",
 				data : {
 					id : id,
-					name : name,
-					password : password,
-					accessiondate : accessiondate,
-					residence : residence,
-					btnAccept : "true"
+					btnPostDelete : "true"
 				},
 				success : function(response) {
 					// 요청이 성공적으로 처리되었을 때 실행되는 코드
