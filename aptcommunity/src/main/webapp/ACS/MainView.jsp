@@ -1,8 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>	
 <%@ page import="dbsql.DBSQL"%>
 <%@ page import="table.*"%>
 <%@ page import="java.util.List"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,6 +22,13 @@
 <title>메인 화면</title>
 </head>
 <body>
+
+<%-- Check Login --%>
+	<jsp:useBean id="loginuser" class="table.Tenant" scope="session"/>
+	<c:if test="${empty loginuser.id}">
+	    <script>location.href = "/Project/lc?action=login"</script>
+	</c:if>
+	
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<div class="container-fluid">
 			<a class="navbar-brand" href="MainView.jsp"> <!-- 로고 이미지 --> <!-- 
