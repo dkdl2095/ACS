@@ -111,7 +111,7 @@
 
 			// AJAX 요청을 보냅니다.
 			$.ajax({
-				url : "Tenant.jsp",
+				url : "Post.jsp",
 				method : "POST",
 				data : {
 					id : id,

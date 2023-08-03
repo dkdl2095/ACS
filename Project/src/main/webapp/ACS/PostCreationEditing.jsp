@@ -290,7 +290,7 @@
 							if (confirmed) {
 								// AJAX 요청을 보냅니다.
 								$.ajax({
-									url : "PostCreation.jsp",
+									url : "Post.jsp",
 									method : "POST",
 									data : {
 										postContent : postContent,
