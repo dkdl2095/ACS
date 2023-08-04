@@ -276,7 +276,7 @@ a.btn-link {
 					</div>
 					<div class="col-lg-1">
 						<a class="btn btn-link"
-							onclick="setPostType(<%=PostMember.getType()%>)"> <%=PostMember.getType()%></a>
+							onclick="setPostType('<%=PostMember.getType()%>')"> <%=PostMember.getType()%></a>
 					</div>
 					<div class="col-lg-5">
 						<a class="btn btn-link"
@@ -341,6 +341,12 @@ a.btn-link {
 							<option value="일정">일정</option>
 						</select>
 					</div>
+					<div class="col-lg-3">
+						<select class="form-control" id="postValueSelect">
+							<option value="title" selected>제목</option>
+							<option value="name">작성자</option>
+						</select>
+					</div>
 					<input type="text" class="form-control" id="searchText"
 						placeholder="검색어를 입력하세요">
 					<button class="btn btn-secondary btnPostSearch" type="button"
@@ -378,13 +384,15 @@ a.btn-link {
     }
     
     function searchPosts() {
+    	var postValue = $("#postValueSelect").val();
 		var searchText = $("#searchText").val();
-		console.log("searchPosts",postType);
+		console.log("postValue",postValue);
 		// AJAX를 이용하여 서버에 검색 요청
 		$.ajax({
 			url: "Post.jsp",
 			type: "POST",
 			data: { postType: postType,
+					postValue: postValue,
 					searchText: searchText,
 					btnPostSearch: "true"
 			},

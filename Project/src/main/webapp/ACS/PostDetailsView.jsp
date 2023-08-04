@@ -98,6 +98,7 @@
 
 		dbsqlUpdate.DBUpdate(post, postid, PostMember.getViewsnum());
 		System.out.println("조회수: " + PostMember.getViewsnum());
+		postidStr = null;
 	}
 	%>
 	<div class="container mt-3">
@@ -174,11 +175,13 @@
 	<script>
 		// 추천 버튼을 누르면 카운트 증가
 		let recommendCount = 0;
-
-		function recommend() {
-			recommendCount++;
-			document.getElementById("recommendCount").textContent = recommendCount;
-		}
+		
+		$(document).ready(function() {
+			function recommend() {
+				recommendCount++;
+				document.getElementById("recommendCount").textContent = recommendCount;
+			}
+		});
 		function textAreaView() {
 			var textArea = document.getElementById("textArea");
 			var content = textArea.innerHTML;

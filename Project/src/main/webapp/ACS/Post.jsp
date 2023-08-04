@@ -3,7 +3,7 @@
 <%@ page import="java.sql.Date"%>
 <%@ page import="dbsql.*"%>
 <%@ page import="table.Post"%>
-<%@ page import="java.util.List" %>
+<%@ page import="java.util.List"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -36,9 +36,11 @@
 
 	// 클라이언트로부터 전송된 데이터 받기
 	String postType = request.getParameter("postType");
+	String postValue = request.getParameter("postValue");
 	String searchText = request.getParameter("searchText");
 	String btnPostSearch = request.getParameter("btnPostSearch");
-
+	
+	System.out.println("postType : "+postType+", postValue : "+postValue);
 	// 요청 파라미터에서 confirm 값을 확인하여 데이터 삽입 여부를 결정
 	if (btnConfirm != null && btnConfirm.equals("true")) {
 		// DBSQL 객체 생성
@@ -86,17 +88,25 @@
 	}
 	
 	if (btnPostSearch != null && btnPostSearch.equals("true")) {
-	    if (searchText == null || searchText.trim().isEmpty()) {
-	        // 검색어가 없을 경우, 모든 글 목록을 가져옴
-	        Select dbsqlPost = new Select("Post");
-	        Post post = new Post();
-	        List<Post> PostMembers = dbsqlPost.DBSelect(post, postType);
+		Select dbsqlPost = new Select("Post");
+        Post post = new Post();
+        List<Post> PostMembers = null;
+		if ((postType.equals("")||postType.equals("전체")) && (searchText == null || searchText.trim().isEmpty())) {
+		    // 검색어가 없고 타입이 전체일 때, 전체 글 목록을 가져옴
+	        PostMembers = dbsqlPost.DBSelect(post);
 	        request.setAttribute("PostMembers", PostMembers);
-	    } else {
+		}
+		else if (searchText == null || searchText.trim().isEmpty()) {
+	        // 검색어가 없을 경우, 해당하는 타입의 글 목록을 가져옴
+	        PostMembers = dbsqlPost.DBSelect(post, postType);
+	        request.setAttribute("PostMembers", PostMembers);
+	    }else if(postType.equals("")||postType.equals("전체")){
+	    	// 검색어가 있고 타입이 전체일 때, 해당하는 글 목록을 가져옴 
+	        PostMembers = dbsqlPost.DBSelect(post, postValue, searchText);
+	        request.setAttribute("PostMembers", PostMembers);
+	    }else {
 	        // 검색어가 있을 경우, 해당하는 타입의 글 목록을 가져옴
-	        Select dbsqlPost = new Select("Post");
-	        Post post = new Post();
-	        List<Post> PostMembers = dbsqlPost.DBSelect(post, searchText);
+	        PostMembers = dbsqlPost.DBSelect(post, postValue, searchText, postType);
 	        request.setAttribute("PostMembers", PostMembers);
 	    }
 	%>
@@ -125,45 +135,45 @@
 		</div>
 	</div>
 	<div class="card-body">
-	    <%
-	    List<Post> PostMembers = (List<Post>) request.getAttribute("PostMembers");
+		<%
+	    //PostMembers = (List<Post>) request.getAttribute("PostMembers");
 	    if (PostMembers != null && !PostMembers.isEmpty()) {
 	        for (Post obj : PostMembers) {
 	            if (obj instanceof Post) {
 	                Post PostMember = obj; // Post로 캐스팅
 	    %>
-	    <div class="row">
-	        <div class="col-lg-1">
-	            <p><%=PostMember.getPostid()%></p>
-	        </div>
-	        <!-- 기존의 글목록 표시 부분이 여기로 이동되었습니다. -->
-	        <div class="col-lg-1">
-	            <p><%=PostMember.getType()%></p>
-	        </div>
-	        <div class="col-lg-5">
-	            <a class="btn btn-link"
-	                onclick="viewPostDetails(<%=PostMember.getPostid()%>)"><%=PostMember.getTitle()%></a>
-	        </div>
-	        <div class="col-lg-1">
-	            <p><%=PostMember.getName()%></p>
-	        </div>
-	        <div class="col-lg-2">
-	            <p><%=PostMember.getWritingdate()%></p>
-	        </div>
-	        <div class="col-lg-1">
-	            <p><%=PostMember.getViewsnum()%></p>
-	        </div>
-	        <div class="col-lg-1">
-	            <p>추천</p>
-	        </div>
-	    </div>
-	    <%
+		<div class="row">
+			<div class="col-lg-1">
+				<p><%=PostMember.getPostid()%></p>
+			</div>
+			<!-- 기존의 글목록 표시 부분이 여기로 이동되었습니다. -->
+			<div class="col-lg-1">
+				<p><%=PostMember.getType()%></p>
+			</div>
+			<div class="col-lg-5">
+				<a class="btn btn-link"
+					onclick="viewPostDetails(<%=PostMember.getPostid()%>)"><%=PostMember.getTitle()%></a>
+			</div>
+			<div class="col-lg-1">
+				<p><%=PostMember.getName()%></p>
+			</div>
+			<div class="col-lg-2">
+				<p><%=PostMember.getWritingdate()%></p>
+			</div>
+			<div class="col-lg-1">
+				<p><%=PostMember.getViewsnum()%></p>
+			</div>
+			<div class="col-lg-1">
+				<p>추천</p>
+			</div>
+		</div>
+		<%
 	            }
 	        }
 	    } else {
 	    %>
-	    <p>검색 결과가 없습니다.</p>
-	    <%
+		<p>검색 결과가 없습니다.</p>
+		<%
 	    }
 	    %>
 	</div>
