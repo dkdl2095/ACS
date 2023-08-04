@@ -59,6 +59,7 @@
 	</nav>
 	<div class="container mt-3">
 		<div class="card">
+			<div class="card-header">글 목록</div>
 			<div class="card-body">
 				<%-- Java 코드 작성 (스크립트릿) --%>
 				<!-- 글목록 정보를 표시하는 플레이스홀더 요소 -->
@@ -97,6 +98,10 @@
 				<%
 				}
 				%>
+			</div>
+			<div class="col-lg-8">
+				<a href="MemberManagement.jsp" class="btn btn-primary">회원 관리</a> <a
+					href="AdminView.jsp" class="btn btn-primary">회원 수락</a>
 			</div>
 		</div>
 	</div>

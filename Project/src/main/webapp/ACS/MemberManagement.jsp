@@ -135,7 +135,8 @@
 			</div>
 		</div>
 		<div class="col-lg-8">
-			<a href="AdminView.jsp" class="btn btn-primary">회원 수락</a>
+			<a href="AdminView.jsp" class="btn btn-primary">회원 수락</a> <a
+				href="PostManagement.jsp" class="btn btn-primary">글 관리</a>
 		</div>
 	</div>
 
