@@ -76,6 +76,12 @@ a.btn-link {
 	text-decoration: none;
 	color: black;
 }
+
+/* 달력 스타일 설정 */
+.card-body #calendarBox #calendar a {
+	text-decoration: none;
+	color: black;
+}
 </style>
 <title>메인 화면</title>
 </head>
@@ -306,7 +312,7 @@ a.btn-link {
 			<div class="col-lg-3">
 				<a href="PostCreationEditing.jsp" class="btn btn-primary">글쓰기</a>
 			</div>
-			<div class="col-lg-4">
+			<div class="col-lg-5">
 				<%
 				// 전체 게시물 수
 				List<Post> Postcount = dbsqlPost.DBSelect(post);
