@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import table.Tenant;
 
+
 @WebServlet("/lc")
 public class LoginController extends HttpServlet {
 	LoginDAO dao = new LoginDAO();
@@ -57,31 +58,38 @@ public class LoginController extends HttpServlet {
 
             if (!result.getId().contains("Error")) {
                 session.setAttribute("result", "로그인에 성공했습니다.");
+                
                 session.setAttribute("loginuser", result);
-                return "redirect:/Project/ACS/MainView.jsp";
+                session.setAttribute("ID", result.getId()); //ID를 세션에 저장
+                session.setAttribute("NAME", result.getName());  //이름을 세션에 저장
+                session.setAttribute("RESIDENCE", result.getResidence()); //입주정보를 세션에 저장
+                //System.out.println("1"+result+result.getId() + result.getPassword() + result.getName() + result.getResidence());
+                return "redirect:/Project/ACS/MainView.jsp";  //로그인 성공하면 메인뷰로 이동
             } else {
             	// "Error:-1" -> ["Error", "-1"]
-            	int errorcode = Integer.parseInt(result.getId().split(":")[1]);
+            	int errorcode = Integer.parseInt(result.getId().split(":")[1]);   //에러코드는 split함수를 이용해 -1,-2,-3 경우 분리
             	switch (errorcode) {
             	case -1:
             		session.setAttribute("error", "비밀번호가 다름.");
             		break;
             	case -2:
-            		session.setAttribute("error", "비밀번호가 다름.");
+            		session.setAttribute("error", "입력한 정보가 없음.");
             		break;
             	case -3:
-            		session.setAttribute("error", "비밀번호가 다름.");
+            		session.setAttribute("error", "데이터베이스에 정보가 확인이 안됨.");
             		break;
             	default:
             		session.setAttribute("error", "뭔지 모를 오류.");
             	}
             }
 
-            return "redirect:/Project/lc?action=login";
+            return "redirect:/Project/lc?action=login";      //로그인 성공이 안되면 다시 로그인 화면으로
         } else if (req.getMethod().equalsIgnoreCase("get")) {
-            return "/ACS/Login.jsp";
+            return "/ACS/Login.jsp";  
         }
 
         return "/ACS/Login.jsp";
     }
+    
+
 }

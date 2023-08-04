@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="java.sql.Date"%>
-<%@ page import="dbsql.DBSQL"%>
+<%@ page import="dbsql.*"%>
 <%@ page import="table.Post"%>
 <%@ page import="java.util.List" %>
 <!DOCTYPE html>
@@ -43,7 +43,7 @@
 	if (btnConfirm != null && btnConfirm.equals("true")) {
 		// DBSQL 객체 생성
 		Post post = new Post();
-		DBSQL dbsql = new DBSQL("Post");
+		Insert dbsqlInsert = new Insert("Post");
 		//newPost.setPostid(2); // 원하는 값을 설정합니다.
 
 		if (notice.equals("true")) {
@@ -62,7 +62,7 @@
 		post.setViewsnum(0);
 
 		// 데이터를 삽입합니다.
-		dbsql.DBInsert(post);
+		dbsqlInsert.DBInsert(post);
 
 		// Send the response to the Eclipse console using JSP's 'out' object
 		out.println("요청이 성공적으로 처리되었습니다.");
@@ -73,7 +73,7 @@
 	if (btnPostDelete != null && btnPostDelete.equals("true")) {
 		// DBSQL 객체 생성
 		Post post = new Post();
-		DBSQL dbsql = new DBSQL("Post");
+		Delete dbsql = new Delete("Post");
 
 		int postid = Integer.parseInt(request.getParameter("id"));
 
@@ -88,13 +88,13 @@
 	if (btnPostSearch != null && btnPostSearch.equals("true")) {
 	    if (searchText == null || searchText.trim().isEmpty()) {
 	        // 검색어가 없을 경우, 모든 글 목록을 가져옴
-	        DBSQL dbsqlPost = new DBSQL("Post");
+	        Select dbsqlPost = new Select("Post");
 	        Post post = new Post();
 	        List<Post> PostMembers = dbsqlPost.DBSelect(post, postType);
 	        request.setAttribute("PostMembers", PostMembers);
 	    } else {
 	        // 검색어가 있을 경우, 해당하는 타입의 글 목록을 가져옴
-	        DBSQL dbsqlPost = new DBSQL("Post");
+	        Select dbsqlPost = new Select("Post");
 	        Post post = new Post();
 	        List<Post> PostMembers = dbsqlPost.DBSelect(post, searchText);
 	        request.setAttribute("PostMembers", PostMembers);

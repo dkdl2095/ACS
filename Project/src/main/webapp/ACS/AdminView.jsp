@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ page import="dbsql.DBSQL"%>
+<%@ page import="dbsql.Select"%>
 <%@ page import="table.*"%>
 <%@ page import="java.util.List"%>
 <!DOCTYPE html>
@@ -64,7 +64,7 @@
 			<div class="card-body">
 				<div class="row">
 					<%
-					DBSQL dbsql = new DBSQL("TenantWait");
+					Select dbsql = new Select("TenantWait");
 					Tenant t = new Tenant();
 
 					// 데이터베이스에서 회원 정보 가져오기

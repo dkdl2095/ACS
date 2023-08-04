@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ page import="dbsql.DBSQL"%>
+<%@ page import="dbsql.Select"%>
 <%@ page import="table.*"%>
 <%@ page import="java.util.List"%>
 <!DOCTYPE html>
@@ -65,7 +65,7 @@
 				<%
 				// Java 코드 작성 (스크립트릿)
 				// DBSQL 객체 생성
-				DBSQL dbsql = new DBSQL("Post");
+				Select dbsql = new Select("Post");
 				Post p = new Post();
 
 				// 데이터베이스에서 글목록 가져오기

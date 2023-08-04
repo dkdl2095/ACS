@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ page import="dbsql.DBSQL"%>
+<%@ page import="dbsql.Select"%>
 <%@ page import="table.*"%>
 <%@ page import="java.util.List"%>
 <!DOCTYPE html>
@@ -98,9 +98,12 @@ a.btn-link {
 				<li class="nav-item"><a class="nav-link" href="MainView.jsp">
 						<!-- 홈 버튼 이미지 --> <img src="Home.png" alt="로고" height="30">
 				</a></li>
-				<li class="nav-item"><a class="nav-link" href="#">공지</a></li>
-				<li class="nav-item"><a class="nav-link" href="#">잡담</a></li>
-				<li class="nav-item"><a class="nav-link" href="#">일정</a></li>
+				<li class="nav-item"><a class="nav-link" href="#"
+					onclick="setPostType('공지')">공지</a></li>
+				<li class="nav-item"><a class="nav-link" href="#"
+					onclick="setPostType('잡담')">잡담</a></li>
+				<li class="nav-item"><a class="nav-link" href="#"
+					onclick="setPostType('일정')">일정</a></li>
 			</ul>
 			<!-- 내 정보, 로그아웃 버튼 -->
 			<ul class="navbar-nav">
@@ -141,11 +144,11 @@ a.btn-link {
 						<%
 						// Java 코드 작성 (스크립트릿)
 						// DBSQL 객체 생성
-						DBSQL dbsql = new DBSQL("TENANTCOMPLET");
+						Select dbSelect = new Select("TENANTCOMPLET");
 						Tenant t = new Tenant();
 
 						// 데이터베이스에서 회원 정보 가져오기
-						List<Tenant> TenantMembers = dbsql.DBSelect(t); // 적절한 메서드를 호출하여 회원 정보를 가져오도록 수정해야 합니다.
+						List<Tenant> TenantMembers = dbSelect.DBSelect(t); // 적절한 메서드를 호출하여 회원 정보를 가져오도록 수정해야 합니다.
 
 						// 가져온 회원 정보를 사용하여 HTML 코드 작성
 						if (TenantMembers.size() > 0) {
@@ -186,27 +189,24 @@ a.btn-link {
 						<%
 						// Java 코드 작성 (스크립트릿)
 						// DBSQL 객체 생성
-						DBSQL dbsqlScedule = new DBSQL("Post");
-						Post pScedule = new Post();
+						Select dbsqlScedule = new Select("Calender");
+						Calendar pScedule = new Calendar();
 
 						// 데이터베이스에서 글목록 가져오기
-						List<Post> SceduleMembers = dbsqlScedule.DBSelect(pScedule, "일정"); // 적절한 메서드를 호출하여 글목록 정보를 가져오도록 수정해야 합니다.
+						List<Calendar> SceduleMembers = dbsqlScedule.DBSelect(pScedule); // 적절한 메서드를 호출하여 글목록 정보를 가져오도록 수정해야 합니다.
 
 						// 가져온 글목록 정보를 사용하여 HTML 코드 작성
 						if (SceduleMembers.size() > 0) {
-							for (Post obj : SceduleMembers) {
-								if (obj instanceof Post) {
-							Post SceduleMember = obj; // Post로 캐스팅
+							for (Calendar obj : SceduleMembers) {
+								if (obj instanceof Calendar) {
+							Calendar SceduleMember = obj; // Post로 캐스팅
 						%>
 						<p>
-							번호 :
-							<%=SceduleMember.getPostid()%>, 타입:
-							<%=SceduleMember.getType()%>, 타이틀:
-							<%=SceduleMember.getTitle()%>, 이름:
-							<%=SceduleMember.getName()%>, 조회수:
-							<%=SceduleMember.getViewsnum()%>, 날짜:
-							<%=SceduleMember.getWritingdate()%>, 텍스트:
-							<%=SceduleMember.getText()%>
+							callid :
+							<%=SceduleMember.getCalid()%>, cdate:
+							<%=SceduleMember.getCdate()%>, text:
+							<%=SceduleMember.getText()%>, postid:
+							<%=SceduleMember.getPostid()%>
 						</p>
 						<%
 						}
@@ -258,7 +258,7 @@ a.btn-link {
 				<%
 				// Java 코드 작성 (스크립트릿)
 				// DBSQL 객체 생성
-				DBSQL dbsqlPost = new DBSQL("Post");
+				Select dbsqlPost = new Select("Post");
 				Post post = new Post();
 
 				// 데이터베이스에서 글목록 가져오기
@@ -275,7 +275,8 @@ a.btn-link {
 						<p><%=PostMember.getPostid()%></p>
 					</div>
 					<div class="col-lg-1">
-						<p><%=PostMember.getType()%></p>
+						<a class="btn btn-link"
+							onclick="setPostType(<%=PostMember.getType()%>)"> <%=PostMember.getType()%></a>
 					</div>
 					<div class="col-lg-5">
 						<a class="btn btn-link"
@@ -332,21 +333,32 @@ a.btn-link {
 			<div class="col-lg-4">
 				<div class="input-group">
 					<div class="col-lg-2">
-						<select class="form-control" id="postTypeSelect">
+						<select class="form-control" id="postTypeSelect"
+							onchange="setPostType(this.value)">
+							<option value="전체" selected>전체</option>
 							<option value="공지">공지</option>
-							<option value="잡담" selected>잡담</option>
+							<option value="잡담">잡담</option>
 							<option value="일정">일정</option>
 						</select>
 					</div>
 					<input type="text" class="form-control" id="searchText"
 						placeholder="검색어를 입력하세요">
-					<button class="btn btn-secondary btnPostSearch" type="button">검색</button>
+					<button class="btn btn-secondary btnPostSearch" type="button"
+						onclick="searchPosts()">검색</button>
 				</div>
 			</div>
 		</div>
 	</div>
 
 	<script>
+	var postType = ''; // 기본값은 빈 문자열
+	 
+    function setPostType(value) {
+		postType = value;
+        console.log("setPostType",postType);
+        searchPosts();
+    }
+	
     function viewPostDetails(postid) {
         // AJAX를 이용하여 서버에 글 상세 정보 요청
         console.log("ajax 보내기 전",postid);
@@ -366,35 +378,36 @@ a.btn-link {
     }
     
     function searchPosts() {
-		$(".btnPostSearch").on("click", function(){
-			var postType = $("#postTypeSelect").val();
-			var searchText = $("#searchText").val();
-			// AJAX를 이용하여 서버에 검색 요청
-			$.ajax({
-				url: "Post.jsp",
-				type: "POST",
-				data: { postType: postType,
-						searchText: searchText,
-						btnPostSearch: "true"
-				},
-				success: function(response) {
-					// 성공시, 받은 응답으로 글 목록 업데이트
-					$("#searchResultsContainer").html(response);
-					$("#infoContainer").hide();
-				},
-				error: function(xhr, status, error) {
-					// 필요한 경우 에러 처리
-					console.error("검색 결과를 가져오는데 실패했습니다.");
-					console.error(error);
-				}
-			});
+		var searchText = $("#searchText").val();
+		console.log("searchPosts",postType);
+		// AJAX를 이용하여 서버에 검색 요청
+		$.ajax({
+			url: "Post.jsp",
+			type: "POST",
+			data: { postType: postType,
+					searchText: searchText,
+					btnPostSearch: "true"
+			},
+			success: function(response) {
+				// 성공시, 받은 응답으로 글 목록 업데이트
+				$("#searchResultsContainer").html(response);
+				$("#infoContainer").hide();
+			},
+			error: function(xhr, status, error) {
+				// 필요한 경우 에러 처리
+				console.error("검색 결과를 가져오는데 실패했습니다.");
+				console.error(error);
+			}
 		});
 	}
-
-	$(document).ready(function () {
-		// 페이지가 로드되면 searchPosts 함수 호출하여 이벤트 핸들러 등록
-		searchPosts();
-	});
+    
+    $(document).ready(function() {
+    	 var urlParams = new URLSearchParams(window.location.search);
+    	 var urlType = urlParams.get("postType");
+    	 if (urlType) {
+    		 setPostType(urlType);
+         }
+    });
 </script>
 </body>
 </html>

@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.sql.Date"%>
-<%@ page import="dbsql.DBSQL"%>
+<%@ page import="dbsql.Insert"%>
+<%@ page import="dbsql.Delete"%>
 <%@ page import="table.*"%>
 <%@ page import="java.util.Calendar"%>
 <!DOCTYPE html>
@@ -28,7 +29,7 @@
     if (btnRequest != null && btnRequest.equals("true")) {
         // DBSQL 객체 생성
         Tenant tenant = new Tenant();
-        DBSQL dbsql = new DBSQL("TenantWait");
+        Insert dbsql = new Insert("TenantWait");
         tenant.setId(id);
         tenant.setName(name);
         tenant.setPassword(password);
@@ -46,7 +47,7 @@
     if (btnAccept != null && btnAccept.equals("true")) {
         // DBSQL 객체 생성
         Tenant tenant = new Tenant();
-        DBSQL dbsql = new DBSQL("TenantComplet");
+        Insert dbsqlInsert = new Insert("TenantComplet");
         tenant.setId(id);
         tenant.setName(name);
         tenant.setPassword(password);
@@ -54,7 +55,7 @@
         tenant.setResidence(residence);
 
         // 데이터를 삽입합니다.
-        dbsql.DBInsert(tenant);
+        dbsqlInsert.DBInsert(tenant);
 
         // Send the response to the Eclipse console using JSP's 'out' object
         out.println("요청이 성공적으로 처리되었습니다.");
@@ -62,10 +63,10 @@
         
         // 성공적으로 테이블 삽입 후에 기존에 있던 테이블에서 정보 삭제
 
-        dbsql = new DBSQL("TenantWait");
+        Delete dbsqlDelete = new Delete("TenantWait");
         
         // 데이터 삭제
-        dbsql.DBDelete(tenant, id);
+        dbsqlDelete.DBDelete(tenant, id);
     }
     
     if (btnTemporary != null && btnTemporary.equals("true")) {
@@ -76,7 +77,7 @@
     	
         // DBSQL 객체 생성
         TenantBan tenant = new TenantBan();
-        DBSQL dbsql = new DBSQL("TenantBan");
+        Insert dbsql = new Insert("TenantBan");
         tenant.setBanid(id);
         tenant.setBandate(sqlDate);
 
@@ -96,7 +97,7 @@
     	
         // DBSQL 객체 생성
         TenantBan tenant = new TenantBan();
-        DBSQL dbsql = new DBSQL("TenantBan");
+        Insert dbsql = new Insert("TenantBan");
         tenant.setBanid(id);
         tenant.setBandate(sqlDate);
 
