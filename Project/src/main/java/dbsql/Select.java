@@ -149,18 +149,9 @@ public class Select extends DBSQL {
 	public List<Post> DBSelect(Post p, String likeProperty, String str) throws SQLException { // Post 테이블에서 likeProperty 값 중에 str가 포함되어 있는 것을 Select 하는 함수
 		open(); // DB 연결
 		List<Post> post = new ArrayList<>();
-		String strlike = "%" + str + "%";
-		String sql = "";
-		if(likeProperty.equals("title")) {
-			sql = "SELECT * FROM post WHERE title LIKE ?"; // sql 쿼리문
-		} else if(likeProperty.equals("name")) {
-			sql = "SELECT * FROM post WHERE name LIKE ?"; // sql 쿼리문
-		} else {
-			throw new SQLException("아직 속성을 지정하지 않았습니다.");
-		}
+		String sql = "SELECT * FROM post WHERE " + likeProperty + " LIKE %" + str + "%";
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			ResultSet rs = pstmt.executeQuery();
-			pstmt.setString(1, strlike); // sql 쿼리문에 첫번째 ?에 해당하는 값 셋팅
 			while (rs.next()) { // 데이터 베이스에서 가져온 데이터를 TenantBan 객체에 할당
 				p = new Post(); // 가져온 sql쿼리문에 관련된 객체 생성
 				p.setPostid(rs.getInt("postid"));
