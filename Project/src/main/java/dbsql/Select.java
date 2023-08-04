@@ -250,13 +250,13 @@ public class Select extends DBSQL {
 		return ban; // 객체에 추가 후 객체 리턴
 	}
 
-	public List<TenantBan> DBSelect(TenantBan b, int banid) { // TenantBan 테이블의 banid에 해당하는 차단 당한 회원을 Select하는 함수
+	public List<TenantBan> DBSelect(TenantBan b, String banid) { // TenantBan 테이블의 banid에 해당하는 차단 당한 회원을 Select하는 함수
 		open(); // DB 연결
 		List<TenantBan> ban = new ArrayList<>();
 		String sql = "SELECT * FROM " + table + " WHERE banid=?"; // sql 쿼리문
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			ResultSet rs = pstmt.executeQuery();
-			pstmt.setInt(1, banid); // sql 쿼리문에 첫번째 ?에 해당하는 값 셋팅
+			pstmt.setString(1, banid); // sql 쿼리문에 첫번째 ?에 해당하는 값 셋팅
 			while (rs.next()) { // 데이터 베이스에서 가져온 데이터를 TenantBan 객체에 할당
 				b = new TenantBan(); // 가져온 sql쿼리문에 관련된 객체 생성
 				b.setBanid(rs.getString("banid"));
