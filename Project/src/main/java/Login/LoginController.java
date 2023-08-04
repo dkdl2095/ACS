@@ -78,25 +78,24 @@ public class LoginController extends HttpServlet {
             	int errorcode = Integer.parseInt(result.getId().split(":")[1]);   //에러코드는 split함수를 이용해 -1,-2,-3 경우 분리
             	switch (errorcode) {
             	case -1:
-            		session.setAttribute("error", "비밀번호가 다름.");
+            		session.setAttribute("error", "아이디가 다릅니다.");
             		break;
             	case -2:
-            		session.setAttribute("error", "입력한 정보가 없음.");
+            		session.setAttribute("error", "아이디 or 비밀번호가 다릅니다.");
             		break;
             	case -3:
             		session.setAttribute("error", "데이터베이스에 정보가 확인이 안됨.");
             		break;
-            	default:
-            		session.setAttribute("error", "뭔지 모를 오류.");
+            	
             	}
+            	// 로그인 실패 시 다시 로그인 화면으로 보여주되, 에러 메시지와 함께 보여줌
+                return "/ACS/Login.jsp";
             }
-
-            return "redirect:/Project/lc?action=login";      //로그인 성공이 안되면 다시 로그인 화면으로
         } else if (req.getMethod().equalsIgnoreCase("get")) {
-            return "/ACS/Login.jsp";  
+        	return "/ACS?Login.jsp";
         }
 
-        return "/ACS/Login.jsp";
+            return "/ACS/Login.jsp";
     }
     
 

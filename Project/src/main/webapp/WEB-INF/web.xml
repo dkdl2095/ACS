@@ -9,4 +9,12 @@
     <welcome-file>default.jsp</welcome-file>
     <welcome-file>default.htm</welcome-file>
   </welcome-file-list>
+  <servlet>
+    <servlet-name>CheckDuplicateServlet</servlet-name>
+    <servlet-class>Login.CheckDuplicateServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>CheckDuplicateServlet</servlet-name>
+    <url-pattern>/checkDuplicate</url-pattern>
+</servlet-mapping>
 </web-app>

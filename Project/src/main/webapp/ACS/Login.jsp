@@ -80,5 +80,20 @@ button {
 	</form>
 	
 
+    <script>
+    // 세션에 저장된 에러 메시지를 가져와서 팝업으로 출력하는 함수
+    function showErrorPopup() {
+        let error = '<%= session.getAttribute("error") %>';
+        if (error !== null && error !== '' && error !== 'null') {
+            alert(error);
+            <% session.removeAttribute("error"); %>
+        }
+    }
+
+    // 페이지 로딩 시 에러 팝업 출력
+    window.onload = function () {
+        showErrorPopup();
+    };
+    </script>
 </body>
 </html>

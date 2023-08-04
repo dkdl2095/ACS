@@ -11,6 +11,7 @@
 	integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
 	crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<%@ page import="Login.CheckDuplicateServlet"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -66,22 +67,21 @@ button {
 		<hr>
 		<p>아래 내용을 기재하여 가입하세요.</p>
 		<hr>
-		<div class="mb-3">
-			<label for="ID" class="form-label">아이디</label>
-			<div class="input-group">
-				<input type="text" id="ID" name="ID" class="form-control"
-					aria-describedby="btnCheckDuplicate">
-				<button class="btn btn-outline-primary" type="button"
-					id="btnCheckDuplicate">중복확인</button>
-			</div>
-		</div>
+<div class="mb-3">
+    <label for="ID" class="form-label">아이디</label>
+    <div class="input-group">
+        <input type="text" id="ID" name="ID" class="form-control" aria-describedby="btnCheckDuplicate">
+        <button class="btn btn-outline-primary" type="button" id="btnCheckDuplicate" onclick="checkDuplicate()">중복확인</button>
+    </div>
+    <div id="duplicateMessage"></div>
+</div>
 		<div class="mb-3">
 			<label for="PW" class="form-label">비밀번호</label>
 			<div class="input-group">
 				<input type="password" id="PW" name="PW" class="form-control"
 					aria-describedby="btnShowPassword">
 				<button class="btn btn-outline-primary" type="button"
-					id="btnShowPassword">내용표시</button>
+					id="btnShowPassword" onclick="togglePasswordVisibility()">내용표시</button>
 			</div>
 		</div>
 		<div class="mb-3">
@@ -133,11 +133,57 @@ button {
 				}
 			});
 		});
-		
+
 		// 가입승인요청 버튼에 대한 클릭 이벤트 처리
 		$(".btnCancel").on("click", function() {
 			location.reload(); // 페이지 새로 고침
 		});
+		
+	    //중복확인 함수
+	    function checkDuplicate() {
+	        const idInput = document.getElementById("ID").value;
+	        const xhr = new XMLHttpRequest();
+	        xhr.open("POST", "/Project/checkDuplicate"); // 서블릿 매핑과 일치하는 URL 사용
+	        xhr.setRequestHeader("Content-Type", "application/json");
+	        xhr.send(JSON.stringify({ id: idInput }));
+
+	        xhr.onreadystatechange = function () {
+	            if (xhr.readyState === XMLHttpRequest.DONE) {
+	                if (xhr.status === 200) {
+	                    const response = JSON.parse(xhr.responseText);
+	                    if (response.exists) {
+	                        // 중복된 아이디가 발견되었습니다.
+	                        document.getElementById("duplicateMessage").innerHTML = "중복인 아이디입니다.";
+	                        document.getElementById("ID").value = "";
+	                    } else {
+	                        // 아이디를 사용할 수 있습니다.
+	                        document.getElementById("duplicateMessage").innerHTML = "사용 가능한 아이디입니다.";
+	                    }
+	                } else {
+	                    // 서버 오류 처리
+	                    console.error("중복 확인 중 오류 발생: " + xhr.status);
+	                }
+	            }
+	        };
+
+	    }
+
+		
+		// 비밀번호 표시 여부를 토글하는 함수
+		  function togglePasswordVisibility() {
+		      var passwordInput = document.getElementById("PW");
+		      var showPasswordButton = document.getElementById("btnShowPassword");
+
+		      if (passwordInput.type === "password") {
+		          // 비밀번호 필드가 가려진 상태일 때 버튼을 클릭하면 텍스트로 변경
+		          passwordInput.type = "text";
+		          showPasswordButton.textContent = "내용숨기기";
+		      } else {
+		          // 비밀번호 필드가 텍스트 상태일 때 버튼을 클릭하면 다시 가려짐
+		          passwordInput.type = "password";
+		          showPasswordButton.textContent = "내용표시";
+		      }
+		  }
 	</script>
 </body>
 </html>

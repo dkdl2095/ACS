@@ -84,4 +84,12 @@ public class LoginDAO {
 		}
 		return result;
 	}
+
+	public boolean checkDuplicate(String id) {
+		
+		return false;
+	}
+
+
+
 }
