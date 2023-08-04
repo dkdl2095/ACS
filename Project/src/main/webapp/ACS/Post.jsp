@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.Date"%>
-<%@ page import="dbsql.DBSQL"%>
+<%@ page import="dbsql.*"%>
 <%@ page import="table.Post"%>
 <!DOCTYPE html>
 <html>
@@ -27,7 +27,7 @@
     if (btnConfirm != null && btnConfirm.equals("true")) {
         // DBSQL 객체 생성
         Post post = new Post();
-        DBSQL dbsql = new DBSQL("Post");
+        Insert dbsql = new Insert("Post");
         //newPost.setPostid(2); // 원하는 값을 설정합니다.
         
         if(notice.equals("true")){
@@ -57,7 +57,7 @@
     if (btnPostDelete != null && btnPostDelete.equals("true")) {
         // DBSQL 객체 생성
         Post post = new Post();
-        DBSQL dbsql = new DBSQL("Post");
+        Delete dbsql = new Delete("Post");
         
         int postid = Integer.parseInt(request.getParameter("id"));
         

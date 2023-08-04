@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ page import="dbsql.DBSQL"%>
+<%@ page import="dbsql.*"%>
 <%@ page import="table.*"%>
 <%@ page import="java.util.List"%>
 <!DOCTYPE html>
@@ -64,11 +64,11 @@
 			<div class="card-body">
 				<div class="row">
 					<%
-					DBSQL dbsql = new DBSQL("TenantWait");
+					Select select = new Select("TenantWait");
 					Tenant t = new Tenant();
 
 					// 데이터베이스에서 회원 정보 가져오기
-					List<Tenant> TenantMembers = dbsql.DBSelect(t); // 적절한 메서드를 호출하여 회원 정보를 가져오도록 수정해야 합니다.
+					List<Tenant> TenantMembers = select.DBSelect(t); // 적절한 메서드를 호출하여 회원 정보를 가져오도록 수정해야 합니다.
 
 					// 가져온 회원 정보를 사용하여 HTML 코드 작성
 					if (TenantMembers.size() > 0) {

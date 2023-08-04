@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
    pageEncoding="UTF-8"%>
-<%@ page import="dbsql.DBSQL"%>
+<%@ page import="dbsql.*"%>
 <%@ page import="table.*"%>
 <%@ page import="java.util.List"%>
 <!DOCTYPE html>
@@ -160,11 +160,11 @@
                   <%
                   // Java 코드 작성 (스크립트릿)
                   // DBSQL 객체 생성
-                  DBSQL dbsqlScedule = new DBSQL("Post");
+                  Select selectScedule = new Select("Post");
                   Post pScedule = new Post();
 
                   // 데이터베이스에서 글목록 가져오기
-                  List<Post> SceduleMembers = dbsqlScedule.DBSelect(pScedule, "일정"); // 적절한 메서드를 호출하여 글목록 정보를 가져오도록 수정해야 합니다.
+                  List<Post> SceduleMembers = selectScedule.DBSelect(pScedule, "일정"); // 적절한 메서드를 호출하여 글목록 정보를 가져오도록 수정해야 합니다.
 
                   // 가져온 글목록 정보를 사용하여 HTML 코드 작성
                   if (SceduleMembers.size() > 0) {
@@ -230,11 +230,11 @@
             <%
             // Java 코드 작성 (스크립트릿)
             // DBSQL 객체 생성
-            DBSQL dbsqlPost = new DBSQL("Post");
+            Select selectpost = new Select("Post");
             Post pPost = new Post();
 
             // 데이터베이스에서 글목록 가져오기
-            List<Post> PostMembers = dbsqlPost.DBSelect(pPost); // 적절한 메서드를 호출하여 글목록 정보를 가져오도록 수정해야 합니다.
+            List<Post> PostMembers = selectpost.DBSelect(pPost); // 적절한 메서드를 호출하여 글목록 정보를 가져오도록 수정해야 합니다.
 
             // 가져온 글목록 정보를 사용하여 HTML 코드 작성
             if (PostMembers.size() > 0) {

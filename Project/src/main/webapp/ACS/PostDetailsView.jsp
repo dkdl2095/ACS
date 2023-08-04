@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="java.sql.Date"%>
-<%@ page import="dbsql.DBSQL"%>
+<%@ page import="dbsql.Select"%>
 <%@ page import="table.Post"%>
 <%@ page import="java.util.List"%>
 <!DOCTYPE html>
@@ -76,7 +76,7 @@
 
 	// DBSQL 객체 생성
 	Post post = new Post();
-	DBSQL dbsql = new DBSQL("Post");
+	Select dbsql = new Select("Post");
 	Post PostMember = null;
 
 	// 데이터베이스에서 글목록 가져오기
