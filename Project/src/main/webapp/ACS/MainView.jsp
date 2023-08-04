@@ -26,47 +26,6 @@
 	src="https://cdn.jsdelivr.net/npm/fullcalendar@5.7.0/main.min.js"></script>
 <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
 <!-- FullCalendar 라이브러리를 이용하여 일정을 표시하는 부분 -->
-<script type="text/javascript">
-    // FullCalendar 라이브러리 초기화 및 설정
-    document.addEventListener('DOMContentLoaded', function() {
-        var calendarEl = document.getElementById('calendar');
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-            timeZone: 'UTC',
-            locale: 'ko', // 한국어 설정
-            initialView: 'dayGridMonth', // 달력 초기 뷰를 '월' 형태로 설정
-
-            // 이벤트 데이터 설정 (임시 데이터)
-            events: [
-                {
-                    title: '에이펙스하기너무무섭다',
-                    start: '2023-07-25',
-                    end: '2023-08-08',
-                    url: 'https://google.com'
-                },
-                {
-                    title: '문명6달리는날',
-                    start: '2023-07-26',
-                    end: '2023-08-09',
-                    url: 'https://google.com'
-                },
-                {
-                    title: '문명6달리는날',
-                    start: '2023-07-26',
-                    end: '2023-08-09',
-                    url: 'https://google.com'
-                }
-            ],
-            // 이벤트 클릭 시 동작하는 함수
-            eventClick: function(info) {
-                alert('Event: ' + info.event.title);
-                info.el.style.borderColor = 'red'; // 이벤트를 클릭한 요소의 테두리 색상 변경
-            },
-            editable: false // 일정 드래그해서 변경할 수 있는 옵션 (true로 설정하면 일정을 드래그해 수정할 수 있습니다.)
-        });
-        calendar.render(); // 달력 표시
-    });
-    
-</script>
 <style>
 #calendarBox {
 	width: 100%;
@@ -410,6 +369,45 @@ a.btn-link {
     	 if (urlType) {
     		 setPostType(urlType);
          }
+    });
+    
+ 	// FullCalendar 라이브러리 초기화 및 설정
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            timeZone: 'UTC',
+            locale: 'ko', // 한국어 설정
+            initialView: 'dayGridMonth', // 달력 초기 뷰를 '월' 형태로 설정
+
+            // 이벤트 데이터 설정 (임시 데이터)
+            events: [
+                {
+                    title: '에이펙스하기너무무섭다',
+                    start: '2023-07-25',
+                    end: '2023-08-08',
+                    url: 'https://google.com'
+                },
+                {
+                    title: '문명6달리는날',
+                    start: '2023-07-26',
+                    end: '2023-08-09',
+                    url: 'https://google.com'
+                },
+                {
+                    title: '문명6달리는날',
+                    start: '2023-07-26',
+                    end: '2023-08-09',
+                    url: 'https://google.com'
+                }
+            ],
+            // 이벤트 클릭 시 동작하는 함수
+            eventClick: function(info) {
+                alert('Event: ' + info.event.title);
+                info.el.style.borderColor = 'red'; // 이벤트를 클릭한 요소의 테두리 색상 변경
+            },
+            editable: false // 일정 드래그해서 변경할 수 있는 옵션 (true로 설정하면 일정을 드래그해 수정할 수 있습니다.)
+        });
+        calendar.render(); // 달력 표시
     });
 </script>
 </body>
