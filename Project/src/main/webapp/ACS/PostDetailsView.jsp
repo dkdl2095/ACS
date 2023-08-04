@@ -33,35 +33,30 @@
 		</div>
 	</nav>
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
-		<div class="container-fluid">
-			<!-- 홈, 공지, 잡담, 일정 버튼 -->
-			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-				<li class="nav-item"><a class="nav-link" href="MainView.jsp">
-						<!-- 홈 버튼 이미지 --> <img src="Home.png" alt="로고" height="30">
-				</a></li>
-				<li class="nav-item"><a class="nav-link" href="#">공지</a></li>
-				<li class="nav-item"><a class="nav-link" href="#">잡담</a></li>
-				<li class="nav-item"><a class="nav-link" href="#">일정</a></li>
-			</ul>
-			<!-- 내 정보, 로그아웃 버튼 -->
-			<ul class="navbar-nav">
-				<!-- 회원가입 버튼 -->
-				<li class="nav-item"><a id="btnSignup" class="nav-link"
-					href="#">회원가입</a></li>
-				<!-- 로그인 버튼 -->
-				<li class="nav-item"><a id="btnLogin" class="nav-link" href="#">로그인</a></li>
-				<!-- 내 정보 버튼 -->
-				<li class="nav-item"><a id="btnMyInfo" class="nav-link"
-					href="#">내 정보</a></li>
-				<!-- 관리자 버튼-->
-				<li class="nav-item"><a id="btnAdmin" class="nav-link"
-					href="AdminView.jsp">관리자</a></li>
-				<!-- 로그아웃 버튼 -->
-				<li class="nav-item"><a id="btnLogout" class="nav-link"
-					href="#">로그아웃</a></li>
-			</ul>
-		</div>
-	</nav>
+      <div class="container-fluid">
+         <!-- 홈, 공지, 잡담, 일정 버튼 -->
+         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item"><a class="nav-link" href="MainView.jsp">
+                  <!-- 홈 버튼 이미지 --> <img src="Home.png" alt="로고" height="30">
+            </a></li>
+            <li class="nav-item"><a class="nav-link" href="#">공지</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">잡담</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">일정</a></li>
+         </ul>
+         <!-- 내 정보, 로그아웃 버튼 -->
+         <ul class="navbar-nav">
+            <!-- 내 정보 버튼 -->
+            <li class="nav-item"><a id="btnMyInfo" class="nav-link"
+               href="Myinfo.jsp">내 정보</a></li>
+            <!-- 관리자 버튼-->
+            <li class="nav-item"><a id="btnAdmin" class="nav-link"
+               href="AdminView.jsp">관리자</a></li>
+            <!-- 로그아웃 버튼 -->
+            <li class="nav-item"><a id="btnLogout" class="nav-link"
+               href="Login.jsp">로그아웃</a></li>
+         </ul>
+      </div>
+   </nav>
 	<%-- Java 코드 작성 (스크립트릿) --%>
 	<%
 	// 클라이언트로부터 전송된 데이터 받기
