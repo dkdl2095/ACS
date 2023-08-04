@@ -71,10 +71,11 @@
 #calendarBox {
 	width: 100%;
 }
+
 a.btn-link {
-        text-decoration: none;
-        color: black;
-    }
+	text-decoration: none;
+	color: black;
+}
 </style>
 <title>메인 화면</title>
 </head>
@@ -116,7 +117,7 @@ a.btn-link {
 		</div>
 	</nav>
 
-	<div class="container mt-3">
+	<div id="infoContainer" class="container mt-3">
 		<!-- 그리드 시스템을 사용하여 달력의 정보, 일정의 글 목록, 로그인 시에만 보이는 회원정보를 한 줄로 배치 -->
 		<div class="row">
 			<div class="col-lg-8">
@@ -225,18 +226,32 @@ a.btn-link {
 	</div>
 
 	<!-- 글 목록을 표시하는 부분 -->
-	<div class="container mt-5">
+	<div id="searchResultsContainer" class="container mt-5">
 		<div class="card">
 			<div class="row justify-content-center">
-				<div class="col-lg-1"><p>번호</p></div>
-				<div class="col-lg-1"><p>타입</p></div>
-				<div class="col-lg-5"><p>제목</p></div>
-				<div class="col-lg-1"><p>작성자</p></div>
-				<div class="col-lg-2"><p>작성일</p></div>
-				<div class="col-lg-1"><p>조회</p></div>
-				<div class="col-lg-1"><p>추천</p></div>
+				<div class="col-lg-1">
+					<p>번호</p>
+				</div>
+				<div class="col-lg-1">
+					<p>타입</p>
+				</div>
+				<div class="col-lg-5">
+					<p>제목</p>
+				</div>
+				<div class="col-lg-1">
+					<p>작성자</p>
+				</div>
+				<div class="col-lg-2">
+					<p>작성일</p>
+				</div>
+				<div class="col-lg-1">
+					<p>조회</p>
+				</div>
+				<div class="col-lg-1">
+					<p>추천</p>
+				</div>
 			</div>
-			
+
 			<div class="card-body">
 				<%-- Java 코드 작성 (스크립트릿) --%>
 				<!-- 글목록 정보를 표시하는 플레이스홀더 요소 -->
@@ -256,20 +271,32 @@ a.btn-link {
 					Post PostMember = obj; // Post로 캐스팅
 				%>
 				<div class="row">
-                	<div class="col-lg-1"><p><%=PostMember.getPostid()%></p></div>
-                	<div class="col-lg-1"><p><%=PostMember.getType()%></p></div>
-                	<div class="col-lg-5"><a class="btn btn-link" onclick="viewPostDetails(<%=PostMember.getPostid()%>)">
-    					<%=PostMember.getTitle()%></a></div>
-                	<div class="col-lg-1"><p><%=PostMember.getName()%></p></div>
-                	<div class="col-lg-2"><p><%=PostMember.getWritingdate()%></p></div>
-                	<div class="col-lg-1"><p><%=PostMember.getViewsnum()%></p></div>
-                	<div class="col-lg-1"><p>추천</p></div>
-            	</div>
-				
+					<div class="col-lg-1">
+						<p><%=PostMember.getPostid()%></p>
+					</div>
+					<div class="col-lg-1">
+						<p><%=PostMember.getType()%></p>
+					</div>
+					<div class="col-lg-5">
+						<a class="btn btn-link"
+							onclick="viewPostDetails(<%=PostMember.getPostid()%>)"> <%=PostMember.getTitle()%></a>
+					</div>
+					<div class="col-lg-1">
+						<p><%=PostMember.getName()%></p>
+					</div>
+					<div class="col-lg-2">
+						<p><%=PostMember.getWritingdate()%></p>
+					</div>
+					<div class="col-lg-1">
+						<p><%=PostMember.getViewsnum()%></p>
+					</div>
+					<div class="col-lg-1">
+						<p>추천</p>
+					</div>
+				</div>
+
 				<button class="btn btn-link"
-					onclick="viewPostDetails(<%=PostMember.getPostid()%>)">
-						
-				</button>
+					onclick="viewPostDetails(<%=PostMember.getPostid()%>)"></button>
 				<%
 				}
 				}
@@ -304,8 +331,16 @@ a.btn-link {
 			</div>
 			<div class="col-lg-4">
 				<div class="input-group">
-					<input type="text" class="form-control" placeholder="검색어를 입력하세요">
-					<button class="btn btn-secondary" type="button">검색</button>
+					<div class="col-lg-2">
+						<select class="form-control" id="postTypeSelect">
+							<option value="공지">공지</option>
+							<option value="잡담" selected>잡담</option>
+							<option value="일정">일정</option>
+						</select>
+					</div>
+					<input type="text" class="form-control" id="searchText"
+						placeholder="검색어를 입력하세요">
+					<button class="btn btn-secondary btnPostSearch" type="button">검색</button>
 				</div>
 			</div>
 		</div>
@@ -329,6 +364,37 @@ a.btn-link {
             }
         });
     }
+    
+    function searchPosts() {
+		$(".btnPostSearch").on("click", function(){
+			var postType = $("#postTypeSelect").val();
+			var searchText = $("#searchText").val();
+			// AJAX를 이용하여 서버에 검색 요청
+			$.ajax({
+				url: "Post.jsp",
+				type: "POST",
+				data: { postType: postType,
+						searchText: searchText,
+						btnPostSearch: "true"
+				},
+				success: function(response) {
+					// 성공시, 받은 응답으로 글 목록 업데이트
+					$("#searchResultsContainer").html(response);
+					$("#infoContainer").hide();
+				},
+				error: function(xhr, status, error) {
+					// 필요한 경우 에러 처리
+					console.error("검색 결과를 가져오는데 실패했습니다.");
+					console.error(error);
+				}
+			});
+		});
+	}
+
+	$(document).ready(function () {
+		// 페이지가 로드되면 searchPosts 함수 호출하여 이벤트 핸들러 등록
+		searchPosts();
+	});
 </script>
 </body>
 </html>
