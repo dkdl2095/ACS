@@ -77,20 +77,16 @@
 						if (post instanceof Post) {
 					Post PostMember = (Post) post; // Post로 캐스팅
 				%>
-				<p>
-					<%=PostMember.getPostid()%>
-					[<%=PostMember.getType()%>] 제목:
-					<%=PostMember.getTitle()%>
-					작성자:
-					<%=PostMember.getName()%>
-					조회수:
-					<%=PostMember.getViewsnum()%>
-					날짜:
-					<%=PostMember.getWritingdate()%>
-				</p>
-				<div class="col-md-2">
-					<button class="btn btn-danger btnPostDelete"
-						data-id="<%=PostMember.getPostid()%>">글 삭제</button>
+				<div class="row">
+					<div class="col-lg-8">
+						<a><%=PostMember.getPostid()%> [<%=PostMember.getType()%>] 제목:
+							<%=PostMember.getTitle()%> 작성자: <%=PostMember.getName()%> 조회수: <%=PostMember.getViewsnum()%>
+							날짜: <%=PostMember.getWritingdate()%></a>
+					</div>
+					<div class="col-lg-1">
+						<button class="btn btn-danger btnPostDelete"
+							data-id="<%=PostMember.getPostid()%>">글 삭제</button>
+					</div>
 				</div>
 				<%
 				}

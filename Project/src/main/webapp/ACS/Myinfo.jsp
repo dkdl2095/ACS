@@ -1,8 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-    
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+	pageEncoding="UTF-8"%>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl"
+	crossorigin="anonymous">
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
+	crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!DOCTYPE html>
 <html>
@@ -11,31 +17,30 @@
 
 <title>내 정보 관리 창</title>
 <style>
-    body {
-        padding-top: 20px;
-        background-color: #f9f9f9;
-    }
+body {
+	padding-top: 20px;
+	background-color: #f9f9f9;
+}
 
-    h2 {
-        text-align: center;
-    }
+h2 {
+	text-align: center;
+}
 
-    label {
-        width: 100px;
-    }
+label {
+	width: 100px;
+}
 
-    input[type="text"], input[type="password"] {
-        width: 240px;
-    }
+input[type="text"], input[type="password"] {
+	width: 240px;
+}
 
-    button {
-        cursor: pointer;
-    }
-
+button {
+	cursor: pointer;
+}
 </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<div class="container-fluid">
 			<a class="navbar-brand" href="MainView.jsp"> <!-- 로고 이미지 --> <!-- 
         로고 출처 
@@ -71,49 +76,77 @@
 			</ul>
 		</div>
 	</nav>
-	
-    <div class="container" id="MyInfoForm">
-        <h2>내 정보 관리</h2>
-        <hr>
-        <p>소중한 내 정보를 확인하세요.</p>
-        <hr>
-        <div class="mb-3">
-            <label for="joinDate" class="form-label">가입날짜</label>
-            <input type="text" id="joinDate" name="joinDate" class="form-control" readonly>
-        </div>
-        <div class="mb-3">
-            <label for="ID" class="form-label">아이디</label>
-            <input type="text" id="ID" name="ID" class="form-control" readonly>
-        </div>        
-        <div class="mb-3">
-            <label for="name" class="form-label">이름</label>
-            <input type="text" id="name" name="name" class="form-control">
-        </div>        
-        <div class="mb-3">
-            <label for="address" class="form-label">거주지</label>
-            <input type="text" id="address" name="address" class="form-control">
-        </div>
-        <div class="mb-3">
-            <label for="myPosts" class="form-label">내가 쓴 글</label>
-            <div class="input-group">
-                <input type="text" id="myPosts" name="myPosts" class="form-control" readonly>
-                <button class="btn btn-outline-secondary" type="button" id="btnEditPost">수정</button>
-                <button class="btn btn-outline-secondary" type="button" id="btnDeletePost">삭제</button>
-            </div>
-        </div>
-        <div class="mb-3">
-            <label for="myComments" class="form-label">내가 쓴 댓글</label>
-            <div class="input-group">
-                <input type="text" id="myComments" name="myComments" class="form-control" readonly>
-                <button class="btn btn-outline-secondary" type="button" id="btnEditComment">수정</button>
-                <button class="btn btn-outline-secondary" type="button" id="btnDeleteComment">삭제</button>
-            </div>
-        </div>
-        <button class="btn btn-primary">적용</button>
-        <button class="btn btn-secondary">돌아가기</button>
-    </div>
-    
-        <script>
+
+
+
+	<div class="container" id="MyInfoForm">
+		<h2>내 정보 관리</h2>
+		<hr>
+		<p>소중한 내 정보를 확인하세요.</p>
+		<hr>
+<div class="mb-3">
+    <label for="joinDate" class="form-label">가입날짜</label>
+    <input type="text" id="joinDate" name="joinDate" class="form-control" readonly>
+    <% String accessiondate = (String) session.getAttribute("ACCESSIONDATE"); %>
+    <script>
+        // 세션에서 가져온 가입날짜를 텍스트 박스에 설정
+        document.getElementById("joinDate").value = "<%= accessiondate %>";
+    </script>
+</div>
+		<div class="mb-3">
+			<label for="ID" class="form-label">아이디</label> <input type="text"
+				id="ID" name="ID" class="form-control" readonly>
+			<% String id = (String) session.getAttribute("ID"); %>
+			<script>
+        	// 세션에서 가져온 아이디를 텍스트 박스에 설정
+        	document.getElementById("ID").value = "<%= id %>";
+   			 </script>
+		</div>
+		<div class="mb-3">
+			<label for="name" class="form-label">이름</label> <input type="text"
+				id="name" name="name" class="form-control">
+			<% String name = (String) session.getAttribute("NAME"); %>
+			<script>
+            // 세션에서 가져온 이름을 텍스트 박스에 설정
+          document.getElementById("name").value = "<%= name %>";
+          </script>
+		</div>
+		<div class="mb-3">
+			<label for="address" class="form-label">거주지</label> <input
+				type="text" id="address" name="address" class="form-control">
+			<% String residence = (String) session.getAttribute("RESIDENCE"); %>
+			<script>
+            // 세션에서 가져온 입주정보를 텍스트 박스에 설정
+          document.getElementById("address").value = "<%= residence %>";
+          </script>
+		</div>
+		<div class="mb-3">
+			<label for="myPosts" class="form-label">내가 쓴 글</label>
+			<div class="input-group">
+				<input type="text" id="myPosts" name="myPosts" class="form-control"
+					readonly>
+				<button class="btn btn-outline-secondary" type="button"
+					id="btnEditPost">수정</button>
+				<button class="btn btn-outline-secondary" type="button"
+					id="btnDeletePost">삭제</button>
+			</div>
+		</div>
+		<div class="mb-3">
+			<label for="myComments" class="form-label">내가 쓴 댓글</label>
+			<div class="input-group">
+				<input type="text" id="myComments" name="myComments"
+					class="form-control" readonly>
+				<button class="btn btn-outline-secondary" type="button"
+					id="btnEditComment">수정</button>
+				<button class="btn btn-outline-secondary" type="button"
+					id="btnDeleteComment">삭제</button>
+			</div>
+		</div>
+		<button class="btn btn-primary">적용</button>
+		<button class="btn btn-secondary">돌아가기</button>
+	</div>
+
+	<script>
 		$(document).ready(function() {
 			// 초기 로그인 상태는 회원가입 버튼만 보이도록 설정
 			$("#btnMyInfo").hide();
