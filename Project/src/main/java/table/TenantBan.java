@@ -3,8 +3,8 @@ package table;
 import java.sql.Date;
 
 public class TenantBan {
-	String banid;
-	Date bandate;
+	private String banid;
+	private Date bandate;
 
 	public String getBanid() {
 		return banid;
