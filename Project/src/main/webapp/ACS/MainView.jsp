@@ -299,7 +299,7 @@ a.btn-link {
 					for (int i = 1; i <= (int) Math.ceil((double) total / itemsPerPage); i++) {
 					%>
 					<li class="page-item <%=i == currentPage ? "active" : ""%>"><a
-						class="page-link" href="#" onclick="setpageNumber(<%=i%>)"><%=i%></a></li>
+						class="page-link" href="#" id="page_<%=i%>" onclick="setpageNumber(<%=i%>)"><%=i%></a></li>
 					<%
 					}
 					// 데이터베이스에서 게시물을 내림차순으로 가져오도록 쿼리 작성
@@ -381,6 +381,11 @@ a.btn-link {
     	var postValue = $("#postValueSelect").val();
 		var searchText = $("#searchText").val();
 		console.log("postValue",postValue);
+		
+		// 해당 페이지 번호를 클릭하면 active 클래스 설정
+        $(".page-item").removeClass("active");
+        $("#page_" + pageNumber).parent().addClass("active");
+        
 		// AJAX를 이용하여 서버에 검색 요청
 		$.ajax({
 			url: "Post.jsp",
