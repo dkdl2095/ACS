@@ -95,7 +95,8 @@
 		out.println("요청이 성공적으로 처리되었습니다.");
 		out.println("서버 응답: " + "데이터가 성공적으로 저장되었습니다."); // You can customize this message as needed
 	}
-
+	
+	// 글 검색 로직
 	if (btnPostSearch != null && btnPostSearch.equals("true")) {
 		Select dbsqlPost = new Select("Post");
 		Post post = new Post();

@@ -63,6 +63,7 @@
 	</nav>
 	<%-- Java 코드 작성 (스크립트릿) --%>
 	<%
+	Boolean viewCount = false;
 	// 클라이언트로부터 전송된 데이터 받기
 	String postidStr = null;
 	Post post = null;
@@ -95,9 +96,10 @@
 		} else {
 			System.out.println("PostMembers 오류");
 		}
-
-		dbsqlUpdate.DBUpdate(post, postid, PostMember.getViewsnum());
-		System.out.println("조회수: " + PostMember.getViewsnum());
+		if(viewCount == false){
+			dbsqlUpdate.DBUpdate(post, postid, PostMember.getViewsnum());
+			System.out.println("조회수: " + PostMember.getViewsnum());
+		}		
 	}
 	%>
 	<div class="container mt-3">

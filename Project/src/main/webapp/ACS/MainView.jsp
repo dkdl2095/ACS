@@ -252,9 +252,6 @@ a.btn-link {
 						<p>추천</p>
 					</div>
 				</div>
-
-				<button class="btn btn-link"
-					onclick="viewPostDetails(<%=PostMember.getPostid()%>)"></button>
 				<%
 				}
 				}
