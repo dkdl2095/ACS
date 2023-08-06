@@ -118,6 +118,35 @@ public class Select extends DBSQL {
 		return post; // 객체에 추가 후 객체 리턴
 	}
 
+	public List<Post> DBSelect(Post p, double postsPerPage) {
+		open(); // DB 연결
+		List<Post> post = new ArrayList<>();
+		String sql = "SELECT * FROM post WHERE ROWNUM <= " + postsPerPage; // sql 쿼리문
+
+		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			ResultSet rs = pstmt.executeQuery();
+
+			while (rs.next()) { // 데이터 베이스에서 가져온 데이터를 Post 객체에 할당
+				p = new Post(); // 가져온 sql쿼리문에 관련된 객체 생성
+				p.setPostid(rs.getInt("postid"));
+				p.setType(rs.getString("type"));
+				p.setTitle(rs.getString("title"));
+				p.setText(rs.getString("text"));
+				p.setWritingdate(rs.getDate("writingdate"));
+				p.setName(rs.getString("name"));
+				p.setImg(rs.getString("img"));
+				p.setViewsnum(rs.getInt("viewsnum"));
+
+				post.add(p);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(); // DB 연결 해제
+		}
+		return post; // 객체에 추가 후 객체 리턴
+	}
+
 	public List<Post> DBSelect(Post p, String type) { // Post 테이블의 type에 해당하는 게시글을 Select하는 함수
 		open(); // DB 연결
 		List<Post> post = new ArrayList<>();
@@ -146,7 +175,8 @@ public class Select extends DBSQL {
 		return post; // 객체에 추가 후 객체 리턴
 	}
 	
-	public List<Post> DBSelect(Post p, String likeProperty, String str) throws SQLException { // Post 테이블에서 likeProperty 값 중에 str가 포함되어 있는 것을 Select 하는 함수
+	// Post 테이블에서 likeProperty값 중에 str가포함되어 있는 것을Select 하는 함수
+	public List<Post> DBSelect(Post p, String likeProperty, String str) throws SQLException { 
 		open(); // DB 연결
 		List<Post> post = new ArrayList<>();
 		String sql = "SELECT * FROM post WHERE " + likeProperty + " LIKE '%" + str + "%'";
@@ -173,32 +203,33 @@ public class Select extends DBSQL {
 		return post; // 객체에 추가 후 객체 리턴
 	}
 	
-	public List<Post> DBSelect(Post p, String likeProperty, String str, String type) throws SQLException {                                                                // Select 하는 함수
-	      open(); // DB 연결
-	      List<Post> post = new ArrayList<>();
-	      String sql = "SELECT * FROM post WHERE " + likeProperty + " LIKE '%" + str + "%' AND type=" +"'"+ type+"'";
-	      try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-	         ResultSet rs = pstmt.executeQuery();
-	         while (rs.next()) { // 데이터 베이스에서 가져온 데이터를 TenantBan 객체에 할당
-	            p = new Post(); // 가져온 sql쿼리문에 관련된 객체 생성
-	            p.setPostid(rs.getInt("postid"));
-	            p.setType(rs.getString("type"));
-	            p.setTitle(rs.getString("title"));
-	            p.setText(rs.getString("text"));
-	            p.setWritingdate(rs.getDate("writingdate"));
-	            p.setName(rs.getString("name"));
-	            p.setImg(rs.getString("img"));
-	            p.setViewsnum(rs.getInt("viewsnum"));
+	// Select 하는 함수
+	public List<Post> DBSelect(Post p, String likeProperty, String str, String type) throws SQLException { 
+		open(); // DB 연결
+		List<Post> post = new ArrayList<>();
+		String sql = "SELECT * FROM post WHERE " + likeProperty + " LIKE '%" + str + "%' AND type=" +"'"+ type+"'";
+		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) { // 데이터 베이스에서 가져온 데이터를 TenantBan 객체에 할당
+				p = new Post(); // 가져온 sql쿼리문에 관련된 객체 생성
+				p.setPostid(rs.getInt("postid"));
+				p.setType(rs.getString("type"));
+				p.setTitle(rs.getString("title"));
+				p.setText(rs.getString("text"));
+				p.setWritingdate(rs.getDate("writingdate"));
+				p.setName(rs.getString("name"));
+				p.setImg(rs.getString("img"));
+				p.setViewsnum(rs.getInt("viewsnum"));
 
-	            post.add(p);
-	         }
-	      } catch (Exception e) {
-	         e.printStackTrace();
-	      } finally {
-	         close(); // DB 연결 해제
-	      }
-	      return post; // 객체에 추가 후 객체 리턴
-	   }
+				post.add(p);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(); // DB 연결 해제
+		}
+		return post; // 객체에 추가 후 객체 리턴
+	}
 
 	public List<Calendar> DBSelect(Calendar c) { // Calendar 테이블에 일정을 전부 Select하는 함수
 		open(); // DB 연결
@@ -209,7 +240,8 @@ public class Select extends DBSQL {
 			while (rs.next()) { // 데이터 베이스에서 가져온 데이터를 Calendar 객체에 할당
 				c = new Calendar(); // 가져온 sql쿼리문에 관련된 객체 생성
 				c.setCalid(rs.getInt("calid"));
-				c.setCdate(rs.getDate("cdate"));
+				c.setStartdate(rs.getDate("startdate"));
+				c.setEnddate(rs.getDate("enddate"));
 				c.setText(rs.getString("text"));
 				c.setPostid(rs.getInt("postid"));
 
@@ -233,7 +265,8 @@ public class Select extends DBSQL {
 			while (rs.next()) { // 데이터 베이스에서 가져온 데이터를 Calendar 객체에 할당
 				c = new Calendar(); // 가져온 sql쿼리문에 관련된 객체 생성
 				c.setCalid(rs.getInt("calid"));
-				c.setCdate(rs.getDate("cdate"));
+				c.setStartdate(rs.getDate("startdate"));
+				c.setEnddate(rs.getDate("enddate"));
 				c.setText(rs.getString("text"));
 				c.setPostid(rs.getInt("postid"));
 

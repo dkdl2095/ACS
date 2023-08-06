@@ -98,7 +98,6 @@
 
 		dbsqlUpdate.DBUpdate(post, postid, PostMember.getViewsnum());
 		System.out.println("조회수: " + PostMember.getViewsnum());
-		postidStr = null;
 	}
 	%>
 	<div class="container mt-3">
@@ -135,6 +134,9 @@
 				<div class="col">
 					<div id="textArea">
 						<p><%=(PostMember != null) ? PostMember.getText() : "데이터가 없습니다"%></p>
+					</div>
+					<div id="img">
+						<p><%= PostMember.getImg() %></p>
 					</div>
 					<div class="text-center">
 						<p>
@@ -175,13 +177,11 @@
 	<script>
 		// 추천 버튼을 누르면 카운트 증가
 		let recommendCount = 0;
-		
-		$(document).ready(function() {
-			function recommend() {
-				recommendCount++;
-				document.getElementById("recommendCount").textContent = recommendCount;
-			}
-		});
+
+		function recommend() {
+			recommendCount++;
+			document.getElementById("recommendCount").textContent = recommendCount;
+		}
 		function textAreaView() {
 			var textArea = document.getElementById("textArea");
 			var content = textArea.innerHTML;

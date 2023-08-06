@@ -1,8 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.sql.Date"%>
-<%@ page import="dbsql.Insert"%>
-<%@ page import="dbsql.Delete"%>
+<%@ page import="dbsql.*"%>
 <%@ page import="table.*"%>
 <%@ page import="java.util.Calendar"%>
 <!DOCTYPE html>
@@ -63,10 +62,10 @@
         
         // 성공적으로 테이블 삽입 후에 기존에 있던 테이블에서 정보 삭제
 
-        Delete dbsqlDelete = new Delete("TenantWait");
+        Delete deletedbsql = new Delete("TenantWait");
         
         // 데이터 삭제
-        dbsqlDelete.DBDelete(tenant, id);
+        deletedbsql.DBDelete(tenant, id);
     }
     
     if (btnTemporary != null && btnTemporary.equals("true")) {

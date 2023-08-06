@@ -4,7 +4,8 @@ import java.sql.Date;
 
 public class Calendar {
 	private int calid;
-	private Date cdate;
+	private Date startdate;
+	private Date enddate;
 	private String text;
 	private int postid;
 
@@ -16,12 +17,19 @@ public class Calendar {
 		this.calid = calid;
 	}
 
-	public Date getCdate() {
-		return cdate;
+	public Date getStartdate() {
+		return startdate;
 	}
 
-	public void setCdate(Date cdate) {
-		this.cdate = cdate;
+	public void setStartdate(Date startdate) {
+		this.startdate = startdate;
+	}
+	public Date getEnddate() {
+		return enddate;
+	}
+
+	public void setEnddate(Date enddate) {
+		this.enddate = enddate;
 	}
 
 	public String getText() {

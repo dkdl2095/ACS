@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ page import="dbsql.Select"%>
+<%@ page import="dbsql.*"%>
 <%@ page import="table.*"%>
 <%@ page import="java.util.List"%>
 <!DOCTYPE html>
@@ -64,11 +64,11 @@
 			<div class="card-body">
 				<div class="row">
 					<%
-					Select dbsql = new Select("TenantWait");
+					Select select = new Select("TenantWait");
 					Tenant t = new Tenant();
 
 					// 데이터베이스에서 회원 정보 가져오기
-					List<Tenant> TenantMembers = dbsql.DBSelect(t); // 적절한 메서드를 호출하여 회원 정보를 가져오도록 수정해야 합니다.
+					List<Tenant> TenantMembers = select.DBSelect(t); // 적절한 메서드를 호출하여 회원 정보를 가져오도록 수정해야 합니다.
 
 					// 가져온 회원 정보를 사용하여 HTML 코드 작성
 					if (TenantMembers.size() > 0) {
@@ -130,19 +130,26 @@
 			</div>
 		</div>
 		<div class="col-lg-8">
-			<a href="MemberManagement.jsp" class="btn btn-primary">회원 관리</a>
-			<a href="PostManagement.jsp" class="btn btn-primary">글 관리</a>
+			<a href="MemberManagement.jsp" class="btn btn-primary">회원 관리</a> <a
+				href="PostManagement.jsp" class="btn btn-primary">글 관리</a>
 		</div>
-		<nav aria-label="Page navigation" class="mt-3">
-			<ul class="pagination justify-content-center">
-				<li class="page-item disabled"><a class="page-link" href="#"
-					tabindex="-1" aria-disabled="true">&laquo;</a></li>
-				<li class="page-item active"><a class="page-link" href="#">1</a></li>
-				<li class="page-item"><a class="page-link" href="#">2</a></li>
-				<li class="page-item"><a class="page-link" href="#">3</a></li>
-				<li class="page-item disabled"><a class="page-link" href="#">&raquo;</a></li>
-			</ul>
-		</nav>
+		<%
+		int total = TenantMembers.size();
+		%>
+		<!-- 페이지 -->
+		<ul class="pagination justify-content-center">
+			<li class="page-item"><a class="page-link" href="#"
+				id="previous">&laquo;</a></li>
+			<%
+			for (int i = 1; i <= (int) Math.ceil((double) total / 10); i++) {
+			%>
+			<li class="page-item <%=i == 1 ? "active" : ""%>"><a
+				class="page-link" href="#"><%=i%></a></li>
+			<%
+			}
+			%>
+			<li class="page-item"><a class="page-link" href="#" id="next">&raquo;</a></li>
+		</ul>
 	</div>
 
 	<script>

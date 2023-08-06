@@ -26,6 +26,7 @@
 	// PostCreationEditing.jsp
 	String postContent = request.getParameter("postContent");
 	String postTitle = request.getParameter("postTitle");
+	String postImg = request.getParameter("postImg");
 	String btnConfirm = request.getParameter("btnConfirm");
 	String notice = request.getParameter("notice");
 	String Schedule = request.getParameter("Schedule");
@@ -38,15 +39,23 @@
 	String postType = request.getParameter("postType");
 	String postValue = request.getParameter("postValue");
 	String searchText = request.getParameter("searchText");
+	String currentPageParam = request.getParameter("currentPage");
 	String btnPostSearch = request.getParameter("btnPostSearch");
-	
-	System.out.println("postType : "+postType+", postValue : "+postValue);
+	int currentPage = 1; // 기본 페이지 1
+
+	if (currentPageParam != null && !currentPageParam.isEmpty()) {
+		currentPage = Integer.parseInt(currentPageParam);
+		System.out.println("currentPage: " + currentPage);
+	}
+
+	System.out.println("postType : " + postType + ", postValue : " + postValue + ", currentPage : " + currentPage);
 	// 요청 파라미터에서 confirm 값을 확인하여 데이터 삽입 여부를 결정
 	if (btnConfirm != null && btnConfirm.equals("true")) {
 		// DBSQL 객체 생성
 		Post post = new Post();
 		Insert dbsqlInsert = new Insert("Post");
 		//newPost.setPostid(2); // 원하는 값을 설정합니다.
+		String name = (String) session.getAttribute("NAME");
 
 		if (notice.equals("true")) {
 			Radio = "공지";
@@ -59,8 +68,8 @@
 		post.setTitle(postTitle);
 		post.setText(postContent);
 		post.setWritingdate(new Date(System.currentTimeMillis()));
-		post.setName("name");
-		post.setImg("img");
+		post.setName(name);
+		post.setImg(postImg);
 		post.setViewsnum(0);
 
 		// 데이터를 삽입합니다.
@@ -86,29 +95,35 @@
 		out.println("요청이 성공적으로 처리되었습니다.");
 		out.println("서버 응답: " + "데이터가 성공적으로 저장되었습니다."); // You can customize this message as needed
 	}
-	
+
 	if (btnPostSearch != null && btnPostSearch.equals("true")) {
 		Select dbsqlPost = new Select("Post");
-        Post post = new Post();
-        List<Post> PostMembers = null;
-		if ((postType.equals("")||postType.equals("전체")) && (searchText == null || searchText.trim().isEmpty())) {
-		    // 검색어가 없고 타입이 전체일 때, 전체 글 목록을 가져옴
-	        PostMembers = dbsqlPost.DBSelect(post);
-	        request.setAttribute("PostMembers", PostMembers);
+		Post post = new Post();
+		List<Post> PostMembers = null;
+		if ((postType.equals("") || postType.equals("전체")) && (searchText == null || searchText.trim().isEmpty())) {
+			// 검색어가 없고 타입이 전체일 때, 전체 글 목록을 가져옴
+			PostMembers = dbsqlPost.DBSelect(post);
+			request.setAttribute("PostMembers", PostMembers);
+		} else if (searchText == null || searchText.trim().isEmpty()) {
+			// 검색어가 없을 경우, 해당하는 타입의 글 목록을 가져옴
+			PostMembers = dbsqlPost.DBSelect(post, postType);
+			request.setAttribute("PostMembers", PostMembers);
+		} else if (postType.equals("") || postType.equals("전체")) {
+			// 검색어가 있고 타입이 전체일 때, 해당하는 글 목록을 가져옴 
+			PostMembers = dbsqlPost.DBSelect(post, postValue, searchText);
+			request.setAttribute("PostMembers", PostMembers);
+		} else {
+			// 검색어가 있을 경우, 해당하는 타입의 글 목록을 가져옴
+			PostMembers = dbsqlPost.DBSelect(post, postValue, searchText, postType);
+			request.setAttribute("PostMembers", PostMembers);
 		}
-		else if (searchText == null || searchText.trim().isEmpty()) {
-	        // 검색어가 없을 경우, 해당하는 타입의 글 목록을 가져옴
-	        PostMembers = dbsqlPost.DBSelect(post, postType);
-	        request.setAttribute("PostMembers", PostMembers);
-	    }else if(postType.equals("")||postType.equals("전체")){
-	    	// 검색어가 있고 타입이 전체일 때, 해당하는 글 목록을 가져옴 
-	        PostMembers = dbsqlPost.DBSelect(post, postValue, searchText);
-	        request.setAttribute("PostMembers", PostMembers);
-	    }else {
-	        // 검색어가 있을 경우, 해당하는 타입의 글 목록을 가져옴
-	        PostMembers = dbsqlPost.DBSelect(post, postValue, searchText, postType);
-	        request.setAttribute("PostMembers", PostMembers);
-	    }
+
+		int total = PostMembers.size();
+		int itemsPerPage = 10; // 10개씩 끊어서 보기
+
+		// 현재 페이지에 해당하는 게시물들을 가져오는 로직
+		int startIndex = (currentPage - 1) * itemsPerPage;
+		int endIndex = Math.min(startIndex + itemsPerPage, total);
 	%>
 
 	<div class="row justify-content-center">
@@ -136,17 +151,17 @@
 	</div>
 	<div class="card-body">
 		<%
-	    //PostMembers = (List<Post>) request.getAttribute("PostMembers");
-	    if (PostMembers != null && !PostMembers.isEmpty()) {
-	        for (Post obj : PostMembers) {
-	            if (obj instanceof Post) {
-	                Post PostMember = obj; // Post로 캐스팅
-	    %>
+		//PostMembers = (List<Post>) request.getAttribute("PostMembers");
+		if (PostMembers != null && !PostMembers.isEmpty()) {
+			for (int i = startIndex; i < endIndex; i++) {
+				 Post obj = PostMembers.get(i);
+				if (obj instanceof Post) {
+			Post PostMember = obj; // Post로 캐스팅
+		%>
 		<div class="row">
 			<div class="col-lg-1">
 				<p><%=PostMember.getPostid()%></p>
 			</div>
-			<!-- 기존의 글목록 표시 부분이 여기로 이동되었습니다. -->
 			<div class="col-lg-1">
 				<p><%=PostMember.getType()%></p>
 			</div>
@@ -168,14 +183,14 @@
 			</div>
 		</div>
 		<%
-	            }
-	        }
-	    } else {
-	    %>
+		}
+		}
+		} else {
+		%>
 		<p>검색 결과가 없습니다.</p>
 		<%
-	    }
-	    %>
+		}
+		%>
 	</div>
 	<%
 	}
