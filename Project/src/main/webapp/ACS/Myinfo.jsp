@@ -147,6 +147,10 @@ a.btn-link {
 								for (Post obj : PostMembers) {
 									if (obj instanceof Post) {
 								Post PostMember = obj; // Post로 캐스팅
+								String title = PostMember.getTitle();
+						        if (title.length() > 25) {
+						            title = title.substring(0, 25) + "...";
+						        }
 
 								// 여기서 추가된 조건문을 확인합니다.
 								if (PostMember.getId().equals(id)) { // Post의 아이디 값과 세션에 저장된 아이디 값을 비교
@@ -164,7 +168,7 @@ a.btn-link {
 								</div>
 								<div class="col-lg-5">
 									<a class="btn btn-link"
-										onclick="viewPostDetails(<%=PostMember.getPostid()%>)"> <%=PostMember.getTitle()%></a>
+										onclick="viewPostDetails(<%=PostMember.getPostid()%>)"> <%=title%></a>
 								</div>
 								<div class="col-lg-1">
 									<p><%=PostMember.getName()%></p>

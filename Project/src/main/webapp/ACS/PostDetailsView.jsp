@@ -179,6 +179,7 @@
 		<input type="hidden" name="postImgSrc"
 			value="<%=PostMember.getImg()%>">
 	</form>
+
 	<script>
 		// 추천 버튼을 누르면 카운트 증가
 		let recommendCount = 0;
@@ -210,8 +211,8 @@
 				url : "Comment.jsp", // 댓글을 처리할 페이지 URL
 				method : "POST",
 				data : {
-					commentContent : content,
-					commentWriter : "",
+					commentText : content,
+					commentPostId :<%=PostMember.getPostid()%>,
 					btnConfirmComment : "true"
 				},
 				success : function(response) {
