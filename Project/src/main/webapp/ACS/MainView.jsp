@@ -58,6 +58,7 @@ a.btn-link {
 			</a>
 		</div>
 	</nav>
+
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<div class="container-fluid">
 			<!-- 홈, 공지, 잡담, 일정 버튼 -->
@@ -81,8 +82,8 @@ a.btn-link {
 				<li class="nav-item"><a id="btnAdmin" class="nav-link"
 					href="AdminView.jsp">관리자</a></li>
 				<!-- 로그아웃 버튼 -->
-				<li class="nav-item"><a id="btnLogout" class="nav-link"
-					href="Login.jsp">로그아웃</a></li>
+				<li class="nav-item"><a id="btnLogout" class="btn btn-link"
+					href="Login.jsp" onclick="Logout()">로그아웃</a></li>
 			</ul>
 		</div>
 	</nav>
@@ -437,6 +438,18 @@ a.btn-link {
         });
         calendar.render();
     });
+ 	
+  	//로그아웃 함수
+    function Logout() {
+        // 세션 만료시키기 위해 sessionStorage 또는 localStorage에 저장된 세션 정보를 삭제
+        console.log("test");
+        sessionStorage.removeItem('ID');
+        sessionStorage.removeItem('NAME');
+        sessionStorage.removeItem('RESIDENCE');
+
+        // 페이지 새로고침
+        location.reload();
+    }
 </script>
 </body>
 </html>

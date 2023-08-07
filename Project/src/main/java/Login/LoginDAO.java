@@ -89,4 +89,31 @@ public class LoginDAO {
 		
 		return false;
 	}
+	
+	//차단 아이디 로그인 막기 함수
+    public boolean isIdBlocked(String id) {
+        open();
+        boolean isBlocked = false;
+
+        try {
+            String query = "SELECT COUNT(*) AS count FROM TenantBan WHERE banid = ?";
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            pstmt.setString(1, id);
+
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt("count");
+                if (count > 0) {
+                    isBlocked = true;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return isBlocked;
+    }
+
+
+
 }

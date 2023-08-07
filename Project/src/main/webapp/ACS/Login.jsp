@@ -5,6 +5,7 @@
 <%@ page import="java.util.List"%>
 <%@ page import="Login.LoginDAO"%>
 
+
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css"
 	rel="stylesheet"
@@ -46,7 +47,7 @@ button {
 <body>
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<div class="container-fluid">
-			<a class="navbar-brand" href="Login.jsp"> <!-- 로고 이미지 --> <!-- 
+			<a class="navbar-brand" href="MainView.jsp"> <!-- 로고 이미지 --> <!-- 
         로고 출처 
         https://pixabay.com/ko/vectors/%EB%8F%84%EC%8B%9C-%EB%8F%84%EB%A1%9C-%EC%A7%80%EC%97%AD-%EC%82%AC%ED%9A%8C-%EA%B1%B4%EB%AC%BC-2042634/
         pixabay - Ricinator
@@ -78,5 +79,22 @@ button {
 			</div>
 		</div>
 	</form>
+	
+
+    <script>
+    // 세션에 저장된 에러 메시지를 가져와서 팝업으로 출력하는 함수
+    function showErrorPopup() {
+        let error = '<%= session.getAttribute("error") %>';
+        if (error !== null && error !== '' && error !== 'null') {
+            alert(error);
+            <% session.removeAttribute("error"); %>
+        }
+    }
+
+    // 페이지 로딩 시 에러 팝업 출력
+    window.onload = function () {
+        showErrorPopup();
+    };
+    </script>
 </body>
 </html>
