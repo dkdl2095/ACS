@@ -358,7 +358,7 @@ a.btn-link {
 	
     function viewPostDetails(postid) {
         // AJAX를 이용하여 서버에 글 상세 정보 요청
-        console.log("ajax 보내기 전",postid);
+        console.log("ajax 보내기 전", postid);
         $.ajax({
             url: "PostDetailsView.jsp",
             type: "POST", // POST 메소드 사용

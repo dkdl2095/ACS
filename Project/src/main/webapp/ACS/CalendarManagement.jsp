@@ -100,11 +100,13 @@ a.btn-link {
 						</div>
 						<div class="col-lg-1">
 							<button class="btn btn-danger btnCalendarDelete"
-								data-id="<%=CalendarMember.getPostid()%>">일정 삭제</button>
+								data-calid="<%=CalendarMember.getCalid()%>"
+								data-postid="<%=CalendarMember.getPostid()%>">일정 삭제</button>
 						</div>
 						<div class="col-lg-1">
 							<button class="btn btn-danger btnCalendarUpdate"
-								data-id="<%=CalendarMember.getPostid()%>">일정 수정</button>
+								data-calid="<%=CalendarMember.getCalid()%>"
+								data-postid="<%=CalendarMember.getPostid()%>">일정 수정</button>
 						</div>
 					</div>
 
@@ -159,14 +161,16 @@ a.btn-link {
 	
 	// 일정 삭제 버튼에 대한 클릭 이벤트 처리
 	$(".btnCalendarDelete").on("click", function() {
-		var id = $(this).data("id");
+		var calid = $(this).data("calid");
+		var postid = $(this).data("postid");
 
 		// AJAX 요청을 보냅니다.
 		$.ajax({
 			url : "Calendar.jsp",
 			method : "POST",
 			data : {
-				id : id,
+				calid : calid,
+				postid : postid,
 				btnCalendarDelete : "true"
 			},
 			success : function(response) {
@@ -186,14 +190,16 @@ a.btn-link {
 	
 	// 일정 수정 버튼에 대한 클릭 이벤트 처리
 	$(".btnCalendarUpdate").on("click", function() {
-		var id = $(this).data("id");
+		var calid = $(this).data("calid");
+		var postid = $(this).data("postid");
 
 		// AJAX 요청을 보냅니다.
 		$.ajax({
 			url : "Calendar.jsp",
 			method : "POST",
 			data : {
-				id : id,
+				calid : calid,
+				postid : postid,
 				btnCalendarUpdate : "true"
 			},
 			success : function(response) {

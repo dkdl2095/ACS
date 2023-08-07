@@ -23,7 +23,7 @@
 </head>
 <body>
 	<%-- Java 코드 작성 (스크립트릿) --%>
-	<%	
+	<%
 	// 클라이언트로부터 전송된 데이터 받기
 	String postidStr = request.getParameter("postid");
 	Post post = new Post();
@@ -31,12 +31,12 @@
 	Update dbsqlUpdate = new Update("Post");
 	Post PostMember = null;
 	List<Post> PostMembers = null;
-	
+
 	int postid = 0; // 기본값으로 초기화
 	// postidStr이 null이 아니고 숫자 형태일 경우에만 Integer로 변환
 	if (postidStr != null && postidStr.matches("\\d+")) {
 		System.out.println("postidStr: " + postidStr);
-		
+
 		postid = Integer.parseInt(postidStr);
 
 		// 데이터베이스에서 글목록 가져오기
@@ -46,15 +46,6 @@
 			for (Post obj : PostMembers) {
 		if (obj instanceof Post) {
 			PostMember = obj; // Post로 캐스팅
-		}
-			}
-		} else {
-			System.out.println("PostMembers 오류");
-		}
-		
-		dbsqlUpdate.DBUpdate(post, postid, PostMember.getViewsnum());
-		System.out.println("조회수: " + PostMember.getViewsnum());
-	}
 	%>
 	<div class="container mt-3">
 		<div class="card">
@@ -63,25 +54,25 @@
 					<div class="col-md-3">
 						<p>
 							<strong>타입:</strong>
-							<%=(PostMember != null) ? PostMember.getType() : "데이터가 없습니다"%>
+							<%=PostMember.getType()%>
 						</p>
 					</div>
 					<div class="col-md-3">
 						<p>
 							<strong>제목:</strong>
-							<%=(PostMember != null) ? PostMember.getTitle() : "데이터가 없습니다"%>
+							<%=PostMember.getTitle()%>
 						</p>
 					</div>
 					<div class="col-md-3">
 						<p>
 							<strong>작성자:</strong>
-							<%=(PostMember != null) ? PostMember.getName() : "데이터가 없습니다"%>
+							<%=PostMember.getName()%>
 						</p>
 					</div>
 					<div class="col-md-3">
 						<p>
 							<strong>조회수:</strong>
-							<%=(PostMember != null) ? PostMember.getViewsnum() + 1 : "데이터가 없습니다"%>
+							<%=PostMember.getViewsnum() + 1%>
 						</p>
 					</div>
 				</div>
@@ -89,11 +80,21 @@
 			<div class="card-body">
 				<div class="col">
 					<div id="textArea">
-						<p><%=(PostMember != null) ? PostMember.getText() : "데이터가 없습니다"%></p>
+						<p><%=PostMember.getText() != null ? PostMember.getText() : " "%></p>
 					</div>
 					<div id="img">
-						<p><%= PostMember.getImg() %></p>
+						<p><%=PostMember.getImg() != null ? PostMember.getImg() : " "%></p>
 					</div>
+					<%
+					}
+					}
+					dbsqlUpdate.DBUpdate(post, postid, PostMember.getViewsnum());
+					System.out.println("조회수: " + PostMember.getViewsnum());
+					} else {
+					System.out.println("PostMembers 오류");
+					}
+					}
+					%>
 					<div class="text-center">
 						<p>
 							<strong>추천수:</strong> <span id="recommendCount">0</span>
@@ -138,7 +139,7 @@
 			recommendCount++;
 			document.getElementById("recommendCount").textContent = recommendCount;
 		}
-		
+
 		function textAreaView() {
 			var textArea = document.getElementById("textArea");
 			var content = textArea.innerHTML;
@@ -148,7 +149,7 @@
 			content = content.replace(/\[\/style\]/g, '</span>');
 			textArea.innerHTML = content;
 		}
-		
+
 		function callMainViewSetPostType(value) {
 			window.location.href = "MainView.jsp?postType=" + value;
 		}

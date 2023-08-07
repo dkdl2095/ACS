@@ -33,7 +33,7 @@ public class Insert extends DBSQL {
 		open(); // DB 연결
 		// sql 쿼리문 (postid는 시퀀스로 1씩증가 POSTID_SEQ.NEXTVAL)
 		String sql = "INSERT INTO " + table
-				+ "(postid, type, title, text, writingdate, id, name, img, viewsnum) VALUES (POSTID_SEQ.NEXTVAL, ?, ?, ?, ?, ?, ?, ?)";
+				+ "(postid, type, title, text, writingdate, id, name, img, viewsnum) VALUES (POSTID_SEQ.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			pstmt.setString(1, p.getType()); // sql 쿼리문에 type에 해당하는 값 셋팅
@@ -56,13 +56,12 @@ public class Insert extends DBSQL {
 	public void DBInsert(Calendar c) { // Calendar 테이블에 일정 정보를 삽입하는 함수
 		open(); // DB 연결
 		// sql 쿼리문
-		String sql = "INSERT INTO " + table + "(calid, startdate, enddate, text, postid) VALUES (CALID_SEQ.NEXTVAL, ?, ?, ?, ?)";
+		String sql = "INSERT INTO " + table + "(calid, startdate, enddate, text, postid) VALUES (CALID_SEQ.NEXTVAL, ?, ?, ?, POSTID_SEQ.NEXTVAL - 1)";
 
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			pstmt.setDate(1, c.getStartdate()); // sql 쿼리문에 cdate에 해당하는 값 셋팅
 			pstmt.setDate(2, c.getEnddate()); // sql 쿼리문에 cdate에 해당하는 값 셋팅
 			pstmt.setString(3, c.getText()); // sql 쿼리문에 text에 해당하는 값 셋팅
-			pstmt.setInt(4, c.getPostid()); // sql 쿼리문에 postid에 해당하는 값 셋팅
 
 			pstmt.executeUpdate();
 		} catch (Exception e) {
