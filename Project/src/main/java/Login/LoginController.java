@@ -117,13 +117,13 @@ public class LoginController extends HttpServlet {
     
     
 
-        public String logout(HttpServletRequest req) {
+        /*public String logout(HttpServletRequest req) {
         	System.out.println("로그아웃 버튼을 클릭하고 이 함수가 실행이 되고있는거냐?");
             HttpSession session = req.getSession(true); // 새로 세션을 생성하도록 수정
             session.invalidate(); // 현재 세션 무효화
             
             return "/ACS/Login.jsp"; // 로그인 페이지로 리다이렉트
-        }
+        }*/
     
 
     

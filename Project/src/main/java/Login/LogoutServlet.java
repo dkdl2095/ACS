@@ -1,4 +1,4 @@
-package Login;
+/*package Login;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,3 +17,4 @@ public class LogoutServlet extends HttpServlet {
         response.sendRedirect("Login.jsp"); // 로그인 페이지로 리다이렉트
     }
 }
+*/
