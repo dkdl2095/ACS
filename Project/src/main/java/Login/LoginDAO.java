@@ -96,14 +96,18 @@ public class LoginDAO {
         boolean isBlocked = false;
 
         try {
-            String query = "SELECT COUNT(*) AS count FROM TenantBan WHERE banid = ?";
+            String query = "SELECT bandate FROM TenantBan WHERE banid = ?";
             PreparedStatement pstmt = conn.prepareStatement(query);
             pstmt.setString(1, id);
 
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
+            	Date banDate = rs.getDate("bandate");
                 int count = rs.getInt("count");
-                if (count > 0) {
+                
+                // 현재 날짜와 차단 날짜를 비교하여 차단 해제 여부를 판단합니다.
+                Date currentDate = new Date(System.currentTimeMillis());
+                if (currentDate.compareTo(banDate) >= 0 && count > 0) {
                     isBlocked = true;
                 }
             }
@@ -113,7 +117,6 @@ public class LoginDAO {
 
         return isBlocked;
     }
-
 
 
 }
