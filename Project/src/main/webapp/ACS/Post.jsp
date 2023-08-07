@@ -202,6 +202,10 @@
 				Post obj = PostMembers.get(i);
 				if (obj instanceof Post) {
 			Post PostMember = obj; // Post로 캐스팅
+			String title = PostMember.getTitle();
+	        if (title.length() > 25) {
+	            title = title.substring(0, 25) + "...";
+	        }
 		%>
 		<div class="row">
 			<div class="col-lg-1">
@@ -212,7 +216,7 @@
 			</div>
 			<div class="col-lg-5">
 				<a class="btn btn-link"
-					onclick="viewPostDetails(<%=PostMember.getPostid()%>)"><%=PostMember.getTitle()%></a>
+					onclick="viewPostDetails(<%=PostMember.getPostid()%>)"><%=title%></a>
 			</div>
 			<div class="col-lg-1">
 				<p><%=PostMember.getName()%></p>
