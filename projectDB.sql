@@ -1,17 +1,38 @@
 --------------------------------------------------------
---  파일이 생성됨 - 토요일-8월-05-2023   
+--  파일이 생성됨 - 월요일-8월-07-2023   
 --------------------------------------------------------
+DROP SEQUENCE "HR"."CALID_SEQ";
 DROP SEQUENCE "HR"."POSTID_SEQ";
-DROP TABLE "HR"."CALENDER";
+DROP TABLE "HR"."CALENDAR";
 DROP TABLE "HR"."POST";
 DROP TABLE "HR"."TENANTBAN";
 DROP TABLE "HR"."TENANTCOMPLET";
 DROP TABLE "HR"."TENANTWAIT";
 --------------------------------------------------------
+--  DDL for Sequence CALID_SEQ
+--------------------------------------------------------
+
+   CREATE SEQUENCE  "HR"."CALID_SEQ"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 1 CACHE 20 NOORDER  NOCYCLE ;
+--------------------------------------------------------
 --  DDL for Sequence POSTID_SEQ
 --------------------------------------------------------
 
-   CREATE SEQUENCE  "HR"."POSTID_SEQ"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 12 NOCACHE  NOORDER  NOCYCLE ;
+   CREATE SEQUENCE  "HR"."POSTID_SEQ"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 91 NOCACHE  NOORDER  NOCYCLE ;
+--------------------------------------------------------
+--  DDL for Table CALENDAR
+--------------------------------------------------------
+
+  CREATE TABLE "HR"."CALENDAR" 
+   (	"CALID" NUMBER(*,0), 
+	"STARTDATE" DATE, 
+	"ENDDATE" DATE, 
+	"TEXT" VARCHAR2(200 BYTE), 
+	"POSTID" NUMBER(*,0)
+   ) SEGMENT CREATION IMMEDIATE 
+  PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255 NOCOMPRESS LOGGING
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "USERS" ;
 --------------------------------------------------------
 --  DDL for Table POST
 --------------------------------------------------------
@@ -23,18 +44,13 @@ DROP TABLE "HR"."TENANTWAIT";
 	"TEXT" VARCHAR2(2000 BYTE), 
 	"WRITINGDATE" DATE, 
 	"NAME" VARCHAR2(20 BYTE), 
-	"IMG" CLOB, 
+	"IMG" VARCHAR2(500 BYTE), 
 	"VIEWSNUM" NUMBER(*,0)
    ) SEGMENT CREATION IMMEDIATE 
   PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255 NOCOMPRESS LOGGING
   STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
   PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
-  TABLESPACE "USERS" 
- LOB ("IMG") STORE AS BASICFILE (
-  TABLESPACE "USERS" ENABLE STORAGE IN ROW CHUNK 8192 RETENTION 
-  NOCACHE LOGGING 
-  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
-  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)) ;
+  TABLESPACE "USERS" ;
 --------------------------------------------------------
 --  DDL for Table TENANTBAN
 --------------------------------------------------------
@@ -77,11 +93,28 @@ DROP TABLE "HR"."TENANTWAIT";
   STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
   PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
   TABLESPACE "USERS" ;
+REM INSERTING into HR.CALENDAR
+SET DEFINE OFF;
 REM INSERTING into HR.POST
 SET DEFINE OFF;
-Insert into HR.POST (POSTID,TYPE,TITLE,TEXT,WRITINGDATE,NAME,VIEWSNUM) values (10,'일정','eqwewwqewqe','wqeqwewqewq',to_date('23/08/05','RR/MM/DD'),'홍길동',0);
-Insert into HR.POST (POSTID,TYPE,TITLE,TEXT,WRITINGDATE,NAME,VIEWSNUM) values (11,'잡담','dasadasd','sadsadsad',to_date('23/08/05','RR/MM/DD'),'홍길동',0);
-Insert into HR.POST (POSTID,TYPE,TITLE,TEXT,WRITINGDATE,NAME,VIEWSNUM) values (9,'잡담','이미지 테스','ㅇㅁㄴㅇㄴㅁㅇㄴㅁㅇㄴㅁㅇㄴㅁㅇㅁ',to_date('23/08/05','RR/MM/DD'),'홍길동',20);
+Insert into HR.POST (POSTID,TYPE,TITLE,TEXT,WRITINGDATE,NAME,IMG,VIEWSNUM) values (82,'잡담','ㅂㄷㅈㅂㄷㅈㅂㄷ','ㅈㅂㄷㅈㅂㄷㅈㅂㄷㅂㄷㅈㅈ',to_date('23/08/04','RR/MM/DD'),'name','img',0);
+Insert into HR.POST (POSTID,TYPE,TITLE,TEXT,WRITINGDATE,NAME,IMG,VIEWSNUM) values (83,'잡담','ㅂㄷㅈㅂㄷㅈㅂㄷ','ㅈㅂㄷㅈㅂㄷㅈㅂㄷㅂㄷㅈㅈ',to_date('23/08/04','RR/MM/DD'),'name','img',0);
+Insert into HR.POST (POSTID,TYPE,TITLE,TEXT,WRITINGDATE,NAME,IMG,VIEWSNUM) values (84,'잡담','ㅂㄷㅈㅂㄷㅈㅂㄷ','ㅈㅂㄷㅈㅂㄷㅈㅂㄷㅂㄷㅈㅈ',to_date('23/08/04','RR/MM/DD'),'name','img',0);
+Insert into HR.POST (POSTID,TYPE,TITLE,TEXT,WRITINGDATE,NAME,IMG,VIEWSNUM) values (85,'잡담','ㅂㄷㅈㅂㄷㅈㅂㄷ','ㅈㅂㄷㅈㅂㄷㅈㅂㄷㅂㄷㅈㅈ',to_date('23/08/04','RR/MM/DD'),'name','img',0);
+Insert into HR.POST (POSTID,TYPE,TITLE,TEXT,WRITINGDATE,NAME,IMG,VIEWSNUM) values (86,'잡담','ㅂㄷㅈㅂㄷㅈㅂㄷ','ㅈㅂㄷㅈㅂㄷㅈㅂㄷㅂㄷㅈㅈ',to_date('23/08/04','RR/MM/DD'),'name','img',0);
+Insert into HR.POST (POSTID,TYPE,TITLE,TEXT,WRITINGDATE,NAME,IMG,VIEWSNUM) values (87,'잡담','ㅂㄷㅈㅂㄷㅈㅂㄷ','ㅈㅂㄷㅈㅂㄷㅈㅂㄷㅂㄷㅈㅈ',to_date('23/08/04','RR/MM/DD'),'name','img',0);
+Insert into HR.POST (POSTID,TYPE,TITLE,TEXT,WRITINGDATE,NAME,IMG,VIEWSNUM) values (88,'잡담','ㅂㄷㅈㅂㄷㅈㅂㄷ','ㅈㅂㄷㅈㅂㄷㅈㅂㄷㅂㄷㅈㅈ',to_date('23/08/04','RR/MM/DD'),'name','img',0);
+Insert into HR.POST (POSTID,TYPE,TITLE,TEXT,WRITINGDATE,NAME,IMG,VIEWSNUM) values (89,'잡담','ㅂㄷㅈㅂㄷㅈㅂㄷ','ㅈㅂㄷㅈㅂㄷㅈㅂㄷㅂㄷㅈㅈ',to_date('23/08/04','RR/MM/DD'),'name','img',0);
+Insert into HR.POST (POSTID,TYPE,TITLE,TEXT,WRITINGDATE,NAME,IMG,VIEWSNUM) values (59,'잡담','ㄴㅁㅇㄴㅁㅇㅁㅇㄴㅁ','ㅇㄴㅁㅇㅁㄴㅇㄴㅁㅇㄴㅁㅇ',to_date('23/08/04','RR/MM/DD'),'name','img',10);
+Insert into HR.POST (POSTID,TYPE,TITLE,TEXT,WRITINGDATE,NAME,IMG,VIEWSNUM) values (60,'잡담','ㄴㅁㅇㄴㅁㅇㅁㅇㄴㅁ','ㅇㄴㅁㅇㅁㄴㅇㄴㅁㅇㄴㅁㅇ',to_date('23/08/04','RR/MM/DD'),'name','img',0);
+Insert into HR.POST (POSTID,TYPE,TITLE,TEXT,WRITINGDATE,NAME,IMG,VIEWSNUM) values (61,'잡담','ㄴㅁㅇㄴㅁㅇㅁㅇㄴㅁ','ㅇㄴㅁㅇㅁㄴㅇㄴㅁㅇㄴㅁㅇ',to_date('23/08/04','RR/MM/DD'),'name','img',0);
+Insert into HR.POST (POSTID,TYPE,TITLE,TEXT,WRITINGDATE,NAME,IMG,VIEWSNUM) values (62,'잡담','ㄴㅁㅇㄴㅁㅇㅁㅇㄴㅁ','ㅇㄴㅁㅇㅁㄴㅇㄴㅁㅇㄴㅁㅇ',to_date('23/08/04','RR/MM/DD'),'name','img',0);
+Insert into HR.POST (POSTID,TYPE,TITLE,TEXT,WRITINGDATE,NAME,IMG,VIEWSNUM) values (63,'잡담','ㄴㅁㅇㄴㅁㅇㅁㅇㄴㅁ','ㅇㄴㅁㅇㅁㄴㅇㄴㅁㅇㄴㅁㅇ',to_date('23/08/04','RR/MM/DD'),'name','img',0);
+Insert into HR.POST (POSTID,TYPE,TITLE,TEXT,WRITINGDATE,NAME,IMG,VIEWSNUM) values (64,'잡담','ㄴㅁㅇㄴㅁㅇㅁㅇㄴㅁ','ㅇㄴㅁㅇㅁㄴㅇㄴㅁㅇㄴㅁㅇ',to_date('23/08/04','RR/MM/DD'),'name','img',0);
+Insert into HR.POST (POSTID,TYPE,TITLE,TEXT,WRITINGDATE,NAME,IMG,VIEWSNUM) values (65,'잡담','ㄴㅁㅇㄴㅁㅇㅁㅇㄴㅁ','ㅇㄴㅁㅇㅁㄴㅇㄴㅁㅇㄴㅁㅇ',to_date('23/08/04','RR/MM/DD'),'name','img',0);
+Insert into HR.POST (POSTID,TYPE,TITLE,TEXT,WRITINGDATE,NAME,IMG,VIEWSNUM) values (66,'잡담','ㄴㅁㅇㄴㅁㅇㅁㅇㄴㅁ','ㅇㄴㅁㅇㅁㄴㅇㄴㅁㅇㄴㅁㅇ',to_date('23/08/04','RR/MM/DD'),'name','img',0);
+Insert into HR.POST (POSTID,TYPE,TITLE,TEXT,WRITINGDATE,NAME,IMG,VIEWSNUM) values (67,'잡담','ㄴㅁㅇㄴㅁㅇㅁㅇㄴㅁ','ㅇㄴㅁㅇㅁㄴㅇㄴㅁㅇㄴㅁㅇ',to_date('23/08/04','RR/MM/DD'),'name','img',0);
+Insert into HR.POST (POSTID,TYPE,TITLE,TEXT,WRITINGDATE,NAME,IMG,VIEWSNUM) values (68,'잡담','ㄴㅁㅇㄴㅁㅇㅁㅇㄴㅁ','ㅇㄴㅁㅇㅁㄴㅇㄴㅁㅇㄴㅁㅇ',to_date('23/08/04','RR/MM/DD'),'name','img',0);
 REM INSERTING into HR.TENANTBAN
 SET DEFINE OFF;
 Insert into HR.TENANTBAN (BANID,BANDATE) values ('qwerqwer',to_date('23/08/06','RR/MM/DD'));
@@ -98,10 +131,19 @@ Insert into HR.TENANTCOMPLET (ID,NAME,PASSWORD,ACCESSIONDATE,RESIDENCE) values (
 REM INSERTING into HR.TENANTWAIT
 SET DEFINE OFF;
 --------------------------------------------------------
---  DDL for Index SYS_C007052
+--  DDL for Index SYS_C007167
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "HR"."SYS_C007052" ON "HR"."POST" ("POSTID") 
+  CREATE UNIQUE INDEX "HR"."SYS_C007167" ON "HR"."CALENDAR" ("CALID") 
+  PCTFREE 10 INITRANS 2 MAXTRANS 255 
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "USERS" ;
+--------------------------------------------------------
+--  DDL for Index SYS_C007165
+--------------------------------------------------------
+
+  CREATE UNIQUE INDEX "HR"."SYS_C007165" ON "HR"."POST" ("POSTID") 
   PCTFREE 10 INITRANS 2 MAXTRANS 255 
   STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
   PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
@@ -134,6 +176,15 @@ SET DEFINE OFF;
   PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
   TABLESPACE "USERS" ;
 --------------------------------------------------------
+--  Constraints for Table CALENDAR
+--------------------------------------------------------
+
+  ALTER TABLE "HR"."CALENDAR" ADD PRIMARY KEY ("CALID")
+  USING INDEX PCTFREE 10 INITRANS 2 MAXTRANS 255 
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "USERS"  ENABLE;
+--------------------------------------------------------
 --  Constraints for Table POST
 --------------------------------------------------------
 
@@ -142,6 +193,7 @@ SET DEFINE OFF;
   STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
   PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
   TABLESPACE "USERS"  ENABLE;
+  ALTER TABLE "HR"."POST" MODIFY ("POSTID" NOT NULL ENABLE);
 --------------------------------------------------------
 --  Constraints for Table TENANTBAN
 --------------------------------------------------------
