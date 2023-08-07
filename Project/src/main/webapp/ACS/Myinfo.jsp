@@ -151,7 +151,7 @@ a.btn-link {
 								// 여기서 추가된 조건문을 확인합니다.
 								if (PostMember.getId().equals(id)) { // Post의 아이디 값과 세션에 저장된 아이디 값을 비교
 									System.out.println(PostMember.getType());
-									if(true/*PostMember.getType().equals("잡담")||(PostMember.getType().equals("공지")&&PostMember.getId().equals("admin"))*/){
+									if(PostMember.getType().equals("잡담")||(PostMember.getType().equals("공지")&&PostMember.getId().equals("admin"))){
 							%>
 							<!-- 이 부분부터는 추가된 조건문이 적용된 영역입니다. -->
 							<div class="row">
