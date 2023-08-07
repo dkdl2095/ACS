@@ -76,6 +76,7 @@ public class Select extends DBSQL {
 				p.setTitle(rs.getString("title"));
 				p.setText(rs.getString("text"));
 				p.setWritingdate(rs.getDate("writingdate"));
+				p.setId(rs.getString("id"));
 				p.setName(rs.getString("name"));
 				p.setImg(rs.getString("img"));
 				p.setViewsnum(rs.getInt("viewsnum"));
@@ -104,6 +105,7 @@ public class Select extends DBSQL {
 				p.setTitle(rs.getString("title"));
 				p.setText(rs.getString("text"));
 				p.setWritingdate(rs.getDate("writingdate"));
+				p.setId(rs.getString("id"));
 				p.setName(rs.getString("name"));
 				p.setImg(rs.getString("img"));
 				p.setViewsnum(rs.getInt("viewsnum"));
@@ -133,6 +135,7 @@ public class Select extends DBSQL {
 				p.setTitle(rs.getString("title"));
 				p.setText(rs.getString("text"));
 				p.setWritingdate(rs.getDate("writingdate"));
+				p.setId(rs.getString("id"));
 				p.setName(rs.getString("name"));
 				p.setImg(rs.getString("img"));
 				p.setViewsnum(rs.getInt("viewsnum"));
@@ -161,6 +164,7 @@ public class Select extends DBSQL {
 				p.setTitle(rs.getString("title"));
 				p.setText(rs.getString("text"));
 				p.setWritingdate(rs.getDate("writingdate"));
+				p.setId(rs.getString("id"));
 				p.setName(rs.getString("name"));
 				p.setImg(rs.getString("img"));
 				p.setViewsnum(rs.getInt("viewsnum"));
@@ -189,6 +193,7 @@ public class Select extends DBSQL {
 				p.setTitle(rs.getString("title"));
 				p.setText(rs.getString("text"));
 				p.setWritingdate(rs.getDate("writingdate"));
+				p.setId(rs.getString("id"));
 				p.setName(rs.getString("name"));
 				p.setImg(rs.getString("img"));
 				p.setViewsnum(rs.getInt("viewsnum"));
@@ -217,6 +222,7 @@ public class Select extends DBSQL {
 				p.setTitle(rs.getString("title"));
 				p.setText(rs.getString("text"));
 				p.setWritingdate(rs.getDate("writingdate"));
+				p.setId(rs.getString("id"));
 				p.setName(rs.getString("name"));
 				p.setImg(rs.getString("img"));
 				p.setViewsnum(rs.getInt("viewsnum"));

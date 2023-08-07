@@ -139,6 +139,14 @@
 
 
 	<script>
+		// 생성, 수정 구분 값.
+		var editing = false;
+		// postid를 URL 파라미터로부터 가져와서 처리.
+		const urlParams = new URLSearchParams(window.location.search);
+		const postId = urlParams.get("postid");
+		const postid = urlParams.get("postid");
+		console.log("editing:", editing);
+		console.log("postid:", postid);
 		function applyFontAndSize() {
 			var selectedFont = $("#fontSelect").val();
 			var selectedSize = $("#sizeSelect").val();
@@ -202,7 +210,6 @@
 			document.getElementById("previewArea").innerHTML = content;
 		}
 
-		
 		// 확인 버튼 클릭 이벤트 처리
 		document
 				.getElementById("btnConfirm")
@@ -224,30 +231,42 @@
 
 							if (confirmed) {
 								// AJAX 요청을 보냅니다.
-								$.ajax({
-									url : "Post.jsp",
-									method : "POST",
-									data : {
-										postContent : postContent,
-										postTitle : postTitle,
-										postImg : postImg,
-										notice : notice,
-										Schedule : Schedule,
-										btnConfirm : "true"
-									},
-									success : function(response) {
-										// 요청이 성공적으로 처리되었을 때 실행되는 코드
-										console.log("요청이 성공적으로 처리되었습니다.");
-										console.log("서버 응답: ", response); // 브라우저 콘솔에 서버 응답 기록
-										
-										window.location.href = "MainView.jsp";
-									},
-									error : function(xhr, status, error) {
-										// 요청이 실패하거나 에러가 발생했을 때 실행되는 코드
-										console.error("요청이 실패하였습니다.");
-										console.error(xhr, status, error);
-									}
-								});
+								$
+										.ajax({
+											url : "Post.jsp",
+											method : "POST",
+											data : {
+												postId : postId,
+												postContent : postContent,
+												postTitle : postTitle,
+												postImg : postImg,
+												notice : notice,
+												Schedule : Schedule,
+												btnConfirm : "true",
+												editing : editing
+											},
+											success : function(response) {
+												// 요청이 성공적으로 처리되었을 때 실행되는 코드
+												console
+														.log("요청이 성공적으로 처리되었습니다.");
+												console
+														.log("서버 응답: ",
+																response); // 브라우저 콘솔에 서버 응답 기록
+												console
+														.log("editing:",
+																editing);
+												if (editing == false)
+													window.location.href = "MainView.jsp";
+												else
+													window.location.href = "Myinfo.jsp";
+											},
+											error : function(xhr, status, error) {
+												// 요청이 실패하거나 에러가 발생했을 때 실행되는 코드
+												console.error("요청이 실패하였습니다.");
+												console.error(xhr, status,
+														error);
+											}
+										});
 							}
 						});
 
@@ -284,6 +303,55 @@
 				reader.readAsDataURL(file);
 			}
 		});
+
+		$(document).ready(
+				function() {
+					// AJAX 요청을 보내서 데이터를 가져옴
+					$.ajax({
+						url : "PostDetailsView.jsp", // 데이터를 가져올 서버의 URL
+						type : "POST",
+						data : {
+							postid : postid
+						},
+						success : function(response) {
+							// 요청이 성공적으로 처리되었을 때 실행되는 코드
+							const $responseHtml = $(response);
+							//console.log(response);
+							// 각 input 요소의 값을 가져와서 변수에 저장
+							const postTitle = $responseHtml.find(
+									'input[name="postTitle"]').val();
+							const postContent = $responseHtml.find(
+									'input[name="postContent"]').val();
+							const postType = $responseHtml.find(
+									'input[name="postType"]').val();
+							const postImgSrc = $responseHtml.find(
+									'input[name="postImgSrc"]').val();
+
+							console.log(postTitle);
+							console.log(postContent);
+							console.log(postType);
+							console.log(postImgSrc);
+							$("#postTitle").val(postTitle);
+							$("#postContent").val(postContent);
+							if (postType == "공지") {
+								$("#noticeRadio").prop("checked", true);
+							} else if (postType == "잡담") {
+								$("#idlechatRadio").prop("checked", true);
+							} else if (postType == "일정") {
+								$("#ScheduleRadio").prop("checked", true);
+							}
+							//$("#postType").val(postType);
+							$("#postImgSrc").val(postImgSrc);
+							editing = true;
+							console.log("editing:", editing);
+						},
+						error : function(xhr, status, error) {
+							// 요청이 실패하거나 에러가 발생했을 때 실행되는 코드
+							console.error("요청이 실패하였습니다.");
+							console.error(xhr, status, error);
+						}
+					});
+				});
 	</script>
 </body>
 </html>

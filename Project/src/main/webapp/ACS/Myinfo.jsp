@@ -117,7 +117,7 @@ a.btn-link {
 		</div>
 		<div class="mb-3">
 			<label for="name" class="form-label">이름</label> <input type="text"
-				id="name" name="name" class="form-control">
+				id="name" name="name" class="form-control" readonly>
 			<%
 			String name = (String) session.getAttribute("NAME");
 			%>
@@ -128,7 +128,7 @@ a.btn-link {
 		</div>
 		<div class="mb-3">
 			<label for="address" class="form-label">거주지</label> <input
-				type="text" id="address" name="address" class="form-control">
+				type="text" id="address" name="address" class="form-control" readonly>
 			<%
 			String residence = (String) session.getAttribute("RESIDENCE");
 			%>
@@ -177,21 +177,27 @@ a.btn-link {
 							Post post = new Post();
 
 							// 데이터베이스에서 글목록 가져오기
-							List<Post> PostMembers = dbsqlPost.DBSelect(post, 10.0); // 적절한 메서드를 호출하여 글목록 정보를 가져오도록 수정해야 합니다.
+							List<Post> PostMembers = dbsqlPost.DBSelect(post); // 적절한 메서드를 호출하여 글목록 정보를 가져오도록 수정해야 합니다.
 
 							// 가져온 글목록 정보를 사용하여 HTML 코드 작성
 							if (PostMembers.size() > 0) {
 								for (Post obj : PostMembers) {
 									if (obj instanceof Post) {
 								Post PostMember = obj; // Post로 캐스팅
+
+								// 여기서 추가된 조건문을 확인합니다.
+								if (PostMember.getId().equals(id)) { // Post의 아이디 값과 세션에 저장된 아이디 값을 비교
+									System.out.println(PostMember.getType());
+									if(true/*PostMember.getType().equals("잡담")||(PostMember.getType().equals("공지")&&PostMember.getId().equals("admin"))*/){
 							%>
+							<!-- 이 부분부터는 추가된 조건문이 적용된 영역입니다. -->
 							<div class="row">
 								<div class="col-lg-1">
 									<p><%=PostMember.getPostid()%></p>
 								</div>
 								<div class="col-lg-1">
 									<a class="btn btn-link"
-										onclick="setPostType(<%=PostMember.getType()%>)"> <%=PostMember.getType()%></a>
+										onclick="setPostType('<%=PostMember.getType()%>')"> <%=PostMember.getType()%></a>
 								</div>
 								<div class="col-lg-5">
 									<a class="btn btn-link"
@@ -214,10 +220,13 @@ a.btn-link {
 							<button class="btn btn-link"
 								onclick="viewPostDetails(<%=PostMember.getPostid()%>)"></button>
 							<button class="btn btn-outline-secondary" type="button"
-								id="btnEditPost">수정</button>
+								onclick="viewPostCreationEditing(<%=PostMember.getPostid()%>)">>수정</button>
 							<button class="btn btn-outline-secondary" type="button"
-								id="btnDeletePost">삭제</button>
+								onclick="PostDelete(<%=PostMember.getPostid()%>)">삭제</button>
 							<%
+								}
+							}
+							// 추가된 조건문 종료
 							}
 							}
 							} else {
@@ -237,48 +246,12 @@ a.btn-link {
 				<input type="text" id="myComments" name="myComments"
 					class="form-control" readonly>
 				<button class="btn btn-outline-secondary" type="button"
-					id="btnEditComment">수정</button>
-				<button class="btn btn-outline-secondary" type="button"
 					id="btnDeleteComment">삭제</button>
 			</div>
 		</div>
-		<button class="btn btn-primary">적용</button>
-		<button class="btn btn-secondary">돌아가기</button>
 	</div>
 
 	<script>
-		/*
-		$(document).ready(function() {
-			// 초기 로그인 상태는 회원가입 버튼만 보이도록 설정
-			$("#btnMyInfo").hide();
-			$("#btnLogout").hide();
-			$("#btnAdmin").hide();
-
-			// 로그인 버튼을 클릭하면 내 정보와 로그아웃 버튼이 토글됨
-			$("#btnLogin").click(function() {
-				$("#btnMyInfo").toggle();
-				$("#btnAdmin").toggle();
-				$("#btnLogout").toggle();
-				$("#btnLogin").hide();
-				$("#btnSignup").hide();
-			});
-
-			// 로그아웃 버튼을 클릭하면 내 정보와 로그아웃 버튼이 사라짐
-			$("#btnLogout").click(function() {
-				$("#btnMyInfo").hide();
-				$("#btnLogout").hide();
-				$("#btnAdmin").hide();
-				// 로그인 버튼과 회원가입 버튼을 보이게 함
-				$("#btnSignup").show();
-				$("#btnLogin").show();
-			});
-			
-			//회원가입 버튼 클릭 시 회원가입 창이 보여짐
-			 $("#btnMyInfo").click(function() {
-			        $("#MyInfoForm").show();
-			    });
-		});*/
-		
 		var postType = ''; // 기본값은 빈 문자열
 		 
 	    function setPostType(value) {
@@ -301,6 +274,49 @@ a.btn-link {
 	            error: function(xhr, status, error) {
 	                // 필요한 경우 에러 처리
 	                console.error(error);
+	            }
+	        });
+	    }
+	    
+	    function viewPostCreationEditing(postid) {
+	        // AJAX를 이용하여 서버에 글 상세 정보 요청
+	        console.log("ajax 보내기 전",postid);
+	        $.ajax({
+	            url: "PostCreationEditing.jsp",
+	            type: "POST", // POST 메소드 사용
+	            data: { postid : postid },
+	            success: function(response) {
+	                // 성공시, 받은 응답으로 postdetailsview.jsp 페이지로 이동
+	                window.location.href = "PostCreationEditing.jsp?postid=" + postid;
+	            },
+	            error: function(xhr, status, error) {
+	                // 필요한 경우 에러 처리
+	                console.error(error);
+	            }
+	        });
+	    }
+	    
+	    function PostDelete(id){
+	    	// AJAX를 이용하여 서버에 글 삭제
+	    	console.log("ajax 보내기 전",id);
+	    	$.ajax({
+	    		url : "Post.jsp",
+	    		type : "POST",
+				data : {
+					id : id,
+					btnPostDelete : "true"
+				},
+	            success: function(response) {
+	            	// 요청이 성공적으로 처리되었을 때 실행되는 코드
+					console.log("요청이 성공적으로 처리되었습니다.");
+					console.log("서버 응답: ", response); // Log server response to browser console
+
+					location.reload(); // 성공 후 페이지 새로 고침
+	            },
+	            error: function(xhr, status, error) {
+	                // 필요한 경우 에러 처리
+	            	console.error("요청이 실패하였습니다.");
+					console.error(xhr, status, error);
 	            }
 	        });
 	    }

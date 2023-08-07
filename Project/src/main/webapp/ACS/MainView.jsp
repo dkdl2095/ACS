@@ -364,8 +364,8 @@ a.btn-link {
             type: "POST", // POST 메소드 사용
             data: { postid : postid },
             success: function(response) {
-                // 성공시, 받은 응답으로 postdetailsview.jsp 페이지로 이동
-                window.location.href = "PostDetailsView.jsp?postid=" + postid;
+            	$("#searchResultsContainer").html(response);
+				$("#infoContainer").hide();
             },
             error: function(xhr, status, error) {
                 // 필요한 경우 에러 처리

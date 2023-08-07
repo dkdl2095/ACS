@@ -10,16 +10,18 @@ public class Post {
     		title VARCHAR2(2000),
 			text VARCHAR2(2000), 
 			writingdate DATE,
+    		id INT,
     		name VARCHAR2(20),
-    		img VARCHAR2(500),
+    		img CLOB,
 			viewsnum INT
-	 	);
+		);
 	 */
 	private int postid;
 	private String type;
 	private String title;
 	private String text;
 	private Date writingdate;
+	private String id;
 	private String name;
 	private String img;
 	private int viewsnum;
@@ -62,6 +64,14 @@ public class Post {
 
 	public void setWritingdate(Date writingdate) {
 		this.writingdate = writingdate;
+	}
+	
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getName() {

@@ -33,16 +33,17 @@ public class Insert extends DBSQL {
 		open(); // DB 연결
 		// sql 쿼리문 (postid는 시퀀스로 1씩증가 POSTID_SEQ.NEXTVAL)
 		String sql = "INSERT INTO " + table
-				+ "(postid, type, title, text, writingdate, name, img, viewsnum) VALUES (POSTID_SEQ.NEXTVAL, ?, ?, ?, ?, ?, ?, ?)";
+				+ "(postid, type, title, text, writingdate, id, name, img, viewsnum) VALUES (POSTID_SEQ.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			pstmt.setString(1, p.getType()); // sql 쿼리문에 type에 해당하는 값 셋팅
 			pstmt.setString(2, p.getTitle()); // sql 쿼리문에 title에 해당하는 값 셋팅
 			pstmt.setString(3, p.getText()); // sql 쿼리문에 text에 해당하는 값 셋팅
 			pstmt.setDate(4, p.getWritingdate()); // sql 쿼리문에 writingdate에 해당하는 값 셋팅
-			pstmt.setString(5, p.getName()); // sql 쿼리문에 name에 해당하는 값 셋팅
-			pstmt.setString(6, p.getImg()); // sql 쿼리문에 img에 해당하는 값 셋팅
-			pstmt.setInt(7, p.getViewsnum()); // sql 쿼리문에 viewsnum에 해당하는 값 셋팅
+			pstmt.setString(5, p.getId()); // sql 쿼리문에 id에 해당하는 값 셋팅
+			pstmt.setString(6, p.getName()); // sql 쿼리문에 name에 해당하는 값 셋팅
+			pstmt.setString(7, p.getImg()); // sql 쿼리문에 img에 해당하는 값 셋팅
+			pstmt.setInt(8, p.getViewsnum()); // sql 쿼리문에 viewsnum에 해당하는 값 셋팅
 
 			pstmt.executeUpdate();
 		} catch (Exception e) {
@@ -55,14 +56,13 @@ public class Insert extends DBSQL {
 	public void DBInsert(Calendar c) { // Calendar 테이블에 일정 정보를 삽입하는 함수
 		open(); // DB 연결
 		// sql 쿼리문
-		String sql = "INSERT INTO " + table + "(calid, startdate, enddate, text, postid) VALUES (?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO " + table + "(calid, startdate, enddate, text, postid) VALUES (CALID_SEQ.NEXTVAL, ?, ?, ?, ?)";
 
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-			pstmt.setInt(1, c.getCalid()); // sql 쿼리문에 calid에 해당하는 값 셋팅
-			pstmt.setDate(2, c.getStartdate()); // sql 쿼리문에 cdate에 해당하는 값 셋팅
-			pstmt.setDate(3, c.getEnddate()); // sql 쿼리문에 cdate에 해당하는 값 셋팅
-			pstmt.setString(4, c.getText()); // sql 쿼리문에 text에 해당하는 값 셋팅
-			pstmt.setInt(5, c.getPostid()); // sql 쿼리문에 postid에 해당하는 값 셋팅
+			pstmt.setDate(1, c.getStartdate()); // sql 쿼리문에 cdate에 해당하는 값 셋팅
+			pstmt.setDate(2, c.getEnddate()); // sql 쿼리문에 cdate에 해당하는 값 셋팅
+			pstmt.setString(3, c.getText()); // sql 쿼리문에 text에 해당하는 값 셋팅
+			pstmt.setInt(4, c.getPostid()); // sql 쿼리문에 postid에 해당하는 값 셋팅
 
 			pstmt.executeUpdate();
 		} catch (Exception e) {

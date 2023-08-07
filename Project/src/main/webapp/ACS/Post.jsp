@@ -17,21 +17,24 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
 	integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
 	crossorigin="anonymous"></script>
-<title>게시글 생성</title>
+<title>게시글</title>
 </head>
 <body>
 	<%-- Java 코드 작성 (스크립트릿) --%>
 	<%
+	String id = (String) session.getAttribute("ID");
 	// 클라이언트로부터 전송된 데이터 받기   
 	// PostCreationEditing.jsp
+	String postIdString = request.getParameter("postId");
 	String postContent = request.getParameter("postContent");
 	String postTitle = request.getParameter("postTitle");
 	String postImg = request.getParameter("postImg");
 	String btnConfirm = request.getParameter("btnConfirm");
 	String notice = request.getParameter("notice");
 	String Schedule = request.getParameter("Schedule");
+	String editing = request.getParameter("editing");
 	String Radio = "";
-
+	int postId = 0;
 	// PostManagement.jsp
 	String btnPostDelete = request.getParameter("btnPostDelete");
 
@@ -47,37 +50,79 @@
 		currentPage = Integer.parseInt(currentPageParam);
 		System.out.println("currentPage: " + currentPage);
 	}
+	if (postIdString != null && !postIdString.isEmpty()) {
+		 postId = Integer.parseInt(postIdString);
+	}
 
 	System.out.println("postType : " + postType + ", postValue : " + postValue + ", currentPage : " + currentPage);
+	System.out.println("Editing: " + editing + "postid: "+postId);
 	// 요청 파라미터에서 confirm 값을 확인하여 데이터 삽입 여부를 결정
 	if (btnConfirm != null && btnConfirm.equals("true")) {
-		// DBSQL 객체 생성
-		Post post = new Post();
-		Insert dbsqlInsert = new Insert("Post");
-		//newPost.setPostid(2); // 원하는 값을 설정합니다.
-		String name = (String) session.getAttribute("NAME");
+		if (editing.equals("false")) {
+			// DBSQL 객체 생성
+			Post post = new Post();
+			Insert dbsqlInsert = new Insert("Post");
+			//newPost.setPostid(2); // 원하는 값을 설정합니다.
+			String name = (String) session.getAttribute("NAME");
 
-		if (notice.equals("true")) {
-			Radio = "공지";
-		} else if (Schedule.equals("true")) {
-			Radio = "일정";
-		} else {
-			Radio = "잡담";
+			if (notice.equals("true")) {
+		Radio = "공지";
+			} else if (Schedule.equals("true")) {
+		Radio = "일정";
+			} else {
+		Radio = "잡담";
+			}
+			post.setType(Radio);
+			post.setTitle(postTitle);
+			post.setText(postContent);
+			post.setWritingdate(new Date(System.currentTimeMillis()));
+			post.setId(id);
+			post.setName(name);
+			post.setImg(postImg);
+			post.setViewsnum(0);
+			System.out.println("Radio: " + Radio + ", postTitle: " + postTitle + ", postContent: " + postContent
+			+ ", Date: " + new Date(System.currentTimeMillis()) + ", id: " + id + ", name: " + name + ", postImg: "
+			+ postImg + ", Viewsnum: " + 0);
+
+			// 데이터를 삽입합니다.
+			dbsqlInsert.DBInsert(post);
+
+			// Send the response to the Eclipse console using JSP's 'out' object
+			out.println("요청이 성공적으로 처리되었습니다.");
+			out.println("서버 응답: " + "데이터가 성공적으로 저장되었습니다."); // You can customize this message as needed
+		} else if (editing.equals("true")) {
+			// DBSQL 객체 생성
+			Post post = new Post();
+			Update dbsqlUpdate = new Update("Post");
+			//newPost.setPostid(2); // 원하는 값을 설정합니다.
+			String name = (String) session.getAttribute("NAME");
+
+			if (notice.equals("true")) {
+				Radio = "공지";
+			} else if (Schedule.equals("true")) {
+				Radio = "일정";
+			} else {
+				Radio = "잡담";
+			}
+			post.setType(Radio);
+			post.setTitle(postTitle);
+			post.setText(postContent);
+			post.setWritingdate(new Date(System.currentTimeMillis()));
+			post.setId(id);
+			post.setName(name);
+			post.setImg(postImg);
+			post.setViewsnum(0);
+			//System.out.println("Radio: " + Radio + ", postTitle: " + postTitle + ", postContent: " + postContent
+			//+ ", Date: " + new Date(System.currentTimeMillis()) + ", id: " + id + ", name: " + name + ", postImg: "
+			//+ postImg + ", Viewsnum: " + 0+", postId: " + postId);
+
+			// 데이터를 삽입합니다.
+			dbsqlUpdate.DBUpdate(post, postId);
+
+			// Send the response to the Eclipse console using JSP's 'out' object
+			out.println("요청이 성공적으로 처리되었습니다.");
+			out.println("서버 응답: " + "데이터가 성공적으로 저장되었습니다."); // You can customize this message as needed
 		}
-		post.setType(Radio);
-		post.setTitle(postTitle);
-		post.setText(postContent);
-		post.setWritingdate(new Date(System.currentTimeMillis()));
-		post.setName(name);
-		post.setImg(postImg);
-		post.setViewsnum(0);
-
-		// 데이터를 삽입합니다.
-		dbsqlInsert.DBInsert(post);
-
-		// Send the response to the Eclipse console using JSP's 'out' object
-		out.println("요청이 성공적으로 처리되었습니다.");
-		out.println("서버 응답: " + "데이터가 성공적으로 저장되었습니다."); // You can customize this message as needed
 	}
 
 	// 관리자가 글 삭제
@@ -95,8 +140,7 @@
 		out.println("요청이 성공적으로 처리되었습니다.");
 		out.println("서버 응답: " + "데이터가 성공적으로 저장되었습니다."); // You can customize this message as needed
 	}
-	
-	// 글 검색 로직
+
 	if (btnPostSearch != null && btnPostSearch.equals("true")) {
 		Select dbsqlPost = new Select("Post");
 		Post post = new Post();
@@ -155,7 +199,7 @@
 		//PostMembers = (List<Post>) request.getAttribute("PostMembers");
 		if (PostMembers != null && !PostMembers.isEmpty()) {
 			for (int i = startIndex; i < endIndex; i++) {
-				 Post obj = PostMembers.get(i);
+				Post obj = PostMembers.get(i);
 				if (obj instanceof Post) {
 			Post PostMember = obj; // Post로 캐스팅
 		%>
