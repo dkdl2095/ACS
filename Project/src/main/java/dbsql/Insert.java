@@ -56,7 +56,7 @@ public class Insert extends DBSQL {
 	public void DBInsert(Calendar c) { // Calendar 테이블에 일정 정보를 삽입하는 함수
 		open(); // DB 연결
 		// sql 쿼리문
-		String sql = "INSERT INTO " + table + "(calid, startdate, enddate, text, postid) VALUES (POSTID_SEQ.NEXTVAL, ?, ?, ?, ?)";
+		String sql = "INSERT INTO " + table + "(calid, startdate, enddate, text, postid) VALUES (CALID_SEQ.NEXTVAL, ?, ?, ?, ?)";
 
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			pstmt.setDate(1, c.getStartdate()); // sql 쿼리문에 cdate에 해당하는 값 셋팅
