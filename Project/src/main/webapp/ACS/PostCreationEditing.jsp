@@ -125,6 +125,7 @@
 			<div class="mb-3">
 				<label for="postContent" class="form-label">게시글 내용</label>
 				<textarea class="form-control" id="postContent" rows="20"></textarea>
+				<div id="postImg" contenteditable="true"></div>
 			</div>
 		</div>
 	</form>
@@ -138,25 +139,6 @@
 
 
 	<script>
-		/*
-		 // 특정 ID를 확인하여 공지/잡담 체크박스를 보이거나 숨깁니다.
-		 function showHideCheckboxes() {
-		 // 여기서 특정 ID 확인을 위한 로직을 추가하십시오.
-		 // 예를 들어, 로그인 상태를 확인하거나 특정 사용자 정보를 기반으로 처리할 수 있습니다.
-		 // 이 예제에서는 특정 ID가 아니면 잡담만 보이도록 처리하겠습니다.
-		 const idlechatCheckbox = document
-		 .getElementById("idlechatCheckbox");
-		 const noticeCheckbox = document.getElementById("noticeCheckbox");
-
-		 // 특정 ID가 아닌 경우, 공지 체크박스를 숨기고, 잡담 체크박스를 보이도록 설정
-		 // 여기에서는 단순히 예시로 ID를 확인하는 로직은 작성하지 않았습니다. 필요한 조건을 추가하여 로직을 완성하십시오.
-		 const isSpecialUser = false; // 여기서 true인 경우 특정 ID라고 가정
-		 if (!isSpecialUser) {
-		 chitchatCheckbox.style.display = "block";
-		 noticeCheckbox.style.display = "none";
-		 }
-		 }*/
-
 		function applyFontAndSize() {
 			var selectedFont = $("#fontSelect").val();
 			var selectedSize = $("#sizeSelect").val();
@@ -220,56 +202,7 @@
 			document.getElementById("previewArea").innerHTML = content;
 		}
 
-		// 페이지가 unload 될 때, 입력된 내용을 저장합니다.
-		/*window.onbeforeunload = function() {
-			var selectedFont = $("#fontSelect").val();
-			var selectedSize = $("#sizeSelect").val();
-			var selectedColor = $("#colorSelect").val();
-			var textArea = document.getElementById("postContent");
-			var titleArea = document.getElementById("postTitle");
-			localStorage.setItem("selectedFont", selectedFont);
-			localStorage.setItem("selectedSize", selectedSize);
-			localStorage.setItem("selectedColor", selectedColor);
-			localStorage.setItem("postContent", JSON.stringify(textArea.value));
-			localStorage.setItem("postTitle", JSON.stringify(titleArea.value));
-			console.log("selectedFont:", selectedFont);
-			console.log("selectedSize:", selectedSize);
-			console.log("selectedColor:", selectedColor);
-			console.log("textArea:", JSON.stringify(textArea.value));
-			console.log("titleArea:", JSON.stringify(titleArea.value));
-		};*/
-
-		// 페이지 로드 시, 저장된 데이터를 텍스트 박스에 복원합니다.
-		/*window.onload = function() {
-			var savedFont = localStorage.getItem("selectedFont");
-			var savedSize = localStorage.getItem("selectedSize");
-			var savedColor = localStorage.getItem("selectedColor");
-			var savedContent = localStorage.getItem("postContent");
-			var savedTitle = localStorage.getItem("postTitle");
-			if (savedFont) {
-				$("#fontSelect").val(savedFont);
-			}
-			if (savedSize) {
-				$("#sizeSelect").val(savedSize);
-			}
-			if (savedColor) {
-				$("#colorSelect").val(savedColor);
-			}
-			if (savedContent) {
-				document.getElementById("postContent").value = JSON
-						.parse(savedContent);
-			}
-			if (savedTitle) {
-				document.getElementById("postTitle").value = JSON
-						.parse(savedTitle);
-			}
-			console.log("savedFont:", savedFont);
-			console.log("savedSize:", savedSize);
-			console.log("savedColor:", savedColor);
-			console.log("savedContent:", JSON.parse(savedContent));
-			console.log("savedTitle:", JSON.parse(savedTitle));
-		};*/
-
+		
 		// 확인 버튼 클릭 이벤트 처리
 		document
 				.getElementById("btnConfirm")
@@ -280,8 +213,10 @@
 									.getElementById("postContent");
 							var titleArea = document
 									.getElementById("postTitle");
+							var imgDiv = document.getElementById("postImg");
 							var postContent = textArea.value;
 							var postTitle = titleArea.value;
+							var postImg = imgDiv.innerHTML;
 							var notice = document.getElementById("noticeRadio").checked;
 							var Schedule = document
 									.getElementById("ScheduleRadio").checked;
@@ -290,11 +225,12 @@
 							if (confirmed) {
 								// AJAX 요청을 보냅니다.
 								$.ajax({
-									url : "PostCreation.jsp",
+									url : "Post.jsp",
 									method : "POST",
 									data : {
 										postContent : postContent,
 										postTitle : postTitle,
+										postImg : postImg,
 										notice : notice,
 										Schedule : Schedule,
 										btnConfirm : "true"
@@ -303,25 +239,8 @@
 										// 요청이 성공적으로 처리되었을 때 실행되는 코드
 										console.log("요청이 성공적으로 처리되었습니다.");
 										console.log("서버 응답: ", response); // 브라우저 콘솔에 서버 응답 기록
-										// 폰트, 사이즈, 색상 선택을 초기화하고, 게시글 내용을 지웁니다.
-										/*localStorage.setItem(
-												"selectedFont", "Font");
-										localStorage.setItem(
-												"selectedSize", "Size");
-										localStorage.setItem(
-												"selectedColor",
-												"Color");
-										localStorage.setItem(
-												"postContent", "");
-										localStorage.setItem(
-												"postTitle", "");
-										$("#fontSelect").val("Font");
-										$("#sizeSelect").val("Size");
-										$("#colorSelect").val("Color");
-										document
-												.getElementById("postContent").value = "";
-										document
-												.getElementById("postTitle").value = "";*/
+										
+										window.location.href = "MainView.jsp";
 									},
 									error : function(xhr, status, error) {
 										// 요청이 실패하거나 에러가 발생했을 때 실행되는 코드
@@ -336,6 +255,35 @@
 			var textArea = document.getElementById("postContent");
 			textArea.value += "\n"; // 이미지 첨부 후 줄 바꿈 처리
 		}
+
+		// 이미지 드래그 앤 드랍
+		var editor = document.getElementById('postImg');
+
+		editor.addEventListener('dragover', function(e) {
+			e.stopPropagation();
+			e.preventDefault();
+			e.dataTransfer.dropEffect = 'copy';
+		});
+
+		editor.addEventListener('drop', function(e) {
+			e.stopPropagation();
+			e.preventDefault();
+
+			var files = e.dataTransfer.files;
+			var file = files[0];
+
+			if (file.type.match('image.*')) {
+				var reader = new FileReader();
+
+				reader.onload = function(e) {
+					var img = document.createElement('img');
+					img.src = e.target.result;
+					editor.appendChild(img);
+				};
+
+				reader.readAsDataURL(file);
+			}
+		});
 	</script>
 </body>
 </html>

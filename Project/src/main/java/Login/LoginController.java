@@ -24,17 +24,28 @@ public class LoginController extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
+        
         String view = "";
 
         Method m = null;
 
         if (action == null) {
             action = "login";
-        }
-
+            
+        } 
+        
         try {
-            m = this.getClass().getMethod(action, HttpServletRequest.class);
-            view = (String) m.invoke(this, req);
+        	switch (action) {
+        	case "login":
+                m = this.getClass().getMethod("login", HttpServletRequest.class);
+                view = (String) m.invoke(this, req);
+                break;
+        	
+        	case "logout":
+                m = this.getClass().getMethod("logout", HttpServletRequest.class);
+                view = (String) m.invoke(this, req);
+                break;
+        	}
         } catch (NoSuchMethodException e) {
             req.setAttribute("error", "존재하지 않는 액션 요청입니다!");
         } catch (Exception e) {
@@ -59,6 +70,12 @@ public class LoginController extends HttpServlet {
             HttpSession session = req.getSession(true);
 
             Tenant result = dao.login(id, pass);
+            
+            if (dao.isIdBlocked(id)) {
+            
+                session.setAttribute("error", "차단된 아이디입니다. 관리자에게 문의하세요.");
+                return "/ACS/Login.jsp";
+            }
 
             if (!result.getId().contains("Error")) {
             	Date getAccessiondate = result.getAccessiondate();
@@ -97,6 +114,19 @@ public class LoginController extends HttpServlet {
 
             return "/ACS/Login.jsp";
     }
+    
+    
+
+        public String logout(HttpServletRequest req) {
+        	System.out.println("로그아웃 버튼을 클릭하고 이 함수가 실행이 되고있는거냐?");
+            HttpSession session = req.getSession(true); // 새로 세션을 생성하도록 수정
+            session.invalidate(); // 현재 세션 무효화
+            
+            return "/ACS/Login.jsp"; // 로그인 페이지로 리다이렉트
+        }
+    
+
+    
     
 
 }

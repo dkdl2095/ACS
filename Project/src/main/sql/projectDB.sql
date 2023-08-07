@@ -1,5 +1,5 @@
 --------------------------------------------------------
---  ∆ƒ¿œ¿Ã ª˝º∫µ  - »≠ø‰¿œ-8ø˘-01-2023   
+--  Áù£ÊûêÊàö ÊåÅÂ§±Âñ´ - Èâ¢Êé®Êûê-8Êùâ-01-2023   
 --------------------------------------------------------
 DROP SEQUENCE "HR"."POSTID_SEQ";
 DROP TABLE "HR"."TENANTWAIT";
@@ -88,17 +88,17 @@ DROP TABLE "HR"."CALENDER";
   TABLESPACE "USERS" ;
 REM INSERTING into HR.TENANTWAIT
 SET DEFINE OFF;
-Insert into HR.TENANTWAIT (ID,NAME,PASSWORD,ACCESSIONDATE,RESIDENCE) values ('wwww','»´±Êµø','qwer1234',to_date('23/07/27','RR/MM/DD'),'bbæ∆∆ƒ∆Æ');
+Insert into HR.TENANTWAIT (ID,NAME,PASSWORD,ACCESSIONDATE,RESIDENCE) values ('wwww','Áï†Êé©Áñë','qwer1234',to_date('23/07/27','RR/MM/DD'),'bbÁÑºÁù£Èóò');
 REM INSERTING into HR.TENANTCOMPLET
 SET DEFINE OFF;
-Insert into HR.TENANTCOMPLET (ID,NAME,PASSWORD,ACCESSIONDATE,RESIDENCE) values ('asd','»´±Êµø','1234',to_date('23/07/27','RR/MM/DD'),'aaæ∆∆ƒ∆Æ');
-Insert into HR.TENANTCOMPLET (ID,NAME,PASSWORD,ACCESSIONDATE,RESIDENCE) values ('www','»´±Êµø','1234',to_date('23/07/27','RR/MM/DD'),'aaæ∆∆ƒ∆Æ');
-Insert into HR.TENANTCOMPLET (ID,NAME,PASSWORD,ACCESSIONDATE,RESIDENCE) values ('wwww','§±§±§±§±','1234',to_date('23/07/27','RR/MM/DD'),'bbæ∆∆ƒ∆Æ');
+Insert into HR.TENANTCOMPLET (ID,NAME,PASSWORD,ACCESSIONDATE,RESIDENCE) values ('asd','Áï†Êé©Áñë','1234',to_date('23/07/27','RR/MM/DD'),'aaÁÑºÁù£Èóò');
+Insert into HR.TENANTCOMPLET (ID,NAME,PASSWORD,ACCESSIONDATE,RESIDENCE) values ('www','Áï†Êé©Áñë','1234',to_date('23/07/27','RR/MM/DD'),'aaÁÑºÁù£Èóò');
+Insert into HR.TENANTCOMPLET (ID,NAME,PASSWORD,ACCESSIONDATE,RESIDENCE) values ('wwww','„Åë„Åë„Åë„Åë','1234',to_date('23/07/27','RR/MM/DD'),'bbÁÑºÁù£Èóò');
 REM INSERTING into HR.TENANTBAN
 SET DEFINE OFF;
 REM INSERTING into HR.POST
 SET DEFINE OFF;
-Insert into HR.POST (POSTID,TYPE,TITLE,TEXT,WRITINGDATE,NAME,IMG,VIEWSNUM) values (4,'type',null,'§∑§§§±§∑§±§§§∑§±§§',to_date('23/08/01','RR/MM/DD'),'name','img',0);
+Insert into HR.POST (POSTID,TYPE,TITLE,TEXT,WRITINGDATE,NAME,IMG,VIEWSNUM) values (4,'type',null,'„Åó„ÅÑ„Åë„Åó„Åë„ÅÑ„Åó„Åë„ÅÑ',to_date('23/08/01','RR/MM/DD'),'name','img',0);
 REM INSERTING into HR.CALENDER
 SET DEFINE OFF;
 --------------------------------------------------------
