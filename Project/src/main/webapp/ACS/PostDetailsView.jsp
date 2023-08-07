@@ -22,66 +22,22 @@
 <title>글 세부 화면</title>
 </head>
 <body>
-	<nav class="navbar navbar-expand-lg navbar-light bg-light">
-		<div class="container-fluid">
-			<a class="navbar-brand" href="MainView.jsp"> <!-- 로고 이미지 --> <!-- 
-        로고 출처 
-        https://pixabay.com/ko/vectors/%EB%8F%84%EC%8B%9C-%EB%8F%84%EB%A1%9C-%EC%A7%80%EC%97%AD-%EC%82%AC%ED%9A%8C-%EA%B1%B4%EB%AC%BC-2042634/
-        pixabay - Ricinator
-        --> <img src="Logo.png" alt="로고"
-				style="width: 20%; height: auto; margin: 0 auto; display: block;">
-			</a>
-		</div>
-	</nav>
-	<nav class="navbar navbar-expand-lg navbar-light bg-light">
-		<div class="container-fluid">
-			<!-- 홈, 공지, 잡담, 일정 버튼 -->
-			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-				<li class="nav-item"><a class="nav-link" href="MainView.jsp">
-						<!-- 홈 버튼 이미지 --> <img src="Home.png" alt="로고" height="30">
-				</a></li>
-				<li class="nav-item"><a class="nav-link" href="#"
-					onclick="callMainViewSetPostType('공지')">공지</a></li>
-				<li class="nav-item"><a class="nav-link" href="#"
-					onclick="callMainViewSetPostType('잡담')">잡담</a></li>
-				<li class="nav-item"><a class="nav-link" href="#"
-					onclick="callMainViewSetPostType('일정')">일정</a></li>
-			</ul>
-			<!-- 내 정보, 로그아웃 버튼 -->
-			<ul class="navbar-nav">
-				<!-- 내 정보 버튼 -->
-				<li class="nav-item"><a id="btnMyInfo" class="nav-link"
-					href="Myinfo.jsp">내 정보</a></li>
-				<!-- 관리자 버튼-->
-				<li class="nav-item"><a id="btnAdmin" class="nav-link"
-					href="AdminView.jsp">관리자</a></li>
-				<!-- 로그아웃 버튼 -->
-				<li class="nav-item"><a id="btnLogout" class="nav-link"
-					href="Login.jsp">로그아웃</a></li>
-			</ul>
-		</div>
-	</nav>
 	<%-- Java 코드 작성 (스크립트릿) --%>
-	<%
+	<%	
 	// 클라이언트로부터 전송된 데이터 받기
-	String postidStr = null;
-	Post post = null;
-	Select dbsqlSelect = null;
-	Update dbsqlUpdate = null;
+	String postidStr = request.getParameter("postid");
+	Post post = new Post();
+	Select dbsqlSelect = new Select("Post");
+	Update dbsqlUpdate = new Update("Post");
 	Post PostMember = null;
 	List<Post> PostMembers = null;
-
-	postidStr = request.getParameter("postid");
-	System.out.println("postidStr: " + postidStr);
+	
 	int postid = 0; // 기본값으로 초기화
 	// postidStr이 null이 아니고 숫자 형태일 경우에만 Integer로 변환
 	if (postidStr != null && postidStr.matches("\\d+")) {
+		System.out.println("postidStr: " + postidStr);
+		
 		postid = Integer.parseInt(postidStr);
-
-		// DBSQL 객체 생성
-		post = new Post();
-		dbsqlSelect = new Select("Post");
-		dbsqlUpdate = new Update("Post");
 
 		// 데이터베이스에서 글목록 가져오기
 		PostMembers = dbsqlSelect.DBSelect(post, postid); // 적절한 메서드를 호출하여 글목록 정보를 가져오도록 수정해야 합니다.
@@ -95,7 +51,7 @@
 		} else {
 			System.out.println("PostMembers 오류");
 		}
-
+		
 		dbsqlUpdate.DBUpdate(post, postid, PostMember.getViewsnum());
 		System.out.println("조회수: " + PostMember.getViewsnum());
 	}
@@ -125,7 +81,7 @@
 					<div class="col-md-3">
 						<p>
 							<strong>조회수:</strong>
-							<%=(PostMember != null) ? PostMember.getViewsnum() : "데이터가 없습니다"%>
+							<%=(PostMember != null) ? PostMember.getViewsnum() + 1 : "데이터가 없습니다"%>
 						</p>
 					</div>
 				</div>
@@ -134,6 +90,9 @@
 				<div class="col">
 					<div id="textArea">
 						<p><%=(PostMember != null) ? PostMember.getText() : "데이터가 없습니다"%></p>
+					</div>
+					<div id="img">
+						<p><%= PostMember.getImg() %></p>
 					</div>
 					<div class="text-center">
 						<p>
@@ -175,10 +134,11 @@
 		// 추천 버튼을 누르면 카운트 증가
 		let recommendCount = 0;
 
-		function recommend() {
+		function recommend() { // 추천 수  
 			recommendCount++;
 			document.getElementById("recommendCount").textContent = recommendCount;
 		}
+		
 		function textAreaView() {
 			var textArea = document.getElementById("textArea");
 			var content = textArea.innerHTML;

@@ -8,7 +8,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>회원 수락</title>
+<title>회원</title>
 </head>
 <body>
 <%-- Java 코드 작성 (스크립트릿) --%>

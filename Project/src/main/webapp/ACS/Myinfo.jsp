@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page import="dbsql.Select"%>
+<%@ page import="table.*"%>
+<%@ page import="java.util.List"%>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css"
 	rel="stylesheet"
@@ -36,6 +39,11 @@ input[type="text"], input[type="password"] {
 
 button {
 	cursor: pointer;
+}
+
+a.btn-link {
+	text-decoration: none;
+	color: black;
 }
 </style>
 </head>
@@ -84,51 +92,143 @@ button {
 		<hr>
 		<p>소중한 내 정보를 확인하세요.</p>
 		<hr>
-<div class="mb-3">
-    <label for="joinDate" class="form-label">가입날짜</label>
-    <input type="text" id="joinDate" name="joinDate" class="form-control" readonly>
-    <% String accessiondate = (String) session.getAttribute("ACCESSIONDATE"); %>
-    <script>
+		<div class="mb-3">
+			<label for="joinDate" class="form-label">가입날짜</label> <input
+				type="text" id="joinDate" name="joinDate" class="form-control"
+				readonly>
+			<%
+			String accessiondate = (String) session.getAttribute("ACCESSIONDATE");
+			%>
+			<script>
         // 세션에서 가져온 가입날짜를 텍스트 박스에 설정
-        document.getElementById("joinDate").value = "<%= accessiondate %>";
+        document.getElementById("joinDate").value = "<%=accessiondate%>";
     </script>
-</div>
+		</div>
 		<div class="mb-3">
 			<label for="ID" class="form-label">아이디</label> <input type="text"
 				id="ID" name="ID" class="form-control" readonly>
-			<% String id = (String) session.getAttribute("ID"); %>
+			<%
+			String id = (String) session.getAttribute("ID");
+			%>
 			<script>
         	// 세션에서 가져온 아이디를 텍스트 박스에 설정
-        	document.getElementById("ID").value = "<%= id %>";
+        	document.getElementById("ID").value = "<%=id%>";
    			 </script>
 		</div>
 		<div class="mb-3">
 			<label for="name" class="form-label">이름</label> <input type="text"
 				id="name" name="name" class="form-control">
-			<% String name = (String) session.getAttribute("NAME"); %>
+			<%
+			String name = (String) session.getAttribute("NAME");
+			%>
 			<script>
             // 세션에서 가져온 이름을 텍스트 박스에 설정
-          document.getElementById("name").value = "<%= name %>";
+          document.getElementById("name").value = "<%=name%>";
           </script>
 		</div>
 		<div class="mb-3">
 			<label for="address" class="form-label">거주지</label> <input
 				type="text" id="address" name="address" class="form-control">
-			<% String residence = (String) session.getAttribute("RESIDENCE"); %>
+			<%
+			String residence = (String) session.getAttribute("RESIDENCE");
+			%>
 			<script>
             // 세션에서 가져온 입주정보를 텍스트 박스에 설정
-          document.getElementById("address").value = "<%= residence %>";
+          document.getElementById("address").value = "<%=residence%>";
           </script>
 		</div>
 		<div class="mb-3">
 			<label for="myPosts" class="form-label">내가 쓴 글</label>
 			<div class="input-group">
-				<input type="text" id="myPosts" name="myPosts" class="form-control"
-					readonly>
-				<button class="btn btn-outline-secondary" type="button"
-					id="btnEditPost">수정</button>
-				<button class="btn btn-outline-secondary" type="button"
-					id="btnDeletePost">삭제</button>
+				<!-- 글 목록을 표시하는 부분 -->
+				<div id="searchResultsContainer" class="container mt-5">
+					<div class="card">
+						<div class="row justify-content-center">
+							<div class="col-lg-1">
+								<p>번호</p>
+							</div>
+							<div class="col-lg-1">
+								<p>타입</p>
+							</div>
+							<div class="col-lg-5">
+								<p>제목</p>
+							</div>
+							<div class="col-lg-1">
+								<p>작성자</p>
+							</div>
+							<div class="col-lg-2">
+								<p>작성일</p>
+							</div>
+							<div class="col-lg-1">
+								<p>조회</p>
+							</div>
+							<div class="col-lg-1">
+								<p>추천</p>
+							</div>
+						</div>
+
+						<div class="card-body">
+							<%-- Java 코드 작성 (스크립트릿) --%>
+							<!-- 글목록 정보를 표시하는 플레이스홀더 요소 -->
+							<%
+							// Java 코드 작성 (스크립트릿)
+							// DBSQL 객체 생성
+							Select dbsqlPost = new Select("Post");
+							Post post = new Post();
+
+							// 데이터베이스에서 글목록 가져오기
+							List<Post> PostMembers = dbsqlPost.DBSelect(post, 10.0); // 적절한 메서드를 호출하여 글목록 정보를 가져오도록 수정해야 합니다.
+
+							// 가져온 글목록 정보를 사용하여 HTML 코드 작성
+							if (PostMembers.size() > 0) {
+								for (Post obj : PostMembers) {
+									if (obj instanceof Post) {
+								Post PostMember = obj; // Post로 캐스팅
+							%>
+							<div class="row">
+								<div class="col-lg-1">
+									<p><%=PostMember.getPostid()%></p>
+								</div>
+								<div class="col-lg-1">
+									<a class="btn btn-link"
+										onclick="setPostType(<%=PostMember.getType()%>)"> <%=PostMember.getType()%></a>
+								</div>
+								<div class="col-lg-5">
+									<a class="btn btn-link"
+										onclick="viewPostDetails(<%=PostMember.getPostid()%>)"> <%=PostMember.getTitle()%></a>
+								</div>
+								<div class="col-lg-1">
+									<p><%=PostMember.getName()%></p>
+								</div>
+								<div class="col-lg-2">
+									<p><%=PostMember.getWritingdate()%></p>
+								</div>
+								<div class="col-lg-1">
+									<p><%=PostMember.getViewsnum()%></p>
+								</div>
+								<div class="col-lg-1">
+									<p>추천</p>
+								</div>
+							</div>
+
+							<button class="btn btn-link"
+								onclick="viewPostDetails(<%=PostMember.getPostid()%>)"></button>
+							<button class="btn btn-outline-secondary" type="button"
+								id="btnEditPost">수정</button>
+							<button class="btn btn-outline-secondary" type="button"
+								id="btnDeletePost">삭제</button>
+							<%
+							}
+							}
+							} else {
+							%>
+							<p>게시글이 없습니다.</p>
+							<%
+							}
+							%>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 		<div class="mb-3">
@@ -147,6 +247,7 @@ button {
 	</div>
 
 	<script>
+		/*
 		$(document).ready(function() {
 			// 초기 로그인 상태는 회원가입 버튼만 보이도록 설정
 			$("#btnMyInfo").hide();
@@ -176,7 +277,41 @@ button {
 			 $("#btnMyInfo").click(function() {
 			        $("#MyInfoForm").show();
 			    });
-		});
+		});*/
+		
+		var postType = ''; // 기본값은 빈 문자열
+		 
+	    function setPostType(value) {
+			postType = value;
+	        console.log("setPostType",postType);
+	        searchPosts();
+	    }
+		
+	    function viewPostDetails(postid) {
+	        // AJAX를 이용하여 서버에 글 상세 정보 요청
+	        console.log("ajax 보내기 전",postid);
+	        $.ajax({
+	            url: "PostDetailsView.jsp",
+	            type: "POST", // POST 메소드 사용
+	            data: { postid : postid },
+	            success: function(response) {
+	                // 성공시, 받은 응답으로 postdetailsview.jsp 페이지로 이동
+	                window.location.href = "PostDetailsView.jsp?postid=" + postid;
+	            },
+	            error: function(xhr, status, error) {
+	                // 필요한 경우 에러 처리
+	                console.error(error);
+	            }
+	        });
+	    }
+	    
+	    $(document).ready(function() {
+	    	 var urlParams = new URLSearchParams(window.location.search);
+	    	 var urlType = urlParams.get("postType");
+	    	 if (urlType) {
+	    		 setPostType(urlType);
+	         }
+	    });
 	</script>
 </body>
 </html>

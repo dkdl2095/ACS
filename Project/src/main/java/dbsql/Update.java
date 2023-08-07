@@ -72,13 +72,14 @@ public class Update extends DBSQL {
 	public void DBUpdate(Calendar c) { // Calendar 테이블에 일정 정보를 수정하는 함수
 		open(); // DB 연결
 		// sql 쿼리문
-		String sql = "UPDATE " + table + " SET calid=?, cdate=?, text=?, postid=?";
+		String sql = "UPDATE " + table + " SET calid=?, startdate=?, enddate=?, text=?, postid=?";
 
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			pstmt.setInt(1, c.getCalid()); // sql 쿼리문에 calid에 해당하는 값 셋팅
-			pstmt.setDate(2, c.getCdate()); // sql 쿼리문에 cdate에 해당하는 값 셋팅
-			pstmt.setString(3, c.getText()); // sql 쿼리문에 text에 해당하는 값 셋팅
-			pstmt.setInt(4, c.getPostid()); // sql 쿼리문에 postid에 해당하는 값 셋팅
+			pstmt.setDate(2, c.getStartdate()); // sql 쿼리문에 cdate에 해당하는 값 셋팅
+			pstmt.setDate(3, c.getEnddate()); // sql 쿼리문에 cdate에 해당하는 값 셋팅
+			pstmt.setString(4, c.getText()); // sql 쿼리문에 text에 해당하는 값 셋팅
+			pstmt.setInt(5, c.getPostid()); // sql 쿼리문에 postid에 해당하는 값 셋팅
 
 			pstmt.executeUpdate();
 		} catch (Exception e) {

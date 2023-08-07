@@ -174,10 +174,9 @@ public class Select extends DBSQL {
 		}
 		return post; // 객체에 추가 후 객체 리턴
 	}
-
-	public List<Post> DBSelect(Post p, String likeProperty, String str) throws SQLException { // Post 테이블에서 likeProperty
-																								// 값 중에 str가 포함되어 있는 것을
-																								// // Select 하는 함수
+	
+	// Post 테이블에서 likeProperty값 중에 str가포함되어 있는 것을Select 하는 함수
+	public List<Post> DBSelect(Post p, String likeProperty, String str) throws SQLException { 
 		open(); // DB 연결
 		List<Post> post = new ArrayList<>();
 		String sql = "SELECT * FROM post WHERE " + likeProperty + " LIKE '%" + str + "%'";
@@ -203,12 +202,12 @@ public class Select extends DBSQL {
 		}
 		return post; // 객체에 추가 후 객체 리턴
 	}
-
-	public List<Post> DBSelect(Post p, String likeProperty, String str, String type) throws SQLException { // Select 하는
-																											// 함수
+	
+	// Select 하는 함수
+	public List<Post> DBSelect(Post p, String likeProperty, String str, String type) throws SQLException { 
 		open(); // DB 연결
 		List<Post> post = new ArrayList<>();
-		String sql = "SELECT * FROM post WHERE " + likeProperty + " LIKE '%" + str + "%' WHERE type=" + type;
+		String sql = "SELECT * FROM post WHERE " + likeProperty + " LIKE '%" + str + "%' AND type=" +"'"+ type+"'";
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) { // 데이터 베이스에서 가져온 데이터를 TenantBan 객체에 할당
@@ -241,7 +240,8 @@ public class Select extends DBSQL {
 			while (rs.next()) { // 데이터 베이스에서 가져온 데이터를 Calendar 객체에 할당
 				c = new Calendar(); // 가져온 sql쿼리문에 관련된 객체 생성
 				c.setCalid(rs.getInt("calid"));
-				c.setCdate(rs.getDate("cdate"));
+				c.setStartdate(rs.getDate("startdate"));
+				c.setEnddate(rs.getDate("enddate"));
 				c.setText(rs.getString("text"));
 				c.setPostid(rs.getInt("postid"));
 
@@ -265,7 +265,8 @@ public class Select extends DBSQL {
 			while (rs.next()) { // 데이터 베이스에서 가져온 데이터를 Calendar 객체에 할당
 				c = new Calendar(); // 가져온 sql쿼리문에 관련된 객체 생성
 				c.setCalid(rs.getInt("calid"));
-				c.setCdate(rs.getDate("cdate"));
+				c.setStartdate(rs.getDate("startdate"));
+				c.setEnddate(rs.getDate("enddate"));
 				c.setText(rs.getString("text"));
 				c.setPostid(rs.getInt("postid"));
 

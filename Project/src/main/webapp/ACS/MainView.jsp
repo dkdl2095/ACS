@@ -3,6 +3,8 @@
 <%@ page import="dbsql.Select"%>
 <%@ page import="table.*"%>
 <%@ page import="java.util.List"%>
+<%@ page import="java.text.SimpleDateFormat"%>
+<%@ page import="java.sql.Date"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -145,7 +147,7 @@ a.btn-link {
 						<%
 						// Java 코드 작성 (스크립트릿)
 						// DBSQL 객체 생성
-						Select dbsqlScedule = new Select("Calender");
+						Select dbsqlScedule = new Select("Calendar");
 						Calendar pScedule = new Calendar();
 
 						// 데이터베이스에서 글목록 가져오기
@@ -158,18 +160,19 @@ a.btn-link {
 							Calendar SceduleMember = obj; // Post로 캐스팅
 						%>
 						<p>
-							callid :
-							<%=SceduleMember.getCalid()%>, cdate:
-							<%=SceduleMember.getCdate()%>, text:
-							<%=SceduleMember.getText()%>, postid:
-							<%=SceduleMember.getPostid()%>
+							<%=SceduleMember.getCalid()%>
+							기간:<%=SceduleMember.getStartdate()%>
+							~
+							<%=SceduleMember.getEnddate()%>
+							내용: <a class="btn btn-link"
+								onclick="viewPostDetails(<%=SceduleMember.getPostid()%>)"><%=SceduleMember.getText()%></a>
 						</p>
 						<%
 						}
 						}
 						} else {
 						%>
-						<p>게시글이 없습니다.</p>
+						<p>일정이 없습니다.</p>
 						<%
 						}
 						%>
@@ -249,9 +252,6 @@ a.btn-link {
 						<p>추천</p>
 					</div>
 				</div>
-
-				<button class="btn btn-link"
-					onclick="viewPostDetails(<%=PostMember.getPostid()%>)"></button>
 				<%
 				}
 				}
@@ -275,18 +275,40 @@ a.btn-link {
 				<%
 				// 전체 게시물 수
 				List<Post> Postcount = dbsqlPost.DBSelect(post);
-				int totalPosts = Postcount.size();
+				int total = Postcount.size();
+				int itemsPerPage = 10; // 10개씩 끊어서 보기
+				int currentPage = 1; // 기본 페이지 1
+
+				// 사용자가 선택한 페이지 번호를 쿼리 매개변수로 전달
+				String currentPageParam = request.getParameter("currentPage");
+				System.out.println("currentPageParam: " + currentPageParam);
+				if (currentPageParam != null && !currentPageParam.isEmpty()) {
+					currentPage = Integer.parseInt(currentPageParam);
+					System.out.println("currentPage: " + currentPage);
+				}
 				%>
 				<!-- 페이지 -->
 				<ul class="pagination justify-content-center">
-					<li class="page-item"><a class="page-link" href="#"
-						id="previous">&laquo;</a></li>
 					<%
-					for (int i = 1; i <= (int) Math.ceil((double) totalPosts / 10); i++) {
+					// 이 부분은 반복문에서 i 변수를 정의합니다.
 					%>
-					<li class="page-item <%=i == 1 ? "active" : ""%>"><a
-						class="page-link" href="#"><%=i%></a></li>
 					<%
+					for (int i = 1; i <= (int) Math.ceil((double) total / itemsPerPage); i++) {
+					%>
+					<li class="page-item <%=i == currentPage ? "active" : ""%>"><a
+						class="page-link" href="#" onclick="setpageNumber(<%=i%>)"><%=i%></a></li>
+					<%
+					}
+					// 데이터베이스에서 게시물을 내림차순으로 가져오도록 쿼리 작성
+					//List<Post> posts = dbsqlPost.DBSelectOrderedByDateDesc(post);
+
+					// 현재 페이지에 해당하는 게시물들을 가져오는 로직
+
+					int startIndex = (currentPage - 1) * itemsPerPage;
+					int endIndex = Math.min(startIndex + itemsPerPage, total);
+
+					for (int i = startIndex; i < endIndex; i++) {
+					Post postItem = Postcount.get(i);
 					}
 					%>
 					<li class="page-item"><a class="page-link" href="#" id="next">&raquo;</a></li>
@@ -303,10 +325,16 @@ a.btn-link {
 							<option value="일정">일정</option>
 						</select>
 					</div>
+					<div class="col-lg-3">
+						<select class="form-control" id="postValueSelect">
+							<option value="title" selected>제목</option>
+							<option value="name">작성자</option>
+						</select>
+					</div>
 					<input type="text" class="form-control" id="searchText"
 						placeholder="검색어를 입력하세요">
 					<button class="btn btn-secondary btnPostSearch" type="button"
-						onclick="searchPosts()">검색</button>
+						onclick="searchPosts(pageNumber)">검색</button>
 				</div>
 			</div>
 		</div>
@@ -314,11 +342,18 @@ a.btn-link {
 
 	<script>
 	var postType = ''; // 기본값은 빈 문자열
+	var pageNumber = 1;
 	 
+    function setpageNumber(pageNum) {
+    	pageNumber = pageNum;
+    	console.log("pageNumber",pageNumber);
+    	searchPosts(pageNumber);
+    }
+    
     function setPostType(value) {
 		postType = value;
         console.log("setPostType",postType);
-        searchPosts();
+        searchPosts(pageNumber);
     }
 	
     function viewPostDetails(postid) {
@@ -329,8 +364,8 @@ a.btn-link {
             type: "POST", // POST 메소드 사용
             data: { postid : postid },
             success: function(response) {
-                // 성공시, 받은 응답으로 postdetailsview.jsp 페이지로 이동
-                window.location.href = "PostDetailsView.jsp?postid=" + postid;
+            	$("#searchResultsContainer").html(response);
+				$("#infoContainer").hide();
             },
             error: function(xhr, status, error) {
                 // 필요한 경우 에러 처리
@@ -339,15 +374,18 @@ a.btn-link {
         });
     }
     
-    function searchPosts() {
+    function searchPosts(pageNumber) {
+    	var postValue = $("#postValueSelect").val();
 		var searchText = $("#searchText").val();
-		console.log("searchPosts",postType);
+		console.log("postValue",postValue);
 		// AJAX를 이용하여 서버에 검색 요청
 		$.ajax({
 			url: "Post.jsp",
 			type: "POST",
 			data: { postType: postType,
+					postValue: postValue,
 					searchText: searchText,
+					currentPage: pageNumber,
 					btnPostSearch: "true"
 			},
 			success: function(response) {
@@ -374,40 +412,30 @@ a.btn-link {
  	// FullCalendar 라이브러리 초기화 및 설정
     document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
+
+        var events = [];
+        <%for (Calendar scheduleMember : SceduleMembers) {%>
+            events.push({
+                title: '<%=scheduleMember.getText()%>',
+                start: '<%=scheduleMember.getStartdate()%>',
+                end: '<%=scheduleMember.getEnddate()%>',
+                postid: '<%=scheduleMember.getPostid()%>'
+            });
+        <%}%>
+
         var calendar = new FullCalendar.Calendar(calendarEl, {
             timeZone: 'UTC',
-            locale: 'ko', // 한국어 설정
-            initialView: 'dayGridMonth', // 달력 초기 뷰를 '월' 형태로 설정
-
-            // 이벤트 데이터 설정 (임시 데이터)
-            events: [
-                {
-                    title: '에이펙스하기너무무섭다',
-                    start: '2023-07-25',
-                    end: '2023-08-08',
-                    url: 'https://google.com'
-                },
-                {
-                    title: '문명6달리는날',
-                    start: '2023-07-26',
-                    end: '2023-08-09',
-                    url: 'https://google.com'
-                },
-                {
-                    title: '문명6달리는날',
-                    start: '2023-07-26',
-                    end: '2023-08-09',
-                    url: 'https://google.com'
-                }
-            ],
-            // 이벤트 클릭 시 동작하는 함수
+            locale: 'ko',
+            initialView: 'dayGridMonth',
+            events: events,
             eventClick: function(info) {
-                alert('Event: ' + info.event.title);
-                info.el.style.borderColor = 'red'; // 이벤트를 클릭한 요소의 테두리 색상 변경
+                var postid = info.event.extendedProps.postid;
+                var link = document.querySelector('.btn-link[onclick*="' + postid + '"]');
+                link.click();
             },
-            editable: false // 일정 드래그해서 변경할 수 있는 옵션 (true로 설정하면 일정을 드래그해 수정할 수 있습니다.)
+            editable: false
         });
-        calendar.render(); // 달력 표시
+        calendar.render();
     });
 </script>
 </body>
