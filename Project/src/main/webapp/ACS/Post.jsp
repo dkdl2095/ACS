@@ -59,8 +59,6 @@
 
 		if (notice.equals("true")) {
 			Radio = "공지";
-		} else if (Schedule.equals("true")) {
-			Radio = "일정";
 		} else {
 			Radio = "잡담";
 		}

@@ -195,7 +195,7 @@ a.btn-link {
 
 		// AJAX 요청을 보냅니다.
 		$.ajax({
-			url : "Calendar.jsp",
+			url : "CalendarUpdate.jsp",
 			method : "POST",
 			data : {
 				calid : calid,
@@ -207,7 +207,7 @@ a.btn-link {
 				console.log("요청이 성공적으로 처리되었습니다.");
 				console.log("서버 응답: ", response); // Log server response to browser console
 				
-				location.reload(); // 성공 후 페이지 새로 고침
+				window.location.href = "CalendarUpdate.jsp?calid=" + calid;
 			},
 			error : function(xhr, status, error) {
 				// 요청이 실패하거나 에러가 발생했을 때 실행되는 코드

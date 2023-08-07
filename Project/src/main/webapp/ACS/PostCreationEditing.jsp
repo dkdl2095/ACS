@@ -39,9 +39,12 @@
 				<li class="nav-item"><a class="nav-link" href="MainView.jsp">
 						<!-- 홈 버튼 이미지 --> <img src="Home.png" alt="로고" height="30">
 				</a></li>
-				<li class="nav-item"><a class="nav-link" href="#">공지</a></li>
-				<li class="nav-item"><a class="nav-link" href="#">잡담</a></li>
-				<li class="nav-item"><a class="nav-link" href="#">일정</a></li>
+				<li class="nav-item"><a class="nav-link" href="#"
+					onclick="setPostType('공지')">공지</a></li>
+				<li class="nav-item"><a class="nav-link" href="#"
+					onclick="setPostType('잡담')">잡담</a></li>
+				<li class="nav-item"><a class="nav-link" href="#"
+					onclick="setPostType('일정')">일정</a></li>
 			</ul>
 			<!-- 내 정보, 로그아웃 버튼 -->
 			<ul class="navbar-nav">
@@ -58,6 +61,7 @@
 		</div>
 	</nav>
 
+
 	<form id="postForm" action="PostCreationEditing.jsp" method="post">
 		<div class="container mt-3">
 			<!-- 체크박스를 게시글 내용 우측에 추가 -->
@@ -65,9 +69,7 @@
 				<input type="radio" id="noticeRadio" name="postType" value="notice">
 				<label for="noticeRadio">공지</label> <input type="radio"
 					id="idlechatRadio" name="postType" value="idlechat" checked>
-				<label for="idlechatRadio">잡담</label> <input type="radio"
-					id="ScheduleRadio" name="postType" value="Schedule"> <label
-					for="ScheduleRadio">일정</label>
+				<label for="idlechatRadio">잡담</label>
 			</div>
 		</div>
 	</form>
@@ -202,7 +204,6 @@
 			document.getElementById("previewArea").innerHTML = content;
 		}
 
-		
 		// 확인 버튼 클릭 이벤트 처리
 		document
 				.getElementById("btnConfirm")
@@ -239,7 +240,7 @@
 										// 요청이 성공적으로 처리되었을 때 실행되는 코드
 										console.log("요청이 성공적으로 처리되었습니다.");
 										console.log("서버 응답: ", response); // 브라우저 콘솔에 서버 응답 기록
-										
+
 										window.location.href = "MainView.jsp";
 									},
 									error : function(xhr, status, error) {

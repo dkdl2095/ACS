@@ -57,7 +57,6 @@
 	// 관리자가 일정 삭제
 	if (btnCalendarDelete != null && btnCalendarDelete.equals("true")) {
 		int calid = Integer.parseInt(request.getParameter("calid"));
-		int postid = Integer.parseInt(request.getParameter("postid"));
 		// DBSQL 객체 생성
 		Calendar calendar = new Calendar();
 		Delete dbsql = new Delete("Calendar");
