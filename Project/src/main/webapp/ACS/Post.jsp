@@ -51,11 +51,11 @@
 		System.out.println("currentPage: " + currentPage);
 	}
 	if (postIdString != null && !postIdString.isEmpty()) {
-		 postId = Integer.parseInt(postIdString);
+		postId = Integer.parseInt(postIdString);
 	}
 
 	System.out.println("postType : " + postType + ", postValue : " + postValue + ", currentPage : " + currentPage);
-	System.out.println("Editing: " + editing + "postid: "+postId);
+	System.out.println("Editing: " + editing + "postid: " + postId);
 	// 요청 파라미터에서 confirm 값을 확인하여 데이터 삽입 여부를 결정
 	if (btnConfirm != null && btnConfirm.equals("true")) {
 		if (editing.equals("false")) {
@@ -98,11 +98,11 @@
 			String name = (String) session.getAttribute("NAME");
 
 			if (notice.equals("true")) {
-				Radio = "공지";
+		Radio = "공지";
 			} else if (Schedule.equals("true")) {
-				Radio = "일정";
+		Radio = "일정";
 			} else {
-				Radio = "잡담";
+		Radio = "잡담";
 			}
 			post.setType(Radio);
 			post.setTitle(postTitle);
@@ -203,9 +203,10 @@
 				if (obj instanceof Post) {
 			Post PostMember = obj; // Post로 캐스팅
 			String title = PostMember.getTitle();
-	        if (title.length() > 25) {
-	            title = title.substring(0, 25) + "...";
-	        }
+			if (title.length() > 25) {
+				title = title.substring(0, 25) + "...";
+			}
+			if (PostMember.getType().equals("잡담") || (PostMember.getType().equals("공지"))||(PostMember.getType().equals("일정"))) {
 		%>
 		<div class="row">
 			<div class="col-lg-1">
@@ -232,6 +233,7 @@
 			</div>
 		</div>
 		<%
+		}
 		}
 		}
 		} else {

@@ -91,7 +91,8 @@ a.btn-link {
 		</div>
 		<div class="mb-3">
 			<label for="address" class="form-label">거주지</label> <input
-				type="text" id="address" name="address" class="form-control" readonly>
+				type="text" id="address" name="address" class="form-control"
+				readonly>
 			<%
 			String residence = (String) session.getAttribute("RESIDENCE");
 			%>
@@ -101,10 +102,10 @@ a.btn-link {
           </script>
 		</div>
 		<div class="mb-3">
-			<label for="myPosts" class="form-label">내가 쓴 글</label>
 			<div class="input-group">
 				<!-- 글 목록을 표시하는 부분 -->
 				<div id="searchResultsContainer" class="container mt-5">
+					<label for="myPosts" class="form-label">내가 쓴 글</label>
 					<div class="card">
 						<div class="row justify-content-center">
 							<div class="col-lg-1">
@@ -113,7 +114,7 @@ a.btn-link {
 							<div class="col-lg-1">
 								<p>타입</p>
 							</div>
-							<div class="col-lg-5">
+							<div class="col-lg-3">
 								<p>제목</p>
 							</div>
 							<div class="col-lg-1">
@@ -127,6 +128,10 @@ a.btn-link {
 							</div>
 							<div class="col-lg-1">
 								<p>추천</p>
+							</div>
+							<div class="col-lg-1">
+							</div>
+							<div class="col-lg-1">
 							</div>
 						</div>
 
@@ -148,14 +153,15 @@ a.btn-link {
 									if (obj instanceof Post) {
 								Post PostMember = obj; // Post로 캐스팅
 								String title = PostMember.getTitle();
-						        if (title.length() > 25) {
-						            title = title.substring(0, 25) + "...";
-						        }
+								if (title.length() > 25) {
+									title = title.substring(0, 25) + "...";
+								}
 
 								// 여기서 추가된 조건문을 확인합니다.
 								if (PostMember.getId().equals(id)) { // Post의 아이디 값과 세션에 저장된 아이디 값을 비교
 									System.out.println(PostMember.getType());
-									if(PostMember.getType().equals("잡담")||(PostMember.getType().equals("공지")&&PostMember.getId().equals("admin"))){
+									if (PostMember.getType().equals("잡담")
+											|| (PostMember.getType().equals("공지") && PostMember.getId().equals("admin"))) {
 							%>
 							<!-- 이 부분부터는 추가된 조건문이 적용된 영역입니다. -->
 							<div class="row">
@@ -166,7 +172,7 @@ a.btn-link {
 									<a class="btn btn-link"
 										onclick="setPostType('<%=PostMember.getType()%>')"> <%=PostMember.getType()%></a>
 								</div>
-								<div class="col-lg-5">
+								<div class="col-lg-3">
 									<a class="btn btn-link"
 										onclick="viewPostDetails(<%=PostMember.getPostid()%>)"> <%=title%></a>
 								</div>
@@ -182,16 +188,22 @@ a.btn-link {
 								<div class="col-lg-1">
 									<p>추천</p>
 								</div>
+								<div class="col-lg-1">
+									<button class="btn btn-outline-secondary" type="button"
+										onclick="viewPostCreationEditing(<%=PostMember.getPostid()%>)">수정</button>
+								</div>
+								<div class="col-lg-1">
+									<button class="btn btn-outline-secondary" type="button"
+										onclick="PostDelete(<%=PostMember.getPostid()%>)">삭제</button>
+								</div>
 							</div>
 
 							<button class="btn btn-link"
 								onclick="viewPostDetails(<%=PostMember.getPostid()%>)"></button>
-							<button class="btn btn-outline-secondary" type="button"
-								onclick="viewPostCreationEditing(<%=PostMember.getPostid()%>)">>수정</button>
-							<button class="btn btn-outline-secondary" type="button"
-								onclick="PostDelete(<%=PostMember.getPostid()%>)">삭제</button>
+
+
 							<%
-								}
+							}
 							}
 							// 추가된 조건문 종료
 							}
@@ -208,12 +220,87 @@ a.btn-link {
 			</div>
 		</div>
 		<div class="mb-3">
-			<label for="myComments" class="form-label">내가 쓴 댓글</label>
 			<div class="input-group">
-				<input type="text" id="myComments" name="myComments"
-					class="form-control" readonly>
-				<button class="btn btn-outline-secondary" type="button"
-					id="btnDeleteComment">삭제</button>
+				<!-- 댓글 목록을 표시하는 부분 -->
+				<div id="commentResultsContainer" class="container mt-5">
+					<label for="myPosts" class="form-label">댓글 목록</label>
+					<div class="card">
+						<div class="row justify-content-center">
+							<div class="col-lg-1">
+								<p>번호</p>
+							</div>
+							<div class="col-lg-1">
+								<p>타입</p>
+							</div>
+							<div class="col-lg-6">
+								<p>내용</p>
+							</div>
+							<div class="col-lg-1">
+								<p>작성자</p>
+							</div>
+							<div class="col-lg-2">
+								<p>작성일</p>
+							</div>
+							<div class="col-lg-1"></div>
+						</div>
+						<%-- 여기서 댓글 목록을 가져옵니다. --%>
+						<%-- Comment 클래스를 사용하여 댓글 데이터를 가져옵니다. --%>
+						<%
+						Select dbsqlComment = new Select("Post");
+						Post postComment = new Post();
+
+						// 데이터베이스에서 글목록 가져오기
+						List<Post> CommentPostMembers = dbsqlPost.DBSelect(post); // 적절한 메서드를 호출하여 글목록 정보를 가져오도록 수정해야 합니다.
+
+						// 가져온 글목록 정보를 사용하여 HTML 코드 작성
+						if (PostMembers.size() > 0) {
+							for (Post obj : PostMembers) {
+								if (obj instanceof Post) {
+							Post PostMember = obj; // Post로 캐스팅
+							String title = PostMember.getTitle();
+							if (title.length() > 25) {
+								title = title.substring(0, 25) + "...";
+							}
+							// 여기서 추가된 조건문을 확인합니다.
+							if (PostMember.getId().equals(id)) { // Post의 아이디 값과 세션에 저장된 아이디 값을 비교
+								System.out.println(PostMember.getType());
+								if (PostMember.getType().equals("댓글")) {
+						%>
+						<!-- 이 부분부터는 추가된 조건문이 적용된 영역입니다. -->
+						<div class="row">
+							<div class="col-lg-1">
+								<p><%=PostMember.getTitle()%></p>
+							</div>
+							<div class="col-lg-1">
+								<p><%=PostMember.getType()%></p>
+							</div>
+							<div class="col-lg-6">
+								<p><%=PostMember.getText()%></p>
+							</div>
+							<div class="col-lg-1">
+								<p><%=PostMember.getName()%></p>
+							</div>
+							<div class="col-lg-2">
+								<p><%=PostMember.getWritingdate()%></p>
+							</div>
+							<div class="col-lg-1">
+								<button class="btn btn-outline-secondary" type="button"
+									onclick="PostDelete(<%=PostMember.getPostid()%>)">삭제</button>
+							</div>
+						</div>
+						<%
+						}
+						}
+						}
+						}
+						} else {
+						%>
+						<p>댓글이 없습니다.</p>
+						<%
+						}
+						%>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

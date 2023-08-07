@@ -189,9 +189,10 @@ a.btn-link {
 						if (obj instanceof Post) {
 					Post PostMember = obj; // Post로 캐스팅
 					String title = PostMember.getTitle();
-			        if (title.length() > 25) {
-			            title = title.substring(0, 25) + "...";
-			        }
+					if (title.length() > 25) {
+						title = title.substring(0, 25) + "...";
+					}
+					if (PostMember.getType().equals("잡담") || (PostMember.getType().equals("공지"))||(PostMember.getType().equals("일정"))) {
 				%>
 				<div class="row">
 					<div class="col-lg-1">
@@ -221,6 +222,7 @@ a.btn-link {
 				<%
 				}
 				}
+				}
 				} else {
 				%>
 				<p>게시글이 없습니다.</p>
@@ -241,7 +243,7 @@ a.btn-link {
 				<%
 				// 전체 게시물 수
 				List<Post> Postcount = dbsqlPost.DBSelect(post);
-				int total = Postcount.size();
+				int total = 0;
 				int itemsPerPage = 10; // 10개씩 끊어서 보기
 				int currentPage = 1; // 기본 페이지 1
 
@@ -252,6 +254,14 @@ a.btn-link {
 					currentPage = Integer.parseInt(currentPageParam);
 					System.out.println("currentPage: " + currentPage);
 				}
+				
+				// total 계산하기 (댓글이 아닌 게시물만 세기)
+			    for (Post postItem : Postcount) {
+			        if (!postItem.getType().equals("댓글")) {
+			            total++;
+			        }
+			    }
+				System.out.println(total);
 				%>
 				<!-- 페이지 -->
 				<ul class="pagination justify-content-center">
@@ -262,7 +272,8 @@ a.btn-link {
 					for (int i = 1; i <= (int) Math.ceil((double) total / itemsPerPage); i++) {
 					%>
 					<li class="page-item <%=i == currentPage ? "active" : ""%>"><a
-						class="page-link" href="#" id="page_<%=i%>" onclick="setpageNumber(<%=i%>)"><%=i%></a></li>
+						class="page-link" href="#" id="page_<%=i%>"
+						onclick="setpageNumber(<%=i%>)"><%=i%></a></li>
 					<%
 					}
 					// 데이터베이스에서 게시물을 내림차순으로 가져오도록 쿼리 작성
