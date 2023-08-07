@@ -33,7 +33,7 @@ public class Update extends DBSQL {
 		open(); // DB 연결
 		// sql 쿼리문
 		String sql = "UPDATE " + table
-				+ " SET postid=?, type=?, title=?, text=?, writingdate=?, name=?, img=?, viewsnum=?";
+				+ " SET postid=?, type=?, title=?, text=?, writingdate=?, id=?, name=?, img=?, viewsnum=?";
 
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			pstmt.setInt(1, p.getPostid()); // sql 쿼리문에 postid에 해당하는 값 셋팅
@@ -41,9 +41,10 @@ public class Update extends DBSQL {
 			pstmt.setString(3, p.getTitle()); // sql 쿼리문에 title에 해당하는 값 셋팅
 			pstmt.setString(4, p.getText()); // sql 쿼리문에 text에 해당하는 값 셋팅
 			pstmt.setDate(5, p.getWritingdate()); // sql 쿼리문에 writingdate에 해당하는 값 셋팅
-			pstmt.setString(6, p.getName()); // sql 쿼리문에 name에 해당하는 값 셋팅
-			pstmt.setString(7, p.getImg()); // sql 쿼리문에 img에 해당하는 값 셋팅
-			pstmt.setInt(8, p.getViewsnum()); // sql 쿼리문에 viewsnum에 해당하는 값 셋팅
+			pstmt.setString(6, p.getId()); // sql 쿼리문에 id에 해당하는 값 셋팅
+			pstmt.setString(7, p.getName()); // sql 쿼리문에 name에 해당하는 값 셋팅
+			pstmt.setString(8, p.getImg()); // sql 쿼리문에 img에 해당하는 값 셋팅
+			pstmt.setInt(9, p.getViewsnum()); // sql 쿼리문에 viewsnum에 해당하는 값 셋팅
 
 			pstmt.executeUpdate();
 		} catch (Exception e) {
