@@ -113,7 +113,4 @@ public class LoginDAO {
 
         return isBlocked;
     }
-
-
-
 }
