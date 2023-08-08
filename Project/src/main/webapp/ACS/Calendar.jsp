@@ -57,30 +57,22 @@
 	// 관리자가 일정 삭제
 	if (btnCalendarDelete != null && btnCalendarDelete.equals("true")) {
 		int calid = Integer.parseInt(request.getParameter("calid"));
+		int postid = Integer.parseInt(request.getParameter("postid"));
+		// Calendar 데이터를 삭제합니다.
 		// DBSQL 객체 생성
 		Calendar calendar = new Calendar();
-		Delete dbsql = new Delete("Calendar");
+		Delete dbsqlcal = new Delete("Calendar");
 
-		// 데이터를 삭제합니다.
-		dbsql.DBDelete(calendar, calid);
+		dbsqlcal.DBDelete(calendar, calid);
+		
+		// Post 데이터를 삭제합니다.
+		// DBSQL 객체 생성
+		Post post = new Post();
+		Delete dbsqlpost = new Delete("Post");
+		dbsqlpost.DBDelete(post, postid);
 
 		out.println("요청이 성공적으로 처리되었습니다.");
 		out.println("서버 응답: " + "데이터가 성공적으로 저장되었습니다."); 
-	}
-
-	// 관리자가 일정 수정
-	if (btnCalendarUpdate != null && btnCalendarUpdate.equals("true")) {
-		int calid = Integer.parseInt(request.getParameter("calid"));
-		int postid = Integer.parseInt(request.getParameter("postid"));
-		// DBSQL 객체 생성
-		Calendar calendar = new Calendar();
-		Delete dbsql = new Delete("Calendar");
-
-		// 데이터를 수정합니다.
-		dbsql.DBDelete(calendar, calid);
-
-		out.println("요청이 성공적으로 처리되었습니다.");
-		out.println("서버 응답: " + "데이터가 성공적으로 저장되었습니다.");
 	}
 	%>
 </body>

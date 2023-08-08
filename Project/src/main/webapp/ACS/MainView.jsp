@@ -47,46 +47,7 @@ a.btn-link {
 <title>메인 화면</title>
 </head>
 <body>
-	<nav class="navbar navbar-expand-lg navbar-light bg-light">
-		<div class="container-fluid">
-			<a class="navbar-brand" href="MainView.jsp"> <!-- 로고 이미지 --> <!-- 
-        로고 출처 
-        https://pixabay.com/ko/vectors/%EB%8F%84%EC%8B%9C-%EB%8F%84%EB%A1%9C-%EC%A7%80%EC%97%AD-%EC%82%AC%ED%9A%8C-%EA%B1%B4%EB%AC%BC-2042634/
-        pixabay - Ricinator
-        --> <img src="Logo.png" alt="로고"
-				style="width: 20%; height: auto; margin: 0 auto; display: block;">
-			</a>
-		</div>
-	</nav>
-
-	<nav class="navbar navbar-expand-lg navbar-light bg-light">
-		<div class="container-fluid">
-			<!-- 홈, 공지, 잡담, 일정 버튼 -->
-			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-				<li class="nav-item"><a class="nav-link" href="MainView.jsp">
-						<!-- 홈 버튼 이미지 --> <img src="Home.png" alt="로고" height="30">
-				</a></li>
-				<li class="nav-item"><a class="nav-link" href="#"
-					onclick="setPostType('공지')">공지</a></li>
-				<li class="nav-item"><a class="nav-link" href="#"
-					onclick="setPostType('잡담')">잡담</a></li>
-				<li class="nav-item"><a class="nav-link" href="#"
-					onclick="setPostType('일정')">일정</a></li>
-			</ul>
-			<!-- 내 정보, 로그아웃 버튼 -->
-			<ul class="navbar-nav">
-				<!-- 내 정보 버튼 -->
-				<li class="nav-item"><a id="btnMyInfo" class="nav-link"
-					href="Myinfo.jsp">내 정보</a></li>
-				<!-- 관리자 버튼-->
-				<li class="nav-item"><a id="btnAdmin" class="nav-link"
-					href="AdminView.jsp">관리자</a></li>
-				<!-- 로그아웃 버튼 -->
-				<li class="nav-item"><a id="btnLogout" class="btn btn-link"
-					href="Login.jsp" onclick="Logout()">로그아웃</a></li>
-			</ul>
-		</div>
-	</nav>
+	<%@include file="nav.jsp"%>
 
 	<div id="infoContainer" class="container mt-3">
 		<!-- 그리드 시스템을 사용하여 달력의 정보, 일정의 글 목록, 로그인 시에만 보이는 회원정보를 한 줄로 배치 -->
@@ -227,6 +188,11 @@ a.btn-link {
 					for (Post obj : PostMembers) {
 						if (obj instanceof Post) {
 					Post PostMember = obj; // Post로 캐스팅
+					String title = PostMember.getTitle();
+					if (title.length() > 25) {
+						title = title.substring(0, 25) + "...";
+					}
+					if (PostMember.getType().equals("잡담") || (PostMember.getType().equals("공지"))||(PostMember.getType().equals("일정"))) {
 				%>
 				<div class="row">
 					<div class="col-lg-1">
@@ -238,7 +204,7 @@ a.btn-link {
 					</div>
 					<div class="col-lg-5">
 						<a class="btn btn-link"
-							onclick="viewPostDetails(<%=PostMember.getPostid()%>)"> <%=PostMember.getTitle()%></a>
+							onclick="viewPostDetails(<%=PostMember.getPostid()%>)"> <%=title%></a>
 					</div>
 					<div class="col-lg-1">
 						<p><%=PostMember.getName()%></p>
@@ -249,11 +215,9 @@ a.btn-link {
 					<div class="col-lg-1">
 						<p><%=PostMember.getViewsnum()%></p>
 					</div>
-					<div class="col-lg-1">
-						<p>추천</p>
-					</div>
 				</div>
 				<%
+				}
 				}
 				}
 				} else {
@@ -276,7 +240,7 @@ a.btn-link {
 				<%
 				// 전체 게시물 수
 				List<Post> Postcount = dbsqlPost.DBSelect(post);
-				int total = Postcount.size();
+				int total = 0;
 				int itemsPerPage = 10; // 10개씩 끊어서 보기
 				int currentPage = 1; // 기본 페이지 1
 
@@ -287,6 +251,14 @@ a.btn-link {
 					currentPage = Integer.parseInt(currentPageParam);
 					System.out.println("currentPage: " + currentPage);
 				}
+				
+				// total 계산하기 (댓글이 아닌 게시물만 세기)
+			    for (Post postItem : Postcount) {
+			        if (!postItem.getType().equals("댓글")) {
+			            total++;
+			        }
+			    }
+				System.out.println(total);
 				%>
 				<!-- 페이지 -->
 				<ul class="pagination justify-content-center">
@@ -297,7 +269,8 @@ a.btn-link {
 					for (int i = 1; i <= (int) Math.ceil((double) total / itemsPerPage); i++) {
 					%>
 					<li class="page-item <%=i == currentPage ? "active" : ""%>"><a
-						class="page-link" href="#" onclick="setpageNumber(<%=i%>)"><%=i%></a></li>
+						class="page-link" href="#" id="page_<%=i%>"
+						onclick="setpageNumber(<%=i%>)"><%=i%></a></li>
 					<%
 					}
 					// 데이터베이스에서 게시물을 내림차순으로 가져오도록 쿼리 작성
@@ -359,7 +332,7 @@ a.btn-link {
 	
     function viewPostDetails(postid) {
         // AJAX를 이용하여 서버에 글 상세 정보 요청
-        console.log("ajax 보내기 전", postid);
+        console.log("ajax 보내기 전",postid);
         $.ajax({
             url: "PostDetailsView.jsp",
             type: "POST", // POST 메소드 사용
@@ -379,6 +352,11 @@ a.btn-link {
     	var postValue = $("#postValueSelect").val();
 		var searchText = $("#searchText").val();
 		console.log("postValue",postValue);
+		
+		// 해당 페이지 번호를 클릭하면 active 클래스 설정
+        $(".page-item").removeClass("active");
+        $("#page_" + pageNumber).parent().addClass("active");
+        
 		// AJAX를 이용하여 서버에 검색 요청
 		$.ajax({
 			url: "Post.jsp",
@@ -438,18 +416,6 @@ a.btn-link {
         });
         calendar.render();
     });
- 	
-  	//로그아웃 함수
-    function Logout() {
-        // 세션 만료시키기 위해 sessionStorage 또는 localStorage에 저장된 세션 정보를 삭제
-        console.log("test");
-        sessionStorage.removeItem('ID');
-        sessionStorage.removeItem('NAME');
-        sessionStorage.removeItem('RESIDENCE');
-
-        // 페이지 새로고침
-        location.reload();
-    }
 </script>
 </body>
 </html>

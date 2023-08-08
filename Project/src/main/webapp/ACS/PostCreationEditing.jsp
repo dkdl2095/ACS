@@ -21,46 +21,7 @@
 <title>게시글 생성 및 수정 화면</title>
 </head>
 <body>
-	<nav class="navbar navbar-expand-lg navbar-light bg-light">
-		<div class="container-fluid">
-			<a class="navbar-brand" href="MainView.jsp"> <!-- 로고 이미지 --> <!-- 
-        로고 출처 
-        https://pixabay.com/ko/vectors/%EB%8F%84%EC%8B%9C-%EB%8F%84%EB%A1%9C-%EC%A7%80%EC%97%AD-%EC%82%AC%ED%9A%8C-%EA%B1%B4%EB%AC%BC-2042634/
-        pixabay - Ricinator
-        --> <img src="Logo.png" alt="로고"
-				style="width: 20%; height: auto; margin: 0 auto; display: block;">
-			</a>
-		</div>
-	</nav>
-	<nav class="navbar navbar-expand-lg navbar-light bg-light">
-		<div class="container-fluid">
-			<!-- 홈, 공지, 잡담, 일정 버튼 -->
-			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-				<li class="nav-item"><a class="nav-link" href="MainView.jsp">
-						<!-- 홈 버튼 이미지 --> <img src="Home.png" alt="로고" height="30">
-				</a></li>
-				<li class="nav-item"><a class="nav-link" href="#"
-					onclick="setPostType('공지')">공지</a></li>
-				<li class="nav-item"><a class="nav-link" href="#"
-					onclick="setPostType('잡담')">잡담</a></li>
-				<li class="nav-item"><a class="nav-link" href="#"
-					onclick="setPostType('일정')">일정</a></li>
-			</ul>
-			<!-- 내 정보, 로그아웃 버튼 -->
-			<ul class="navbar-nav">
-				<!-- 내 정보 버튼 -->
-				<li class="nav-item"><a id="btnMyInfo" class="nav-link"
-					href="Myinfo.jsp">내 정보</a></li>
-				<!-- 관리자 버튼-->
-				<li class="nav-item"><a id="btnAdmin" class="nav-link"
-					href="AdminView.jsp">관리자</a></li>
-				<!-- 로그아웃 버튼 -->
-				<li class="nav-item"><a id="btnLogout" class="nav-link"
-					href="Login.jsp">로그아웃</a></li>
-			</ul>
-		</div>
-	</nav>
-
+	<%@include file="nav.jsp"%>
 
 	<form id="postForm" action="PostCreationEditing.jsp" method="post">
 		<div class="container mt-3">
@@ -81,12 +42,11 @@
 		</div>
 		<!-- 글꼴, 크기, 글 색상 설정 -->
 		<div class="row">
-			<div class="col-md-3">폰트</div>
-			<div class="col-md-3">사이즈</div>
-			<div class="col-md-3">색</div>
-			<div class="col-md-3">이미지 삽입</div>
+			<div class="col-md-4">폰트</div>
+			<div class="col-md-4">사이즈</div>
+			<div class="col-md-4">색</div>
 
-			<div class="col-md-3">
+			<div class="col-md-4">
 				<select id="fontSelect" class="form-select form-select-sm"
 					aria-label=".form-select-sm example">
 					<option value="Font" selected>Font</option>
@@ -95,7 +55,7 @@
 					<option value="'Courier New, monospace'">Courier New</option>
 				</select>
 			</div>
-			<div class="col-md-3">
+			<div class="col-md-4">
 				<select id="sizeSelect" class="form-select form-select-sm"
 					aria-label=".form-select-sm example">
 					<option value="Size" selected>Size</option>
@@ -104,7 +64,7 @@
 					<option value="'16px'">16</option>
 				</select>
 			</div>
-			<div class="col-md-3">
+			<div class="col-md-4">
 				<select id="colorSelect" class="form-select form-select-sm"
 					aria-label=".form-select-sm example">
 					<option value="Color" selected>Color</option>
@@ -113,11 +73,6 @@
 					<option value="'blue'">파랑</option>
 				</select>
 			</div>
-			<div class="col-md-3">
-				<!-- <label for="imageInput" class="form-label">이미지 삽입</label> -->
-				<input type="file" class="form-control" id="imageInput"
-					accept="image/*" onchange="insertImage()">
-			</div>
 		</div>
 	</div>
 
@@ -125,9 +80,14 @@
 		<div class="container mt-3">
 			<!-- 텍스트 박스 -->
 			<div class="mb-3">
-				<label for="postContent" class="form-label">게시글 내용</label>
-				<textarea class="form-control" id="postContent" rows="20"></textarea>
-				<div id="postImg" contenteditable="true"></div>
+				<label for="postContent" class="form-label">게시글 내용</label> <small
+					id="postLengthInfo" class="form-text text-muted">최대 2000자까지
+					입력 가능합니다.</small>
+				<textarea class="form-control" id="postContent" rows="20"
+					oninput="checkPostTextLength()" maxlength="2000"></textarea>
+				<div class="col-md-3">이미지 삽입</div>
+				<div id="postImg" contenteditable="true"
+					style="border: 1px solid #ccc; padding: 10px; background-color: #f7f7f7; width: auto; height: 200px; font-family: Arial, sans-serif; font-size: 14px; color: #333; line-height: 1.6;"></div>
 			</div>
 		</div>
 	</form>
@@ -141,6 +101,30 @@
 
 
 	<script>
+		function checkPostTextLength() {
+			var postInput = document.getElementById("postContent");
+			var postLength = postInput.value.length;
+			var maxLength = 2000;
+			var postLengthInfo = document.getElementById("postLengthInfo");
+
+			if (postLength > maxLength) {
+				postInput.value = postInput.value.substring(0, maxLength);
+				postLengthInfo.textContent = "최대 2000자까지 입력 가능합니다. (현재 "
+						+ maxLength + "자)";
+			} else {
+				postLengthInfo.textContent = "최대 2000자까지 입력 가능합니다. (현재 "
+						+ postLength + "자)";
+			}
+		}
+
+		// 생성, 수정 구분 값.
+		var editing = false;
+		// postid를 URL 파라미터로부터 가져와서 처리.
+		const urlParams = new URLSearchParams(window.location.search);
+		const postId = urlParams.get("postid");
+		const postid = urlParams.get("postid");
+		console.log("editing:", editing);
+		console.log("postid:", postid);
 		function applyFontAndSize() {
 			var selectedFont = $("#fontSelect").val();
 			var selectedSize = $("#sizeSelect").val();
@@ -219,36 +203,45 @@
 							var postTitle = titleArea.value;
 							var postImg = imgDiv.innerHTML;
 							var notice = document.getElementById("noticeRadio").checked;
-							var Schedule = document
-									.getElementById("ScheduleRadio").checked;
 							var confirmed = confirm("확인 버튼을 누르면 게시글을 저장합니다. 계속하시겠습니까?");
 
 							if (confirmed) {
 								// AJAX 요청을 보냅니다.
-								$.ajax({
-									url : "Post.jsp",
-									method : "POST",
-									data : {
-										postContent : postContent,
-										postTitle : postTitle,
-										postImg : postImg,
-										notice : notice,
-										Schedule : Schedule,
-										btnConfirm : "true"
-									},
-									success : function(response) {
-										// 요청이 성공적으로 처리되었을 때 실행되는 코드
-										console.log("요청이 성공적으로 처리되었습니다.");
-										console.log("서버 응답: ", response); // 브라우저 콘솔에 서버 응답 기록
-
-										window.location.href = "MainView.jsp";
-									},
-									error : function(xhr, status, error) {
-										// 요청이 실패하거나 에러가 발생했을 때 실행되는 코드
-										console.error("요청이 실패하였습니다.");
-										console.error(xhr, status, error);
-									}
-								});
+								$
+										.ajax({
+											url : "Post.jsp",
+											method : "POST",
+											data : {
+												postId : postId,
+												postContent : postContent,
+												postTitle : postTitle,
+												postImg : postImg,
+												notice : notice,
+												btnConfirm : "true",
+												editing : editing
+											},
+											success : function(response) {
+												// 요청이 성공적으로 처리되었을 때 실행되는 코드
+												console
+														.log("요청이 성공적으로 처리되었습니다.");
+												console
+														.log("서버 응답: ",
+																response); // 브라우저 콘솔에 서버 응답 기록
+												console
+														.log("editing:",
+																editing);
+												if (editing == false)
+													window.location.href = "MainView.jsp";
+												else
+													window.location.href = "Myinfo.jsp";
+											},
+											error : function(xhr, status, error) {
+												// 요청이 실패하거나 에러가 발생했을 때 실행되는 코드
+												console.error("요청이 실패하였습니다.");
+												console.error(xhr, status,
+														error);
+											}
+										});
 							}
 						});
 
@@ -285,6 +278,52 @@
 				reader.readAsDataURL(file);
 			}
 		});
+
+		$(document).ready(
+				function() {
+					// AJAX 요청을 보내서 데이터를 가져옴
+					$.ajax({
+						url : "PostDetailsView.jsp", // 데이터를 가져올 서버의 URL
+						type : "POST",
+						data : {
+							postid : postid
+						},
+						success : function(response) {
+							// 요청이 성공적으로 처리되었을 때 실행되는 코드
+							const $responseHtml = $(response);
+							//console.log(response);
+							// 각 input 요소의 값을 가져와서 변수에 저장
+							const postTitle = $responseHtml.find(
+									'input[name="postTitle"]').val();
+							const postContent = $responseHtml.find(
+									'input[name="postContent"]').val();
+							const postType = $responseHtml.find(
+									'input[name="postType"]').val();
+							
+
+							console.log(postTitle);
+							console.log(postContent);
+							console.log(postType);
+							$("#postTitle").val(postTitle);
+							$("#postContent").val(postContent);
+							if (postType == "공지") {
+								$("#noticeRadio").prop("checked", true);
+							} else if (postType == "잡담") {
+								$("#idlechatRadio").prop("checked", true);
+							} else if (postType == "일정") {
+								$("#ScheduleRadio").prop("checked", true);
+							}
+							//$("#postType").val(postType);
+							editing = true;
+							console.log("editing:", editing);
+						},
+						error : function(xhr, status, error) {
+							// 요청이 실패하거나 에러가 발생했을 때 실행되는 코드
+							console.error("요청이 실패하였습니다.");
+							console.error(xhr, status, error);
+						}
+					});
+				});
 	</script>
 </body>
 </html>

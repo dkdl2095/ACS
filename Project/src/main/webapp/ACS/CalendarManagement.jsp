@@ -26,43 +26,8 @@ a.btn-link {
 <title>관리자 화면</title>
 </head>
 <body>
-	<nav class="navbar navbar-expand-lg navbar-light bg-light">
-		<div class="container-fluid">
-			<a class="navbar-brand" href="MainView.jsp"> <!-- 로고 이미지 --> <!-- 
-        로고 출처 
-        https://pixabay.com/ko/vectors/%EB%8F%84%EC%8B%9C-%EB%8F%84%EB%A1%9C-%EC%A7%80%EC%97%AD-%EC%82%AC%ED%9A%8C-%EA%B1%B4%EB%AC%BC-2042634/
-        pixabay - Ricinator
-        --> <img src="Logo.png" alt="로고"
-				style="width: 20%; height: auto; margin: 0 auto; display: block;">
-			</a>
-		</div>
-	</nav>
-	<nav class="navbar navbar-expand-lg navbar-light bg-light">
-		<div class="container-fluid">
-			<!-- 홈, 공지, 잡담, 일정 버튼 -->
-			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-				<li class="nav-item"><a class="nav-link" href="MainView.jsp">
-						<!-- 홈 버튼 이미지 --> <img src="Home.png" alt="로고" height="30">
-				</a></li>
-				<li class="nav-item"><a class="nav-link" href="#">공지</a></li>
-				<li class="nav-item"><a class="nav-link" href="#">잡담</a></li>
-				<li class="nav-item"><a class="nav-link" href="#">일정</a></li>
-			</ul>
-			<!-- 내 정보, 로그아웃 버튼 -->
-			<ul class="navbar-nav">
-				<!-- 내 정보 버튼 -->
-				<li class="nav-item"><a id="btnMyInfo" class="nav-link"
-					href="Myinfo.jsp">내 정보</a></li>
-				<!-- 관리자 버튼-->
-				<li class="nav-item"><a id="btnAdmin" class="nav-link"
-					href="AdminView.jsp">관리자</a></li>
-				<!-- 로그아웃 버튼 -->
-				<li class="nav-item"><a id="btnLogout" class="nav-link"
-					href="Login.jsp">로그아웃</a></li>
-			</ul>
-		</div>
-	</nav>
-
+	<!-- 로고, 네비게이션 바 파일 불러오기 -->
+	<%@include file="nav.jsp"%>
 
 	<div class="container mt-2">
 		<div class="card">
@@ -103,11 +68,6 @@ a.btn-link {
 								data-calid="<%=CalendarMember.getCalid()%>"
 								data-postid="<%=CalendarMember.getPostid()%>">일정 삭제</button>
 						</div>
-						<div class="col-lg-1">
-							<button class="btn btn-danger btnCalendarUpdate"
-								data-calid="<%=CalendarMember.getCalid()%>"
-								data-postid="<%=CalendarMember.getPostid()%>">일정 수정</button>
-						</div>
 					</div>
 
 					<%
@@ -125,13 +85,15 @@ a.btn-link {
 					}
 					%>
 				</div>
+				<div class="col-lg-8">
+					<a href="AdminView.jsp" class="btn btn-primary">회원 수락</a> <a
+						href="MemberManagement.jsp" class="btn btn-primary">회원 관리</a> <a
+						href="PostManagement.jsp" class="btn btn-primary">글 관리</a>
+				</div>
 			</div>
+
 		</div>
-		<div class="col-lg-8">
-			<a href="AdminView.jsp" class="btn btn-primary">회원 수락</a> <a
-				href="MemberManagement.jsp" class="btn btn-primary">회원 관리</a> <a
-				href="PostManagement.jsp" class="btn btn-primary">글 관리</a>
-		</div>
+
 	</div>
 
 	<script>
@@ -144,8 +106,8 @@ a.btn-link {
             type: "POST", // POST 메소드 사용
             data: { postid : postid },
             success: function(response) {
-                // 성공시, 받은 응답으로 postdetailsview.jsp 페이지로 이동
-                window.location.href = "PostDetailsView.jsp?postid=" + postid;
+            	$("#searchResultsContainer").html(response);
+				$("#infoContainer").hide();
             },
             error: function(xhr, status, error) {
                 // 필요한 경우 에러 처리
@@ -179,35 +141,6 @@ a.btn-link {
 				console.log("서버 응답: ", response); // Log server response to browser console
 				
 				location.reload(); // 성공 후 페이지 새로 고침
-			},
-			error : function(xhr, status, error) {
-				// 요청이 실패하거나 에러가 발생했을 때 실행되는 코드
-				console.error("요청이 실패하였습니다.");
-				console.error(xhr, status, error);
-			}
-		});
-	});
-	
-	// 일정 수정 버튼에 대한 클릭 이벤트 처리
-	$(".btnCalendarUpdate").on("click", function() {
-		var calid = $(this).data("calid");
-		var postid = $(this).data("postid");
-
-		// AJAX 요청을 보냅니다.
-		$.ajax({
-			url : "CalendarUpdate.jsp",
-			method : "POST",
-			data : {
-				calid : calid,
-				postid : postid,
-				btnCalendarUpdate : "true"
-			},
-			success : function(response) {
-				// 요청이 성공적으로 처리되었을 때 실행되는 코드
-				console.log("요청이 성공적으로 처리되었습니다.");
-				console.log("서버 응답: ", response); // Log server response to browser console
-				
-				window.location.href = "CalendarUpdate.jsp?calid=" + calid;
 			},
 			error : function(xhr, status, error) {
 				// 요청이 실패하거나 에러가 발생했을 때 실행되는 코드
